@@ -1,4 +1,5 @@
-﻿using GoSportsAPI.Mdels.Location;
+﻿using GoSportsAPI.Mdels.Lobbies;
+using GoSportsAPI.Mdels.Locations;
 using Microsoft.EntityFrameworkCore;
 
 namespace GoSportsAPI.Data
@@ -12,6 +13,7 @@ namespace GoSportsAPI.Data
 
         public DbSet<Location> Location { get; set; }
         public DbSet<LocationType> locationType { get; set; }
+        public DbSet<Lobby> lobby { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -21,6 +23,12 @@ namespace GoSportsAPI.Data
                 .WithOne()
                 .HasForeignKey<LocationType>(t => t.LocationId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Lobby>()
+            .HasOne(l => l.Location)
+            .WithMany(loc => loc.Lobbies)
+            .HasForeignKey(l => l.LocationId)
+            .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

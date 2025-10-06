@@ -6,53 +6,53 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GoSportsAPI.Data;
-using GoSportsAPI.Mdels.Locations;
+using GoSportsAPI.Mdels.Lobbies;
 
 namespace GoSportsAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LocationsController : ControllerBase
+    public class LobbiesController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
 
-        public LocationsController(ApplicationDBContext context)
+        public LobbiesController(ApplicationDBContext context)
         {
             _context = context;
         }
 
-        // GET: api/Locations
+        // GET: api/Lobbies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Location>>> GetLocation()
+        public async Task<ActionResult<IEnumerable<Lobby>>> Getlobby()
         {
-            return await _context.Location.ToListAsync();
+            return await _context.lobby.ToListAsync();
         }
 
-        // GET: api/Locations/5
+        // GET: api/Lobbies/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Location>> GetLocation(Guid id)
+        public async Task<ActionResult<Lobby>> GetLobby(Guid id)
         {
-            var location = await _context.Location.FindAsync(id);
+            var lobby = await _context.lobby.FindAsync(id);
 
-            if (location == null)
+            if (lobby == null)
             {
                 return NotFound();
             }
 
-            return location;
+            return lobby;
         }
 
-        // PUT: api/Locations/5
+        // PUT: api/Lobbies/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLocation(Guid id, Location location)
+        public async Task<IActionResult> PutLobby(Guid id, Lobby lobby)
         {
-            if (id != location.Id)
+            if (id != lobby.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(location).State = EntityState.Modified;
+            _context.Entry(lobby).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace GoSportsAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LocationExists(id))
+                if (!LobbyExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace GoSportsAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Locations
+        // POST: api/Lobbies
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Location>> PostLocation(Location location)
+        public async Task<ActionResult<Lobby>> PostLobby(Lobby lobby)
         {
-            _context.Location.Add(location);
+            _context.lobby.Add(lobby);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLocation", new { id = location.Id }, location);
+            return CreatedAtAction("GetLobby", new { id = lobby.Id }, lobby);
         }
 
-        // DELETE: api/Locations/5
+        // DELETE: api/Lobbies/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLocation(Guid id)
+        public async Task<IActionResult> DeleteLobby(Guid id)
         {
-            var location = await _context.Location.FindAsync(id);
-            if (location == null)
+            var lobby = await _context.lobby.FindAsync(id);
+            if (lobby == null)
             {
                 return NotFound();
             }
 
-            _context.Location.Remove(location);
+            _context.lobby.Remove(lobby);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool LocationExists(Guid id)
+        private bool LobbyExists(Guid id)
         {
-            return _context.Location.Any(e => e.Id == id);
+            return _context.lobby.Any(e => e.Id == id);
         }
     }
 }

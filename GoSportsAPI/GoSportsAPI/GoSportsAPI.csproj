@@ -23,8 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Mdels\Lobby\" />
-    <Folder Include="Mdels\Users\" />
+    <Folder Include="Models\Users\" />
   </ItemGroup>
 
 </Project>

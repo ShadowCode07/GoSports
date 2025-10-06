@@ -12,47 +12,47 @@ namespace GoSportsAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LocationsController : ControllerBase
+    public class LocationTypesController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
 
-        public LocationsController(ApplicationDBContext context)
+        public LocationTypesController(ApplicationDBContext context)
         {
             _context = context;
         }
 
-        // GET: api/Locations
+        // GET: api/LocationTypes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Location>>> GetLocation()
+        public async Task<ActionResult<IEnumerable<LocationType>>> GetlocationType()
         {
-            return await _context.Location.ToListAsync();
+            return await _context.locationType.ToListAsync();
         }
 
-        // GET: api/Locations/5
+        // GET: api/LocationTypes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Location>> GetLocation(Guid id)
+        public async Task<ActionResult<LocationType>> GetLocationType(Guid id)
         {
-            var location = await _context.Location.FindAsync(id);
+            var locationType = await _context.locationType.FindAsync(id);
 
-            if (location == null)
+            if (locationType == null)
             {
                 return NotFound();
             }
 
-            return location;
+            return locationType;
         }
 
-        // PUT: api/Locations/5
+        // PUT: api/LocationTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLocation(Guid id, Location location)
+        public async Task<IActionResult> PutLocationType(Guid id, LocationType locationType)
         {
-            if (id != location.Id)
+            if (id != locationType.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(location).State = EntityState.Modified;
+            _context.Entry(locationType).State = EntityState.Modified;
 
             try
             {
@@ -60,7 +60,7 @@ namespace GoSportsAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LocationExists(id))
+                if (!LocationTypeExists(id))
                 {
                     return NotFound();
                 }
@@ -73,36 +73,36 @@ namespace GoSportsAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Locations
+        // POST: api/LocationTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Location>> PostLocation(Location location)
+        public async Task<ActionResult<LocationType>> PostLocationType(LocationType locationType)
         {
-            _context.Location.Add(location);
+            _context.locationType.Add(locationType);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLocation", new { id = location.Id }, location);
+            return CreatedAtAction("GetLocationType", new { id = locationType.Id }, locationType);
         }
 
-        // DELETE: api/Locations/5
+        // DELETE: api/LocationTypes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLocation(Guid id)
+        public async Task<IActionResult> DeleteLocationType(Guid id)
         {
-            var location = await _context.Location.FindAsync(id);
-            if (location == null)
+            var locationType = await _context.locationType.FindAsync(id);
+            if (locationType == null)
             {
                 return NotFound();
             }
 
-            _context.Location.Remove(location);
+            _context.locationType.Remove(locationType);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool LocationExists(Guid id)
+        private bool LocationTypeExists(Guid id)
         {
-            return _context.Location.Any(e => e.Id == id);
+            return _context.locationType.Any(e => e.Id == id);
         }
     }
 }
