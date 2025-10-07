@@ -1,7 +1,5 @@
-﻿
-using GoSportsAPI.Dtos.Locations;
+﻿using GoSportsAPI.Dtos.Locations;
 using GoSportsAPI.Mdels.Locations;
-using Microsoft.Identity.Client;
 
 namespace GoSportsAPI.Mappers
 {

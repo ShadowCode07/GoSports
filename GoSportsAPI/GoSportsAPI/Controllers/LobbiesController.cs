@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GoSportsAPI.Data;
+using GoSportsAPI.Dtos.Lobbies;
+using GoSportsAPI.Mappers;
+using GoSportsAPI.Mdels.Lobbies;
+using GoSportsAPI.Migrations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GoSportsAPI.Data;
-using GoSportsAPI.Mdels.Lobbies;
+using System;
+using System.Collections.Generic;
+using System.Data.OleDb;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GoSportsAPI.Controllers
 {
@@ -21,88 +25,72 @@ namespace GoSportsAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Lobbies
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Lobby>>> Getlobby()
+        public async Task<IActionResult> Getlobbies()
         {
-            return await _context.lobby.ToListAsync();
+            var lobbies = await _context.lobbies.ToListAsync();
+
+            var lobbyDto = lobbies.Select(l => l.ToLobbyResponceDto());
+
+            return Ok(lobbyDto);
         }
 
-        // GET: api/Lobbies/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Lobby>> GetLobby(Guid id)
+        public async Task<IActionResult> GetLobby([FromRoute] Guid id)
         {
-            var lobby = await _context.lobby.FindAsync(id);
+            var lobby = await _context.lobbies.FindAsync(id);
 
             if (lobby == null)
             {
                 return NotFound();
             }
 
-            return lobby;
+            return Ok(lobby.ToLobbyResponceDto());
         }
 
-        // PUT: api/Lobbies/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutLobby(Guid id, Lobby lobby)
-        {
-            if (id != lobby.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(lobby).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LobbyExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Lobbies
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Lobby>> PostLobby(Lobby lobby)
+        public async Task<IActionResult> CreateLobby([FromBody] LobbyCreateDto createDto)
         {
-            _context.lobby.Add(lobby);
+            var lobbyModel = createDto.ToLobbyFromCreate();
+
+            await _context.AddAsync(lobbyModel);
+
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLobby", new { id = lobby.Id }, lobby);
+            return CreatedAtAction(nameof(GetLobby), new { id = lobbyModel.Id }, lobbyModel.ToLobbyResponceDto());
         }
 
-        // DELETE: api/Lobbies/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateLobby([FromRoute] Guid id, [FromBody] LobbyUpdateDto updateDto)
+        {
+            var lobbyModel = await _context.lobbies.FirstOrDefaultAsync(l => l.Id == id);
+
+            if(lobbyModel == null)
+            {
+                return NotFound();
+            }
+
+            lobbyModel = updateDto.ToLobbyFromUpdate();
+
+            await _context.SaveChangesAsync();
+
+            return Ok(lobbyModel.ToLobbyResponceDto());
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLobby(Guid id)
         {
-            var lobby = await _context.lobby.FindAsync(id);
+            var lobby = await _context.lobbies.FirstOrDefaultAsync(x => x.Id == id);
             if (lobby == null)
             {
                 return NotFound();
             }
 
-            _context.lobby.Remove(lobby);
+            _context.lobbies.Remove(lobby);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool LobbyExists(Guid id)
-        {
-            return _context.lobby.Any(e => e.Id == id);
-        }
     }
 }

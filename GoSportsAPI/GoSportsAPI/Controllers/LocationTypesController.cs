@@ -25,14 +25,14 @@ namespace GoSportsAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<LocationType>>> GetlocationType()
         {
-            return await _context.locationType.ToListAsync();
+            return await _context.locationTypes.ToListAsync();
         }
 
         // GET: api/LocationTypes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<LocationType>> GetLocationType(Guid id)
         {
-            var locationType = await _context.locationType.FindAsync(id);
+            var locationType = await _context.locationTypes.FindAsync(id);
 
             if (locationType == null)
             {
@@ -78,7 +78,7 @@ namespace GoSportsAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<LocationType>> PostLocationType(LocationType locationType)
         {
-            _context.locationType.Add(locationType);
+            _context.locationTypes.Add(locationType);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetLocationType", new { id = locationType.Id }, locationType);
@@ -88,13 +88,13 @@ namespace GoSportsAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLocationType(Guid id)
         {
-            var locationType = await _context.locationType.FindAsync(id);
+            var locationType = await _context.locationTypes.FindAsync(id);
             if (locationType == null)
             {
                 return NotFound();
             }
 
-            _context.locationType.Remove(locationType);
+            _context.locationTypes.Remove(locationType);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -102,7 +102,7 @@ namespace GoSportsAPI.Controllers
 
         private bool LocationTypeExists(Guid id)
         {
-            return _context.locationType.Any(e => e.Id == id);
+            return _context.locationTypes.Any(e => e.Id == id);
         }
     }
 }

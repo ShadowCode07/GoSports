@@ -28,7 +28,7 @@ namespace GoSportsAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetLocations()
         {
-            var locations = await _context.Location.ToListAsync();
+            var locations = await _context.locations.ToListAsync();
 
             var locationDto = locations.Select(l => l.ToLocationResponceDto());
 
@@ -38,7 +38,7 @@ namespace GoSportsAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetLocation([FromRoute] Guid id)
         {
-            var location = await _context.Location.FindAsync(id);
+            var location = await _context.locations.FindAsync(id);
 
             if (location == null)
             { 
@@ -63,7 +63,7 @@ namespace GoSportsAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateLocation([FromRoute] Guid id, [FromBody] LocationUpdateDto updateDto)
         {
-            var locationModel = await _context.Location.FirstOrDefaultAsync(x => x.Id == id);
+            var locationModel = await _context.locations.FirstOrDefaultAsync(x => x.Id == id);
             
             if(locationModel == null)
             {
@@ -80,13 +80,13 @@ namespace GoSportsAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLocation([FromRoute] Guid id)
         {
-            var location = await _context.Location.FirstOrDefaultAsync(x => x.Id == id);
+            var location = await _context.locations.FirstOrDefaultAsync(x => x.Id == id);
             if (location == null)
             {
                 return NotFound();
             }
 
-            _context.Location.Remove(location);
+            _context.locations.Remove(location);
             await _context.SaveChangesAsync();
 
             return NoContent();
