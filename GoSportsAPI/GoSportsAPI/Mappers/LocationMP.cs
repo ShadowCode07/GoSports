@@ -21,26 +21,25 @@ namespace GoSportsAPI.Mappers
             };
         }
 
-        public static LocationRequestDto ToLocationRequestDto(this Location locationModel)
-        {
-            return new LocationRequestDto
-            {
-                Name = locationModel.Name,
-                Description = locationModel.Description,
-                LocationType = locationModel.LocationType,
-                MaxLobbyCount = locationModel.MaxLobbyCount
-            };
-        }
-
-        public static Location ToLocationFromRequest(this LocationRequestDto locationModel)
+        public static Location ToLocationFromCreate(this LocationCreateDto locationDto)
         {
             return new Location
             {
-                Name = locationModel.Name,
-                Description = locationModel.Description,
-                LocationType = locationModel.LocationType,
-                MaxLobbyCount = locationModel.MaxLobbyCount,
-                CurrentLobbyCount = 0
+                Name = locationDto.Name,
+                Description = locationDto.Description,
+                LocationType = locationDto.LocationType,
+                MaxLobbyCount = locationDto.MaxLobbyCount,
+            };
+        }
+
+        public static Location ToLocationFromUpdate(this LocationUpdateDto locationDto)
+        {
+            return new Location
+            {
+                Name = locationDto.Name,
+                Description = locationDto.Description,
+                LocationType = locationDto.LocationType,
+                MaxLobbyCount = locationDto.MaxLobbyCount,
             };
         }
     }

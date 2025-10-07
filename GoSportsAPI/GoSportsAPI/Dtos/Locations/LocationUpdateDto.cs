@@ -2,7 +2,7 @@
 
 namespace GoSportsAPI.Dtos.Locations
 {
-    public class LocationRequestDto
+    public class LocationUpdateDto
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;

@@ -25,7 +25,6 @@ namespace GoSportsAPI.Controllers
             _context = context;
         }
 
-        // GET: api/Locations
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Location>>> GetLocations()
         {
@@ -35,7 +34,6 @@ namespace GoSportsAPI.Controllers
             return Ok(locations);
         }
 
-        // GET: api/Locations/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Location>> GetLocation(Guid id)
         {
@@ -50,24 +48,32 @@ namespace GoSportsAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateLocation([FromBody] LocationRequestDto locationDto)
+        public async Task<IActionResult> CreateLocation([FromBody] LocationCreateDto createDto)
         {
-            var locationModel = locationDto.ToLocationFromRequest();
+            var locationModel = createDto.ToLocationFromCreate();
 
-            _context.Entry(locationModel).State = EntityState.Modified;
+            _context.Add(locationModel);
 
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return CreatedAtAction(nameof(GetLocation), new { id = locationModel.Id }, locationModel.ToLocationResponceDto());
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Location>> UpdateLocation(Guid id, Location location)
+        public async Task<ActionResult<Location>> UpdateLocation([FromRoute] Guid id, [FromBody] LocationUpdateDto updateDto)
         {
-            _context.Location.Add(location);
+            var locationModel = _context.Location.FirstOrDefault(x => x.Id == id);
+            
+            if(locationModel == null)
+            {
+                return NotFound();
+            }
+
+            locationModel = updateDto.ToLocationFromUpdate();
+
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLocation", new { id = location.Id }, location);
+            return Ok(locationModel.ToLocationResponceDto());
         }
 
         // DELETE: api/Locations/5
