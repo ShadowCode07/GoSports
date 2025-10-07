@@ -3,24 +3,44 @@
   "WorkspaceRootPath": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\controllers\\locationtypescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|solutionrelative:gosportsapi\\controllers\\locationtypescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\controllers\\locationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|solutionrelative:gosportsapi\\controllers\\locationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\controllers\\lobbiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|solutionrelative:gosportsapi\\controllers\\lobbiescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\models\\lobbies\\lobby.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|solutionrelative:gosportsapi\\models\\lobbies\\lobby.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\dtos\\locations\\locationrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|solutionrelative:gosportsapi\\dtos\\locations\\locationrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\dtos\\locations\\locationresponcedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|solutionrelative:gosportsapi\\dtos\\locations\\locationresponcedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\models\\locations\\location.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|solutionrelative:gosportsapi\\models\\locations\\location.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\mappers\\locationmp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|solutionrelative:gosportsapi\\mappers\\locationmp.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\models\\locations\\locationtype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|solutionrelative:gosportsapi\\models\\locations\\locationtype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\models\\lobbies\\lobby.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|solutionrelative:gosportsapi\\models\\lobbies\\lobby.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|solutionrelative:gosportsapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\controllers\\locationtypescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|solutionrelative:gosportsapi\\controllers\\locationtypescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -31,16 +51,8 @@
       "RelativeMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|solutionrelative:gosportsapi\\migrations\\applicationdbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\controllers\\locationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|solutionrelative:gosportsapi\\controllers\\locationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\migrations\\20251006100725_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|solutionrelative:gosportsapi\\migrations\\20251006100725_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|solutionrelative:gosportsapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D6C9EC43-922C-423C-8F1E-31D9B04AA3FB}|GoSportsAPI\\GoSportsAPI.csproj|d:\\projects\\fontys 2\\project\\gosports\\gosportsapi\\gosportsapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -54,19 +66,97 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "LocationTypesController.cs",
-              "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Controllers\\LocationTypesController.cs",
-              "RelativeDocumentMoniker": "GoSportsAPI\\Controllers\\LocationTypesController.cs",
-              "ToolTip": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Controllers\\LocationTypesController.cs",
-              "RelativeToolTip": "GoSportsAPI\\Controllers\\LocationTypesController.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "LocationMP.cs",
+              "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Mappers\\LocationMP.cs",
+              "RelativeDocumentMoniker": "GoSportsAPI\\Mappers\\LocationMP.cs",
+              "ToolTip": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Mappers\\LocationMP.cs",
+              "RelativeToolTip": "GoSportsAPI\\Mappers\\LocationMP.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAA+wCYAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-06T13:57:51.363Z",
+              "WhenOpened": "2025-10-07T07:30:34.992Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "LocationsController.cs",
+              "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Controllers\\LocationsController.cs",
+              "RelativeDocumentMoniker": "GoSportsAPI\\Controllers\\LocationsController.cs",
+              "ToolTip": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Controllers\\LocationsController.cs",
+              "RelativeToolTip": "GoSportsAPI\\Controllers\\LocationsController.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAuwDYAAABEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T11:19:38.91Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "LocationRequestDto.cs",
+              "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Dtos\\Locations\\LocationRequestDto.cs",
+              "RelativeDocumentMoniker": "GoSportsAPI\\Dtos\\Locations\\LocationRequestDto.cs",
+              "ToolTip": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Dtos\\Locations\\LocationRequestDto.cs",
+              "RelativeToolTip": "GoSportsAPI\\Dtos\\Locations\\LocationRequestDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-07T08:39:07.883Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "LocationResponceDto.cs",
+              "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Dtos\\Locations\\LocationResponceDto.cs",
+              "RelativeDocumentMoniker": "GoSportsAPI\\Dtos\\Locations\\LocationResponceDto.cs",
+              "ToolTip": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Dtos\\Locations\\LocationResponceDto.cs",
+              "RelativeToolTip": "GoSportsAPI\\Dtos\\Locations\\LocationResponceDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-07T07:29:11.252Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Lobby.cs",
+              "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Models\\Lobbies\\Lobby.cs",
+              "RelativeDocumentMoniker": "GoSportsAPI\\Models\\Lobbies\\Lobby.cs",
+              "ToolTip": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Models\\Lobbies\\Lobby.cs",
+              "RelativeToolTip": "GoSportsAPI\\Models\\Lobbies\\Lobby.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T11:38:41.082Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "LocationType.cs",
+              "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Models\\Locations\\LocationType.cs",
+              "RelativeDocumentMoniker": "GoSportsAPI\\Models\\Locations\\LocationType.cs",
+              "ToolTip": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Models\\Locations\\LocationType.cs",
+              "RelativeToolTip": "GoSportsAPI\\Models\\Locations\\LocationType.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAIAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-01T07:33:32.279Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Location.cs",
+              "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Models\\Locations\\Location.cs",
+              "RelativeDocumentMoniker": "GoSportsAPI\\Models\\Locations\\Location.cs",
+              "ToolTip": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Models\\Locations\\Location.cs",
+              "RelativeToolTip": "GoSportsAPI\\Models\\Locations\\Location.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-01T07:36:54.956Z",
               "EditorCaption": ""
             },
             {
@@ -84,7 +174,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Program.cs",
+              "RelativeDocumentMoniker": "GoSportsAPI\\Program.cs",
+              "ToolTip": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Program.cs",
+              "RelativeToolTip": "GoSportsAPI\\Program.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAUwA8AAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-01T07:18:22.082Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "LocationTypesController.cs",
+              "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Controllers\\LocationTypesController.cs",
+              "RelativeDocumentMoniker": "GoSportsAPI\\Controllers\\LocationTypesController.cs",
+              "ToolTip": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Controllers\\LocationTypesController.cs",
+              "RelativeToolTip": "GoSportsAPI\\Controllers\\LocationTypesController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-06T13:57:51.363Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "ApplicationDBContextModelSnapshot.cs",
               "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Migrations\\ApplicationDBContextModelSnapshot.cs",
               "RelativeDocumentMoniker": "GoSportsAPI\\Migrations\\ApplicationDBContextModelSnapshot.cs",
@@ -97,59 +213,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Lobby.cs",
-              "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Models\\Lobbies\\Lobby.cs",
-              "RelativeDocumentMoniker": "GoSportsAPI\\Models\\Lobbies\\Lobby.cs",
-              "ToolTip": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Models\\Lobbies\\Lobby.cs",
-              "RelativeToolTip": "GoSportsAPI\\Models\\Lobbies\\Lobby.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-06T11:38:41.082Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "LocationType.cs",
-              "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Models\\Locations\\LocationType.cs",
-              "RelativeDocumentMoniker": "GoSportsAPI\\Models\\Locations\\LocationType.cs",
-              "ToolTip": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Models\\Locations\\LocationType.cs",
-              "RelativeToolTip": "GoSportsAPI\\Models\\Locations\\LocationType.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T07:33:32.279Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Location.cs",
-              "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Models\\Locations\\Location.cs",
-              "RelativeDocumentMoniker": "GoSportsAPI\\Models\\Locations\\Location.cs",
-              "ToolTip": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Models\\Locations\\Location.cs",
-              "RelativeToolTip": "GoSportsAPI\\Models\\Locations\\Location.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAzwA0AAABMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T07:36:54.956Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "LocationsController.cs",
-              "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Controllers\\LocationsController.cs",
-              "RelativeDocumentMoniker": "GoSportsAPI\\Controllers\\LocationsController.cs",
-              "ToolTip": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Controllers\\LocationsController.cs",
-              "RelativeToolTip": "GoSportsAPI\\Controllers\\LocationsController.cs",
-              "ViewState": "AgIAAC8AAAAAAAAAAAAgwAgAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-06T11:19:38.91Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 12,
               "Title": "20251006100725_Init.cs",
               "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Migrations\\20251006100725_Init.cs",
               "RelativeDocumentMoniker": "GoSportsAPI\\Migrations\\20251006100725_Init.cs",
@@ -162,7 +226,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 13,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\appsettings.json",
               "RelativeDocumentMoniker": "GoSportsAPI\\appsettings.json",
@@ -170,32 +234,21 @@
               "RelativeToolTip": "GoSportsAPI\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-10-06T09:19:55.781Z"
+              "WhenOpened": "2025-10-06T09:19:55.781Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 10,
               "Title": "ApplicationDBContext.cs",
               "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Data\\ApplicationDBContext.cs",
               "RelativeDocumentMoniker": "GoSportsAPI\\Data\\ApplicationDBContext.cs",
               "ToolTip": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Data\\ApplicationDBContext.cs",
               "RelativeToolTip": "GoSportsAPI\\Data\\ApplicationDBContext.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAIA4wBkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAIA2wBkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-06T09:15:40.73Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Program.cs",
-              "RelativeDocumentMoniker": "GoSportsAPI\\Program.cs",
-              "ToolTip": "D:\\Projects\\Fontys 2\\Project\\GoSports\\GoSportsAPI\\GoSportsAPI\\Program.cs",
-              "RelativeToolTip": "GoSportsAPI\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T07:18:22.082Z"
             }
           ]
         }

@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GoSportsAPI.Data;
+using GoSportsAPI.Dtos.Locations;
+using GoSportsAPI.Mappers;
+using GoSportsAPI.Mdels.Locations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GoSportsAPI.Data;
-using GoSportsAPI.Mdels.Locations;
+using System;
+using System.Collections.Generic;
+using System.Data.OleDb;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GoSportsAPI.Controllers
 {
@@ -16,6 +19,7 @@ namespace GoSportsAPI.Controllers
     {
         private readonly ApplicationDBContext _context;
 
+
         public LocationsController(ApplicationDBContext context)
         {
             _context = context;
@@ -23,9 +27,12 @@ namespace GoSportsAPI.Controllers
 
         // GET: api/Locations
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Location>>> GetLocation()
+        public async Task<ActionResult<IEnumerable<Location>>> GetLocations()
         {
-            return await _context.Location.ToListAsync();
+            var locations = await _context.Location.ToListAsync();
+            locations.Select(l => l.ToLocationResponceDto());
+
+            return Ok(locations);
         }
 
         // GET: api/Locations/5
@@ -39,44 +46,23 @@ namespace GoSportsAPI.Controllers
                 return NotFound();
             }
 
-            return location;
+            return Ok(location.ToLocationResponceDto());
         }
 
-        // PUT: api/Locations/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutLocation(Guid id, Location location)
+        [HttpPost]
+        public async Task<IActionResult> CreateLocation([FromBody] LocationRequestDto locationDto)
         {
-            if (id != location.Id)
-            {
-                return BadRequest();
-            }
+            var locationModel = locationDto.ToLocationFromRequest();
 
-            _context.Entry(location).State = EntityState.Modified;
+            _context.Entry(locationModel).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LocationExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        // POST: api/Locations
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Location>> PostLocation(Location location)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Location>> UpdateLocation(Guid id, Location location)
         {
             _context.Location.Add(location);
             await _context.SaveChangesAsync();
@@ -98,11 +84,6 @@ namespace GoSportsAPI.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool LocationExists(Guid id)
-        {
-            return _context.Location.Any(e => e.Id == id);
         }
     }
 }
