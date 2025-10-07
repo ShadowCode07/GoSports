@@ -26,21 +26,22 @@ namespace GoSportsAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Location>>> GetLocations()
+        public async Task<IActionResult> GetLocations()
         {
             var locations = await _context.Location.ToListAsync();
-            locations.Select(l => l.ToLocationResponceDto());
 
-            return Ok(locations);
+            var locationDto = locations.Select(l => l.ToLocationResponceDto());
+
+            return Ok(locationDto);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Location>> GetLocation(Guid id)
+        public async Task<IActionResult> GetLocation([FromRoute] Guid id)
         {
             var location = await _context.Location.FindAsync(id);
 
             if (location == null)
-            {
+            { 
                 return NotFound();
             }
 
@@ -52,7 +53,7 @@ namespace GoSportsAPI.Controllers
         {
             var locationModel = createDto.ToLocationFromCreate();
 
-            _context.Add(locationModel);
+            await _context.AddAsync(locationModel);
 
             await _context.SaveChangesAsync();
 
@@ -60,9 +61,9 @@ namespace GoSportsAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Location>> UpdateLocation([FromRoute] Guid id, [FromBody] LocationUpdateDto updateDto)
+        public async Task<IActionResult> UpdateLocation([FromRoute] Guid id, [FromBody] LocationUpdateDto updateDto)
         {
-            var locationModel = _context.Location.FirstOrDefault(x => x.Id == id);
+            var locationModel = await _context.Location.FirstOrDefaultAsync(x => x.Id == id);
             
             if(locationModel == null)
             {
@@ -76,11 +77,10 @@ namespace GoSportsAPI.Controllers
             return Ok(locationModel.ToLocationResponceDto());
         }
 
-        // DELETE: api/Locations/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLocation(Guid id)
+        public async Task<IActionResult> DeleteLocation([FromRoute] Guid id)
         {
-            var location = await _context.Location.FindAsync(id);
+            var location = await _context.Location.FirstOrDefaultAsync(x => x.Id == id);
             if (location == null)
             {
                 return NotFound();
