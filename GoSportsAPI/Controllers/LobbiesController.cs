@@ -1,5 +1,6 @@
 ﻿using GoSportsAPI.Data;
 using GoSportsAPI.Dtos.Lobbies;
+using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
 using GoSportsAPI.Mdels.Lobbies;
 using GoSportsAPI.Migrations;
@@ -18,17 +19,17 @@ namespace GoSportsAPI.Controllers
     [ApiController]
     public class LobbiesController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
+        private readonly ILobbyRepository _repository;
 
-        public LobbiesController(ApplicationDBContext context)
+        public LobbiesController(ILobbyRepository lobbyRepository)
         {
-            _context = context;
+            _repository = lobbyRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> Getlobbies()
         {
-            var lobbies = await _context.lobbies.ToListAsync();
+            var lobbies = await _repository.GetAllAsync();
 
             var lobbyDto = lobbies.Select(l => l.ToLobbyResponceDto());
 
@@ -38,7 +39,7 @@ namespace GoSportsAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetLobby([FromRoute] Guid id)
         {
-            var lobby = await _context.lobbies.FindAsync(id);
+            var lobby = await _repository.GetByIdAsync(id);
 
             if (lobby == null)
             {
@@ -53,9 +54,7 @@ namespace GoSportsAPI.Controllers
         {
             var lobbyModel = createDto.ToLobbyFromCreate();
 
-            await _context.AddAsync(lobbyModel);
-
-            await _context.SaveChangesAsync();
+            await _repository.CreateAsync(lobbyModel);
 
             return CreatedAtAction(nameof(GetLobby), new { id = lobbyModel.Id }, lobbyModel.ToLobbyResponceDto());
         }
@@ -63,16 +62,14 @@ namespace GoSportsAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateLobby([FromRoute] Guid id, [FromBody] LobbyUpdateDto updateDto)
         {
-            var lobbyModel = await _context.lobbies.FirstOrDefaultAsync(l => l.Id == id);
+            var lobbyModel = await _repository.GetByIdAsync(id);
 
             if(lobbyModel == null)
             {
                 return NotFound();
             }
 
-            lobbyModel = updateDto.ToLobbyFromUpdate();
-
-            await _context.SaveChangesAsync();
+            //lobbyModel = _lobbyRepository.UpdateAsync(updateDto);
 
             return Ok(lobbyModel.ToLobbyResponceDto());
         }
@@ -80,14 +77,13 @@ namespace GoSportsAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLobby(Guid id)
         {
-            var lobby = await _context.lobbies.FirstOrDefaultAsync(x => x.Id == id);
+            var lobby = await _repository.GetByIdAsync(id);
             if (lobby == null)
             {
                 return NotFound();
             }
 
-            _context.lobbies.Remove(lobby);
-            await _context.SaveChangesAsync();
+            await _repository.DeleteAsync(id);
 
             return NoContent();
         }

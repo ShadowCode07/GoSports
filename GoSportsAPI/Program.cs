@@ -18,6 +18,7 @@ namespace GoSportsAPI
             });
 
             builder.Services.AddScoped<ILocationRepository, LocationRepository>();
+            builder.Services.AddScoped<ILobbyRepository, LobbyRepository>();
 
             builder.Services.AddControllers();
        
