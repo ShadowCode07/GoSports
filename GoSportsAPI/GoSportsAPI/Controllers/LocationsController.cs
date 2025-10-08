@@ -1,5 +1,6 @@
 ﻿using GoSportsAPI.Data;
 using GoSportsAPI.Dtos.Locations;
+using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
 using GoSportsAPI.Mdels.Locations;
 using Microsoft.AspNetCore.Http;
@@ -17,18 +18,18 @@ namespace GoSportsAPI.Controllers
     [ApiController]
     public class LocationsController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
+        private readonly ILocationRepository _repository;
 
 
-        public LocationsController(ApplicationDBContext context)
+        public LocationsController(ILocationRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetLocations()
         {
-            var locations = await _context.locations.ToListAsync();
+            var locations = await _repository.GetAllAsync();
 
             var locationDto = locations.Select(l => l.ToLocationResponceDto());
 
@@ -38,7 +39,7 @@ namespace GoSportsAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetLocation([FromRoute] Guid id)
         {
-            var location = await _context.locations.FindAsync(id);
+            var location = await _repository.GetByIdAsync(id);
 
             if (location == null)
             { 
@@ -53,9 +54,7 @@ namespace GoSportsAPI.Controllers
         {
             var locationModel = createDto.ToLocationFromCreate();
 
-            await _context.AddAsync(locationModel);
-
-            await _context.SaveChangesAsync();
+            await _repository.CreateAsync(locationModel);
 
             return CreatedAtAction(nameof(GetLocation), new { id = locationModel.Id }, locationModel.ToLocationResponceDto());
         }
@@ -63,16 +62,14 @@ namespace GoSportsAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateLocation([FromRoute] Guid id, [FromBody] LocationUpdateDto updateDto)
         {
-            var locationModel = await _context.locations.FirstOrDefaultAsync(x => x.Id == id);
+            var locationModel = await _repository.GetByIdAsync(id);
             
             if(locationModel == null)
             {
                 return NotFound();
             }
 
-            locationModel = updateDto.ToLocationFromUpdate();
-
-            await _context.SaveChangesAsync();
+            locationModel = await _repository.UpdateAsync(id, updateDto);
 
             return Ok(locationModel.ToLocationResponceDto());
         }
@@ -80,14 +77,13 @@ namespace GoSportsAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLocation([FromRoute] Guid id)
         {
-            var location = await _context.locations.FirstOrDefaultAsync(x => x.Id == id);
+            var location = await _repository.GetByIdAsync(id);
             if (location == null)
             {
                 return NotFound();
             }
 
-            _context.locations.Remove(location);
-            await _context.SaveChangesAsync();
+            await _repository.DeleteAsync(id);
 
             return NoContent();
         }
