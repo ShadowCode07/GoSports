@@ -15,11 +15,12 @@ namespace GoSportsAPI.Mappers
             };
         }
 
-        public static Lobby ToLobbyFromCreate(this LobbyCreateDto lobbyDto)
+        public static Lobby ToLobbyFromCreate(this LobbyCreateDto lobbyDto, Guid locationID)
         {
             return new Lobby
             {
-                Name = lobbyDto.Name
+                Name = lobbyDto.Name,
+                LocationId = locationID
             };
         }
 

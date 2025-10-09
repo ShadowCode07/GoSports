@@ -61,7 +61,7 @@ namespace GoSportsAPI.Repositories
 
         public virtual Task<bool> Exists(Guid id)
         {
-            return _context.locations.AnyAsync(x => x.Id == id);
+            return _dbSet.AnyAsync();
         }
 
 /*        public virtual IEnumerable<T> FindByFilter(Func<T, bool> predicate)

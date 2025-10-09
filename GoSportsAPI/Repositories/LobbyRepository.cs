@@ -3,18 +3,20 @@ using GoSportsAPI.Dtos.Lobbies;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
 using GoSportsAPI.Mdels.Lobbies;
+using GoSportsAPI.Mdels.Locations;
 
 namespace GoSportsAPI.Repositories
 {
     public class LobbyRepository : Repository<Lobby>, ILobbyRepository
     {
+
         public LobbyRepository(ApplicationDBContext context) : base(context)
         {
         }
 
-        public override async Task<Lobby?> UpdateAsync(Guid id, Lobby entity)
+        public async Task<Lobby> CreateAsync(Guid locationId, Lobby entity)
         {
-            _dbSet.Update(entity);
+            await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
             return entity;
         }

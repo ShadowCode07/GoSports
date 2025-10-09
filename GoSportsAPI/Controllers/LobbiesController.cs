@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace GoSportsAPI.Controllers
@@ -20,10 +21,12 @@ namespace GoSportsAPI.Controllers
     public class LobbiesController : ControllerBase
     {
         private readonly ILobbyRepository _repository;
+        private readonly ILocationRepository _locationRepository;
 
-        public LobbiesController(ILobbyRepository lobbyRepository)
+        public LobbiesController(ILobbyRepository lobbyRepository, ILocationRepository locationRepository)
         {
             _repository = lobbyRepository;
+            _locationRepository = locationRepository;
         }
 
         [HttpGet]
@@ -49,12 +52,25 @@ namespace GoSportsAPI.Controllers
             return Ok(lobby.ToLobbyResponceDto());
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateLobby([FromBody] LobbyCreateDto createDto)
+        // Move to locations controllers
+        [HttpPost("{locationGuid}")]
+        public async Task<IActionResult> CreateLobby([FromRoute] Guid locationGuid, LobbyCreateDto createDto)
         {
-            var lobbyModel = createDto.ToLobbyFromCreate();
+            if(!await _locationRepository.Exists(locationGuid))
+            {
+                return NotFound("Location doesn't exist");
+            }
+
+            if (!await _locationRepository.CheckLobbyCount(locationGuid))
+            {
+                return BadRequest("Lobby count full for this location");
+            }
+
+            var lobbyModel = createDto.ToLobbyFromCreate(locationGuid);
 
             await _repository.CreateAsync(lobbyModel);
+
+            await _locationRepository.AddLobbyToCount(locationGuid);
 
             return CreatedAtAction(nameof(GetLobby), new { id = lobbyModel.Id }, lobbyModel.ToLobbyResponceDto());
         }
