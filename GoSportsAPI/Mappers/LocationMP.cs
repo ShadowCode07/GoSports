@@ -13,7 +13,7 @@ namespace GoSportsAPI.Mappers
                 Name = locationModel.Name,
                 Description = locationModel.Description,
                 LocationType = locationModel.LocationType,
-                
+                Lobbies = locationModel.Lobbies.Select(l => l.ToLobbyResponceDto()).ToList(),
                 CurrentLobbyCount = locationModel.CurrentLobbyCount,
                 MaxLobbyCount = locationModel.MaxLobbyCount
             };

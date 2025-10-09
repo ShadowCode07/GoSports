@@ -13,6 +13,15 @@ namespace GoSportsAPI.Repositories
         {
         }
 
+        public override async Task<List<Location>> GetAllAsync()
+        {
+            return await _dbSet.Include(l => l.Lobbies).ToListAsync();
+        }
+        public override async Task<Location?> GetByIdAsync(Guid id)
+        {
+            return await _dbSet.Include(l => l.Lobbies).FirstOrDefaultAsync(l => l.Id == id);
+        }
+
         public override async Task<Location?> UpdateAsync(Guid id, Location entity)
         {
             _dbSet.Update(entity);

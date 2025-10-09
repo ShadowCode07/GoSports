@@ -1,5 +1,7 @@
 ﻿using GoSportsAPI.Data;
+using GoSportsAPI.Dtos.Lobbies;
 using GoSportsAPI.Interfaces;
+using GoSportsAPI.Mappers;
 using GoSportsAPI.Mdels.Lobbies;
 
 namespace GoSportsAPI.Repositories
@@ -8,6 +10,21 @@ namespace GoSportsAPI.Repositories
     {
         public LobbyRepository(ApplicationDBContext context) : base(context)
         {
+        }
+
+        public override async Task<Lobby?> UpdateAsync(Guid id, Lobby entity)
+        {
+            _dbSet.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<Lobby?> UpdateAsync(Guid id, LobbyUpdateDto dto)
+        {
+            var update = dto.ToLobbyFromUpdate();
+            _dbSet.Update(update);
+            await _context.SaveChangesAsync();
+            return update;
         }
     }
 }

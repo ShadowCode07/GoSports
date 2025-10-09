@@ -3,6 +3,7 @@ using GoSportsAPI.Data;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace GoSportsAPI
 {
@@ -21,7 +22,12 @@ namespace GoSportsAPI
             builder.Services.AddScoped<ILobbyRepository, LobbyRepository>();
 
             builder.Services.AddControllers();
-       
+
+            builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 

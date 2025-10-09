@@ -4,7 +4,7 @@ namespace GoSportsAPI.Mdels.Locations
 {
     public class LocationType
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public Guid LocationId { get; set; }
 
         public string Name { get; set; } = string.Empty;

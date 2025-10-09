@@ -1,14 +1,5 @@
-﻿using GoSportsAPI.Data;
-using GoSportsAPI.Dtos.Locations;
-using GoSportsAPI.Interfaces;
-using GoSportsAPI.Mdels.Locations;
-using Microsoft.AspNetCore.Http;
+﻿using GoSportsAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GoSportsAPI.Controllers
 {
@@ -72,7 +63,7 @@ namespace GoSportsAPI.Controllers
         }*/
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLocation([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteLocationType([FromRoute] Guid id)
         {
             var location = await _repository.GetByIdAsync(id);
             if (location == null)

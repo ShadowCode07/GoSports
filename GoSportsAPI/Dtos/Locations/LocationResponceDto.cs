@@ -1,4 +1,5 @@
-﻿using GoSportsAPI.Mdels.Lobbies;
+﻿using GoSportsAPI.Dtos.Lobbies;
+using GoSportsAPI.Mdels.Lobbies;
 using GoSportsAPI.Mdels.Locations;
 
 namespace GoSportsAPI.Dtos.Locations
@@ -9,7 +10,7 @@ namespace GoSportsAPI.Dtos.Locations
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public LocationType LocationType { get; set; } = null!;
-        //public ICollection<Lobby> Lobbies { get; set; } = new List<Lobby>();
+        public ICollection<LobbyResponceDto> Lobbies { get; set; }
         public int CurrentLobbyCount { get; set; }
         public int MaxLobbyCount { get; set; }
     }
