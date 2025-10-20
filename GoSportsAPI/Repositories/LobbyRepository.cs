@@ -26,15 +26,15 @@ namespace GoSportsAPI.Repositories
             return entity;
         }
 
-        public async Task<List<Lobby>> GetAllAsync(LobbyQueryObject queryObject)
+        public async Task<List<Lobby>> GetAllAsync(QueryObject queryObject)
         {
             var lobbies = _context.lobbies
                 .Include(l => l.Location)
                 .AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(queryObject.Name))
+            if (!string.IsNullOrWhiteSpace(queryObject.LobbyName))
             {
-                lobbies = lobbies.Where(l => l.Name.Contains(queryObject.Name));
+                lobbies = lobbies.Where(l => l.Name.Contains(queryObject.LobbyName));
             }
 
             if (!string.IsNullOrWhiteSpace(queryObject.LocationName))

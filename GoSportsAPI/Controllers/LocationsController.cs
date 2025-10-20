@@ -1,4 +1,5 @@
 ﻿using GoSportsAPI.Dtos.Locations;
+using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +19,14 @@ namespace GoSportsAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetLocations()
+        public async Task<IActionResult> GetLocations([FromQuery] QueryObject queryObject)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var locations = await _repository.GetAllAsync();
+            var locations = await _repository.GetAllAsync(queryObject);
 
             var locationDto = locations.Select(l => l.ToLocationResponceDto());
 

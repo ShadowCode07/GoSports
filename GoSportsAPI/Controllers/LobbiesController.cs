@@ -31,7 +31,7 @@ namespace GoSportsAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Getlobbies([FromQuery]LobbyQueryObject queryObject)
+        public async Task<IActionResult> Getlobbies([FromQuery]QueryObject queryObject)
         {
             if (!ModelState.IsValid)
             {

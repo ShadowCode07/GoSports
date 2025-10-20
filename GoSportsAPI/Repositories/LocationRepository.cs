@@ -1,5 +1,6 @@
 ﻿using GoSportsAPI.Data;
 using GoSportsAPI.Dtos.Locations;
+using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
 using GoSportsAPI.Mdels.Lobbies;
@@ -36,6 +37,26 @@ namespace GoSportsAPI.Repositories
             }
 
             return values.CurrentLobbyCount < values.MaxLobbyCount;
+        }
+
+        public async Task<List<Location>> GetAllAsync(QueryObject queryObject)
+        {
+            var locations = _context.locations
+                .Include(l => l.Lobbies)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(queryObject.LobbyName))
+            {
+                locations = locations.Where(l =>
+                        l.Lobbies.Any(lb => lb.Name.Contains(queryObject.LobbyName)));
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryObject.LocationName))
+            {
+                locations = locations.Where(l => l.Name.Contains(queryObject.LocationName));
+            }
+
+            return await locations.ToListAsync();
         }
 
         public override async Task<bool> Exists(Guid id)
