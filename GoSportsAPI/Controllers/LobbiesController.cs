@@ -32,6 +32,11 @@ namespace GoSportsAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Getlobbies()
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var lobbies = await _repository.GetAllAsync();
 
             var lobbyDto = lobbies.Select(l => l.ToLobbyResponceDto());
@@ -39,9 +44,14 @@ namespace GoSportsAPI.Controllers
             return Ok(lobbyDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetLobby([FromRoute] Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var lobby = await _repository.GetByIdAsync(id);
 
             if (lobby == null)
@@ -56,7 +66,12 @@ namespace GoSportsAPI.Controllers
         [HttpPost("{locationGuid}")]
         public async Task<IActionResult> CreateLobby([FromRoute] Guid locationGuid, LobbyCreateDto createDto)
         {
-            if(!await _locationRepository.Exists(locationGuid))
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!await _locationRepository.Exists(locationGuid))
             {
                 return NotFound("Location doesn't exist");
             }
@@ -75,9 +90,14 @@ namespace GoSportsAPI.Controllers
             return CreatedAtAction(nameof(GetLobby), new { id = lobbyModel.Id }, lobbyModel.ToLobbyResponceDto());
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateLobby([FromRoute] Guid id, [FromBody] LobbyUpdateDto updateDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var lobbyModel = await _repository.GetByIdAsync(id);
 
             if(lobbyModel == null)
@@ -90,9 +110,14 @@ namespace GoSportsAPI.Controllers
             return Ok(lobbyModel.ToLobbyResponceDto());
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteLobby(Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var lobby = await _repository.GetByIdAsync(id);
             if (lobby == null)
             {

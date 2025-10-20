@@ -20,6 +20,11 @@ namespace GoSportsAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetLocations()
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var locations = await _repository.GetAllAsync();
 
             var locationDto = locations.Select(l => l.ToLocationResponceDto());
@@ -27,9 +32,14 @@ namespace GoSportsAPI.Controllers
             return Ok(locationDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetLocation([FromRoute] Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var location = await _repository.GetByIdAsync(id);
 
             if (location == null)
@@ -43,6 +53,11 @@ namespace GoSportsAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateLocation([FromBody] LocationCreateDto createDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var locationModel = createDto.ToLocationFromCreate();
 
             await _repository.CreateAsync(locationModel);
@@ -50,9 +65,14 @@ namespace GoSportsAPI.Controllers
             return CreatedAtAction(nameof(GetLocation), new { id = locationModel.Id }, locationModel.ToLocationResponceDto());
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateLocation([FromRoute] Guid id, [FromBody] LocationUpdateDto updateDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var locationModel = await _repository.GetByIdAsync(id);
             
             if(locationModel == null)
@@ -65,9 +85,14 @@ namespace GoSportsAPI.Controllers
             return Ok(locationModel.ToLocationResponceDto());
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteLocation([FromRoute] Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var location = await _repository.GetByIdAsync(id);
             if (location == null)
             {
