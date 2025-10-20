@@ -13,7 +13,9 @@ namespace GoSportsAPI.Dtos.Locations
         [MinLength(20, ErrorMessage = "Description must be at least 20 characters long")]
         [MaxLength(280, ErrorMessage = "Description can't be longer than 280 characters")]
         public string Description { get; set; } = string.Empty;
+        [Required]
         public LocationType LocationType { get; set; } = null!;
+        [Required]
         public int MaxLobbyCount { get; set; }
     }
 }

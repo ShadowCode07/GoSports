@@ -14,7 +14,8 @@ namespace GoSportsAPI.Controllers
             _repository = locationTypeRepository;
         }
 
-        /*[HttpGet]
+        //Finish
+       /* [HttpGet]
         public async Task<IActionResult> GetLocationTypes()
         {
             var locations = await _repository.GetAllAsync();
@@ -25,7 +26,7 @@ namespace GoSportsAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetLocation([FromRoute] Guid id)
+        public async Task<IActionResult> GetLocationType([FromRoute] Guid id)
         {
             var location = await _repository.GetByIdAsync(id);
 
@@ -38,7 +39,7 @@ namespace GoSportsAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateLocation([FromBody] LocationCreateDto createDto)
+        public async Task<IActionResult> CreateLocationType([FromBody] LocationCreateDto createDto)
         {
             var locationModel = createDto.ToLocationFromCreate();
 
@@ -48,7 +49,7 @@ namespace GoSportsAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateLocation([FromRoute] Guid id, [FromBody] LocationUpdateDto updateDto)
+        public async Task<IActionResult> UpdateLocationType([FromRoute] Guid id, [FromBody] LocationUpdateDto updateDto)
         {
             var locationModel = await _repository.GetByIdAsync(id);
 
