@@ -1,5 +1,4 @@
 ﻿using GoSportsAPI.Dtos.Lobbies;
-using GoSportsAPI.Mdels.Lobbies;
 using GoSportsAPI.Mdels.Locations;
 
 namespace GoSportsAPI.Dtos.Locations

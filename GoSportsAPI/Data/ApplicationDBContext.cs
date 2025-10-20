@@ -1,6 +1,5 @@
 ﻿using GoSportsAPI.Mdels.Lobbies;
 using GoSportsAPI.Mdels.Locations;
-using GoSportsAPI.Migrations;
 using Microsoft.EntityFrameworkCore;
 
 namespace GoSportsAPI.Data

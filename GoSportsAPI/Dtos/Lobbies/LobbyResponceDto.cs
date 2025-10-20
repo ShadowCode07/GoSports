@@ -1,6 +1,4 @@
-﻿using GoSportsAPI.Mdels.Locations;
-
-namespace GoSportsAPI.Dtos.Lobbies
+﻿namespace GoSportsAPI.Dtos.Lobbies
 {
     public class LobbyResponceDto
     {

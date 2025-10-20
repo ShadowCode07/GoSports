@@ -3,10 +3,8 @@ using GoSportsAPI.Dtos.Locations;
 using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
-using GoSportsAPI.Mdels.Lobbies;
 using GoSportsAPI.Mdels.Locations;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.InteropServices;
 
 namespace GoSportsAPI.Repositories
 {
@@ -54,6 +52,14 @@ namespace GoSportsAPI.Repositories
             if (!string.IsNullOrWhiteSpace(queryObject.LocationName))
             {
                 locations = locations.Where(l => l.Name.Contains(queryObject.LocationName));
+            }
+
+            if (!string.IsNullOrEmpty(queryObject.SortBy))
+            {
+                if (queryObject.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    locations = queryObject.IsDescending ? locations.OrderByDescending(l => l.Name) : locations.OrderBy(l => l.Name);
+                }
             }
 
             return await locations.ToListAsync();

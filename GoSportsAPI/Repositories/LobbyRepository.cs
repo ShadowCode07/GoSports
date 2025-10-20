@@ -4,10 +4,7 @@ using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
 using GoSportsAPI.Mdels.Lobbies;
-using GoSportsAPI.Mdels.Locations;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace GoSportsAPI.Repositories
 {
@@ -41,6 +38,15 @@ namespace GoSportsAPI.Repositories
             {
                 lobbies = lobbies.Where(l => l.Location.Name.Contains(queryObject.LocationName));
             }
+
+            if(!string.IsNullOrEmpty(queryObject.SortBy))
+            {
+                if(queryObject.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    lobbies = queryObject.IsDescending ? lobbies.OrderByDescending(l => l.Name) : lobbies.OrderBy(l => l.Name);
+                }
+            }
+
 
             return await lobbies.ToListAsync();
         }

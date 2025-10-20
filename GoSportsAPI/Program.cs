@@ -1,9 +1,7 @@
-
 using GoSportsAPI.Data;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace GoSportsAPI
 {

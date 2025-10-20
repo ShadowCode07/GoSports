@@ -1,19 +1,8 @@
-﻿using GoSportsAPI.Data;
-using GoSportsAPI.Dtos.Lobbies;
+﻿using GoSportsAPI.Dtos.Lobbies;
 using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
-using GoSportsAPI.Mdels.Lobbies;
-using GoSportsAPI.Migrations;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Data.OleDb;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 namespace GoSportsAPI.Controllers
 {

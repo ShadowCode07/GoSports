@@ -1,7 +1,6 @@
 ﻿using GoSportsAPI.Dtos.Lobbies;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoSportsAPI.Controllers

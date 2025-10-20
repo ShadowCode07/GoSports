@@ -2,7 +2,9 @@
 {
     public class QueryObject
     {
-        public string? LobbyName { get; set; }
-        public string? LocationName { get; set; }
+        public string? LobbyName { get; set; } = null;
+        public string? LocationName { get; set; } = null;
+        public string? SortBy { get; set; } = null;
+        public bool IsDescending { get; set; } = false;
     }
 }

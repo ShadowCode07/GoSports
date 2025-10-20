@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-
-namespace GoSportsAPI.Mdels.Locations
+﻿namespace GoSportsAPI.Mdels.Locations
 {
     public class LocationType
     {
