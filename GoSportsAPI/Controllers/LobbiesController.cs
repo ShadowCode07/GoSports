@@ -88,7 +88,10 @@ namespace GoSportsAPI.Controllers
 
             await _locationRepository.AddLobbyToCount(locationGuid);
 
-            return CreatedAtAction(nameof(GetLobby), new { id = lobbyModel.Id }, lobbyModel.ToLobbyResponceDto());
+            return CreatedAtAction(
+                nameof(GetLobby),
+                new { id = lobbyModel.Id }, 
+                lobbyModel.ToLobbyResponceDto());
         }
 
         [HttpPut("{id:guid}")]

@@ -63,7 +63,10 @@ namespace GoSportsAPI.Controllers
 
             await _repository.CreateAsync(locationModel);
 
-            return CreatedAtAction(nameof(GetLocation), new { id = locationModel.Id }, locationModel.ToLocationResponceDto());
+            return CreatedAtAction(
+                nameof(GetLocation),
+                new { id = locationModel.Id },
+                locationModel.ToLocationResponceDto());
         }
 
         [HttpPut("{id:guid}")]
