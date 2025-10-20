@@ -1,5 +1,6 @@
 ﻿using GoSportsAPI.Data;
 using GoSportsAPI.Dtos.Lobbies;
+using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
 using GoSportsAPI.Mdels.Lobbies;
@@ -30,14 +31,14 @@ namespace GoSportsAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Getlobbies()
+        public async Task<IActionResult> Getlobbies([FromQuery]LobbyQueryObject queryObject)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var lobbies = await _repository.GetAllAsync();
+            var lobbies = await _repository.GetAllAsync(queryObject);
 
             var lobbyDto = lobbies.Select(l => l.ToLobbyResponceDto());
 

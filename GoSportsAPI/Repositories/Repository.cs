@@ -33,8 +33,8 @@ namespace GoSportsAPI.Repositories
         public virtual async Task<T?> DeleteAsync(Guid id)
         {
             var model = await GetByIdAsync(id);
-            
-            if(model == null)
+
+            if (model == null)
             {
                 return null;
             }
@@ -64,9 +64,9 @@ namespace GoSportsAPI.Repositories
             return _dbSet.AnyAsync();
         }
 
-/*        public virtual IEnumerable<T> FindByFilter(Func<T, bool> predicate)
+        public Task<List<T>> FindByFilter(Func<T, bool> predicate)
         {
             throw new NotImplementedException();
-        }*/
+        }
     }
 }
