@@ -1,6 +1,5 @@
 ﻿using GoSportsAPI.Dtos.Sports;
 using GoSportsAPI.Models.Sports;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GoSportsAPI.Mappers
 {

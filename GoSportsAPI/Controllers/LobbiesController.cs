@@ -53,7 +53,7 @@ namespace GoSportsAPI.Controllers
         }
 
         // Move to locations controllers
-        [HttpPost("{locationGuid}")]
+        /*[HttpPost("{locationGuid}")]
         public async Task<IActionResult> CreateLobby([FromRoute] Guid locationGuid, LobbyCreateDto createDto)
         {
             if (!ModelState.IsValid)
@@ -81,7 +81,7 @@ namespace GoSportsAPI.Controllers
                 nameof(GetLobby),
                 new { id = lobbyModel.Id }, 
                 lobbyModel.ToLobbyResponceDto());
-        }
+        }*/
 
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateLobby([FromRoute] Guid id, [FromBody] LobbyUpdateDto updateDto)

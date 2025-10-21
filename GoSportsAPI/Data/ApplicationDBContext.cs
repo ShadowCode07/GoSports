@@ -15,7 +15,7 @@ namespace GoSportsAPI.Data
         public DbSet<Location> locations { get; set; }
         public DbSet<LocationType> locationTypes { get; set; }
         public DbSet<Lobby> lobbies { get; set; }
-        public DbSet<Sport> Sports { get; set; }
+        public DbSet<Sport> sports { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

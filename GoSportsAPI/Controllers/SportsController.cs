@@ -1,17 +1,8 @@
-﻿using GoSportsAPI.Data;
-using GoSportsAPI.Dtos.Locations;
-using GoSportsAPI.Dtos.Sports;
+﻿using GoSportsAPI.Dtos.Sports;
 using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
-using GoSportsAPI.Models.Sports;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GoSportsAPI.Controllers
 {
@@ -27,8 +18,8 @@ namespace GoSportsAPI.Controllers
             _repository = repository;
         }
 
-       /* [HttpGet]
-        public async Task<IActionResult> GetLocations([FromQuery] SportsQueryObject queryObject)
+        [HttpGet]
+        public async Task<IActionResult> GetLocations([FromQuery] SportQueryObject queryObject)
         {
             if (!ModelState.IsValid)
             {
@@ -41,7 +32,7 @@ namespace GoSportsAPI.Controllers
 
             return Ok(sportsDto);
         }
-*/
+
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetSport([FromRoute] Guid id)
         {

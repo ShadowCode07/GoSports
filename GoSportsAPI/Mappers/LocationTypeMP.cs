@@ -1,5 +1,4 @@
-﻿using GoSportsAPI.Dtos.Locations;
-using GoSportsAPI.Dtos.LocationTypes;
+﻿using GoSportsAPI.Dtos.LocationTypes;
 using GoSportsAPI.Mdels.Locations;
 
 namespace GoSportsAPI.Mappers

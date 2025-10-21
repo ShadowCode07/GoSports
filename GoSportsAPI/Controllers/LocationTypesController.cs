@@ -49,7 +49,7 @@ namespace GoSportsAPI.Controllers
             return Ok(location.ToLocationTypeResponceDto());
         }
 
-        [HttpDelete("{id}")]
+        /*[HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLocationType([FromRoute] Guid id)
         {
             if (!ModelState.IsValid)
@@ -67,6 +67,6 @@ namespace GoSportsAPI.Controllers
             await _repository.DeleteAsync(id);
 
             return NoContent();
-        }
+        }*/
     }
 }
