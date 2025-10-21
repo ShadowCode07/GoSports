@@ -1,5 +1,6 @@
 ﻿using GoSportsAPI.Mdels.Lobbies;
 using GoSportsAPI.Mdels.Locations;
+using GoSportsAPI.Models.Sports;
 using Microsoft.EntityFrameworkCore;
 
 namespace GoSportsAPI.Data
@@ -14,6 +15,7 @@ namespace GoSportsAPI.Data
         public DbSet<Location> locations { get; set; }
         public DbSet<LocationType> locationTypes { get; set; }
         public DbSet<Lobby> lobbies { get; set; }
+        public DbSet<Sport> Sports { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
