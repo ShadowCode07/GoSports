@@ -1,4 +1,5 @@
 ﻿using GoSportsAPI.Dtos.LocationTypes;
+using GoSportsAPI.Dtos.Sports;
 using GoSportsAPI.Mdels.Locations;
 using System.ComponentModel.DataAnnotations;
 
@@ -19,5 +20,8 @@ namespace GoSportsAPI.Dtos.Locations
         public int MaxLobbyCount { get; set; }
         [Required]
         public LocationTypeCreateDto LocationType { get; set; }
+        [Required]
+        [MinLength(1, ErrorMessage = "You must add at least one sport.")]
+        public List<SportCreateDto> NewSports { get; set; } = new();
     }
 }

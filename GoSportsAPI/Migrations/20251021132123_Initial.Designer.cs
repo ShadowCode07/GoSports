@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GoSportsAPI.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20251006134907_lobbies")]
-    partial class lobbies
+    [Migration("20251021132123_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,11 +38,16 @@ namespace GoSportsAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("SportId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("lobby");
+                    b.HasIndex("SportId");
+
+                    b.ToTable("lobbies");
                 });
 
             modelBuilder.Entity("GoSportsAPI.Mdels.Locations.Location", b =>
@@ -67,7 +72,7 @@ namespace GoSportsAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Location");
+                    b.ToTable("locations");
                 });
 
             modelBuilder.Entity("GoSportsAPI.Mdels.Locations.LocationType", b =>
@@ -98,7 +103,37 @@ namespace GoSportsAPI.Migrations
                     b.HasIndex("LocationId")
                         .IsUnique();
 
-                    b.ToTable("locationType");
+                    b.ToTable("locationTypes");
+                });
+
+            modelBuilder.Entity("GoSportsAPI.Models.BridgeTables.LocationSport", b =>
+                {
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SportId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("LocationId", "SportId");
+
+                    b.HasIndex("SportId");
+
+                    b.ToTable("locationSports");
+                });
+
+            modelBuilder.Entity("GoSportsAPI.Models.Sports.Sport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("sports");
                 });
 
             modelBuilder.Entity("GoSportsAPI.Mdels.Lobbies.Lobby", b =>
@@ -109,7 +144,15 @@ namespace GoSportsAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("GoSportsAPI.Mdels.Locations.Location", "Sport")
+                        .WithMany()
+                        .HasForeignKey("SportId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Location");
+
+                    b.Navigation("Sport");
                 });
 
             modelBuilder.Entity("GoSportsAPI.Mdels.Locations.LocationType", b =>
@@ -121,12 +164,38 @@ namespace GoSportsAPI.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("GoSportsAPI.Models.BridgeTables.LocationSport", b =>
+                {
+                    b.HasOne("GoSportsAPI.Mdels.Locations.Location", "Location")
+                        .WithMany("LocationSports")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GoSportsAPI.Models.Sports.Sport", "Sport")
+                        .WithMany("LocationSports")
+                        .HasForeignKey("SportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+
+                    b.Navigation("Sport");
+                });
+
             modelBuilder.Entity("GoSportsAPI.Mdels.Locations.Location", b =>
                 {
                     b.Navigation("Lobbies");
 
+                    b.Navigation("LocationSports");
+
                     b.Navigation("LocationType")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("GoSportsAPI.Models.Sports.Sport", b =>
+                {
+                    b.Navigation("LocationSports");
                 });
 #pragma warning restore 612, 618
         }

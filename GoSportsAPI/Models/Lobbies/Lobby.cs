@@ -9,5 +9,8 @@ namespace GoSportsAPI.Mdels.Lobbies
 
         public Guid LocationId { get; set; }
         public Location Location { get; set; } = null!;
+
+        public Guid SportId { get; set; }
+        public Location Sport { get; set; } = null!;
     }
 }
