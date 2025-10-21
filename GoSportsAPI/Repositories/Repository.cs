@@ -61,10 +61,5 @@ namespace GoSportsAPI.Repositories
         {
             return _dbSet.AnyAsync();
         }
-
-        public Task<List<T>> FindByFilter(Func<T, bool> predicate)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

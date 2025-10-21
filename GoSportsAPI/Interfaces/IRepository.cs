@@ -7,7 +7,6 @@
         Task<T?> DeleteAsync(Guid id);
         Task<T?> GetByIdAsync(Guid id);
         Task<List<T>> GetAllAsync();
-        Task<List<T>> FindByFilter(Func<T, bool> predicate);
         Task<bool> Exists(Guid id);
         Task<bool> SaveChanges();
     }

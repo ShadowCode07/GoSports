@@ -1,4 +1,5 @@
-﻿using GoSportsAPI.Interfaces;
+﻿using GoSportsAPI.Helpers;
+using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,14 @@ namespace GoSportsAPI.Controllers
         }
 
        [HttpGet]
-        public async Task<IActionResult> GetLocationTypes()
+        public async Task<IActionResult> GetLocationTypes([FromQuery] LocationTypeQueryObject queryObject)
         {
-            var locationTypes = await _repository.GetAllAsync();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var locationTypes = await _repository.GetAllAsync(queryObject);
 
             var locationTypesDto = locationTypes.Select(l => l.ToLocationTypeResponceDto());
 
@@ -28,6 +34,11 @@ namespace GoSportsAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetLocationType([FromRoute] Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var location = await _repository.GetByIdAsync(id);
 
             if (location == null)
@@ -41,7 +52,13 @@ namespace GoSportsAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLocationType([FromRoute] Guid id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var location = await _repository.GetByIdAsync(id);
+
             if (location == null)
             {
                 return NotFound();

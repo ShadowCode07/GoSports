@@ -23,7 +23,7 @@ namespace GoSportsAPI.Repositories
             return entity;
         }
 
-        public async Task<List<Lobby>> GetAllAsync(QueryObject queryObject)
+        public async Task<List<Lobby>> GetAllAsync(LobbyQueryObject queryObject)
         {
             var lobbies = _context.lobbies
                 .Include(l => l.Location)

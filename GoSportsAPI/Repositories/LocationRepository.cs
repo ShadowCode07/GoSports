@@ -37,9 +37,10 @@ namespace GoSportsAPI.Repositories
             return values.CurrentLobbyCount < values.MaxLobbyCount;
         }
 
-        public async Task<List<Location>> GetAllAsync(QueryObject queryObject)
+        public async Task<List<Location>> GetAllAsync(LocationQueryObject queryObject)
         {
             var locations = _context.locations
+                .Include(l => l.LocationType)
                 .Include(l => l.Lobbies)
                 .AsQueryable();
 
@@ -52,6 +53,30 @@ namespace GoSportsAPI.Repositories
             if (!string.IsNullOrWhiteSpace(queryObject.LocationName))
             {
                 locations = locations.Where(l => l.Name.Contains(queryObject.LocationName));
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryObject.LocationTypeName))
+            {
+                locations = locations.Where(l =>
+                        l.LocationType.Name.Contains(queryObject.LocationTypeName));
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryObject.Surface))
+            {
+                locations = locations.Where(l =>
+                         l.LocationType.Surface.Contains(queryObject.Surface));
+            }
+
+            if (queryObject.HasLights)
+            {
+                locations = locations.Where(l =>
+                        l.LocationType.HasLights == queryObject.HasLights);
+            }
+
+            if (queryObject.IsIndoor)
+            {
+                locations = locations.Where(l =>
+                        l.LocationType.HasLights == queryObject.IsIndoor);
             }
 
             if (!string.IsNullOrEmpty(queryObject.SortBy))

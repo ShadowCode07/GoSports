@@ -19,7 +19,7 @@ namespace GoSportsAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetLocations([FromQuery] QueryObject queryObject)
+        public async Task<IActionResult> GetLocations([FromQuery] LocationQueryObject queryObject)
         {
             if (!ModelState.IsValid)
             {

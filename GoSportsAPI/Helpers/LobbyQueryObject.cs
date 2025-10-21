@@ -1,6 +1,6 @@
 ﻿namespace GoSportsAPI.Helpers
 {
-    public class QueryObject
+    public class LobbyQueryObject
     {
         public string? LobbyName { get; set; } = null;
         public string? LocationName { get; set; } = null;

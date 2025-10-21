@@ -39,7 +39,7 @@ namespace GoSportsAPI.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("lobbies");
+                    b.ToTable("lobbies", (string)null);
                 });
 
             modelBuilder.Entity("GoSportsAPI.Mdels.Locations.Location", b =>
@@ -64,7 +64,7 @@ namespace GoSportsAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("locations");
+                    b.ToTable("locations", (string)null);
                 });
 
             modelBuilder.Entity("GoSportsAPI.Mdels.Locations.LocationType", b =>
@@ -95,7 +95,7 @@ namespace GoSportsAPI.Migrations
                     b.HasIndex("LocationId")
                         .IsUnique();
 
-                    b.ToTable("locationTypes");
+                    b.ToTable("locationTypes", (string)null);
                 });
 
             modelBuilder.Entity("GoSportsAPI.Mdels.Lobbies.Lobby", b =>

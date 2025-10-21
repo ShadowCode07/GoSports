@@ -6,7 +6,7 @@ namespace GoSportsAPI.Interfaces
 {
     public interface ILobbyRepository : IRepository<Lobby>
     {
-        Task<List<Lobby>> GetAllAsync(QueryObject queryObject);
+        Task<List<Lobby>> GetAllAsync(LobbyQueryObject queryObject);
         Task<Lobby?> UpdateAsync(Guid id, LobbyUpdateDto dto);
     }
 }
