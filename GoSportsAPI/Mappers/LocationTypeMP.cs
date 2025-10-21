@@ -6,7 +6,7 @@ namespace GoSportsAPI.Mappers
 {
     public static class LocationTypeMP
     {
-        public static LocationTypeResponceDto ToLocationResponceDto(this LocationType locationTypeModel)
+        public static LocationTypeResponceDto ToLocationTypeResponceDto(this LocationType locationTypeModel)
         {
             return new LocationTypeResponceDto
             {

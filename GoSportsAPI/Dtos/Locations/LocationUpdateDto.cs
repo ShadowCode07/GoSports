@@ -1,4 +1,5 @@
-﻿using GoSportsAPI.Mdels.Locations;
+﻿using GoSportsAPI.Dtos.LocationTypes;
+using GoSportsAPI.Mdels.Locations;
 using System.ComponentModel.DataAnnotations;
 
 namespace GoSportsAPI.Dtos.Locations
@@ -14,8 +15,8 @@ namespace GoSportsAPI.Dtos.Locations
         [MaxLength(280, ErrorMessage = "Description can't be longer than 280 characters")]
         public string Description { get; set; } = string.Empty;
         [Required]
-        public LocationType LocationType { get; set; } = null!;
-        [Required]
         public int MaxLobbyCount { get; set; }
+        [Required]
+        public LocationTypeUpdateDto LocationType { get; set; }
     }
 }

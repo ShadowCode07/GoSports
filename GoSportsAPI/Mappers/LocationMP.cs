@@ -25,7 +25,7 @@ namespace GoSportsAPI.Mappers
             {
                 Name = locationDto.Name,
                 Description = locationDto.Description,
-                LocationType = locationDto.LocationType,
+                LocationType = locationDto.LocationType.ToLocationTypeFromCreate(),
                 MaxLobbyCount = locationDto.MaxLobbyCount,
             };
         }
@@ -36,7 +36,7 @@ namespace GoSportsAPI.Mappers
             {
                 Name = locationDto.Name,
                 Description = locationDto.Description,
-                LocationType = locationDto.LocationType,
+                LocationType = locationDto.LocationType.ToLocationTypeFromUpdate(),
                 MaxLobbyCount = locationDto.MaxLobbyCount,
             };
         }
