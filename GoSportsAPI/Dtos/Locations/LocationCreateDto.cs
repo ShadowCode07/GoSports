@@ -8,7 +8,7 @@ namespace GoSportsAPI.Dtos.Locations
     public class LocationCreateDto
     {
         [Required]
-        [MinLength (4, ErrorMessage = "Name must be at least 4 characters long")]
+        [MinLength (3, ErrorMessage = "Name must be at least 3 characters long")]
         [MaxLength (20, ErrorMessage = "Name can't be longer than 20 characters")]
         public string Name { get; set; } = string.Empty;
         [Required]
@@ -22,6 +22,6 @@ namespace GoSportsAPI.Dtos.Locations
         public LocationTypeCreateDto LocationType { get; set; }
         [Required]
         [MinLength(1, ErrorMessage = "You must add at least one sport.")]
-        public List<SportCreateDto> NewSports { get; set; } = new();
+        public List<string> Sports { get; set; } = new();
     }
 }

@@ -5,7 +5,7 @@ namespace GoSportsAPI.Dtos.LocationTypes
     public class LocationTypeCreateDto
     {
         [Required]
-        [MinLength(4, ErrorMessage = "Name must be at least 4 characters long")]
+        [MinLength(3, ErrorMessage = "Name must be at least 3 characters long")]
         [MaxLength(10, ErrorMessage = "Name can't be longer than 10 characters")]
         public string Name { get; set; } = string.Empty;
         [Required]

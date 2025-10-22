@@ -1,5 +1,4 @@
-﻿using GoSportsAPI.Mdels.Lobbies;
-using GoSportsAPI.Models.BridgeTables;
+﻿using GoSportsAPI.Mdels.Locations;
 
 namespace GoSportsAPI.Models.Sports
 {
@@ -7,6 +6,6 @@ namespace GoSportsAPI.Models.Sports
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; } = string.Empty;
-        public ICollection<LocationSport> LocationSports { get; set; } = new List<LocationSport>();
+        public ICollection<Location> Locations { get; set; } = new List<Location>();
     }
 }

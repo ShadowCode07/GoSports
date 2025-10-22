@@ -61,7 +61,7 @@ namespace GoSportsAPI.Controllers
 
             var locationModel = createDto.ToLocationFromCreate();
 
-            await _repository.CreateAsync(locationModel);
+            await _repository.CreateAsync(locationModel, createDto.Sports);
 
             return CreatedAtAction(
                 nameof(GetLocation),
@@ -84,7 +84,7 @@ namespace GoSportsAPI.Controllers
                 return NotFound();
             }
 
-            locationModel = await _repository.UpdateAsync(id, updateDto);
+            locationModel = await _repository.UpdateAsync(id, updateDto, updateDto.Sports);
 
             return Ok(locationModel.ToLocationResponceDto());
         }

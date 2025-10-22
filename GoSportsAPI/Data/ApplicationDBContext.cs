@@ -1,6 +1,5 @@
 ﻿using GoSportsAPI.Mdels.Lobbies;
 using GoSportsAPI.Mdels.Locations;
-using GoSportsAPI.Models.BridgeTables;
 using GoSportsAPI.Models.Sports;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,13 +16,9 @@ namespace GoSportsAPI.Data
         public DbSet<LocationType> locationTypes { get; set; }
         public DbSet<Lobby> lobbies { get; set; }
         public DbSet<Sport> sports { get; set; }
-        public DbSet<LocationSport> locationSports { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<LocationSport>()
-                .HasKey(ls => new { ls.LocationId, ls.SportId });
-
             modelBuilder.Entity<Location>()
                 .Property(f => f.Id)
                 .ValueGeneratedOnAdd();
@@ -36,9 +31,17 @@ namespace GoSportsAPI.Data
                 .Property(f => f.Id)
                 .ValueGeneratedOnAdd();
 
+            modelBuilder.Entity<Lobby>()
+                .HasIndex(l => l.Name)
+                .IsUnique();
+
             modelBuilder.Entity<Sport>()
                 .Property(f => f.Id)
                 .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Sport>()
+                .HasIndex(l => l.Name)
+                .IsUnique();
 
             modelBuilder.Entity<Location>()
                 .HasOne(l => l.LocationType)
@@ -56,19 +59,12 @@ namespace GoSportsAPI.Data
                 .HasOne(l => l.Sport)
                 .WithMany()
                 .HasForeignKey(l => l.SportId)
-                .OnDelete(DeleteBehavior.Restrict); 
+                .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<LocationSport>()
-                .HasOne(ls => ls.Location)
-                .WithMany(l => l.LocationSports)
-                .HasForeignKey(ls => ls.LocationId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<LocationSport>()
-                .HasOne(ls => ls.Sport)
-                .WithMany(s => s.LocationSports)
-                .HasForeignKey(ls => ls.SportId)
-                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Location>()
+                .HasMany(l => l.Sports)
+                .WithMany(s => s.Locations)
+                .UsingEntity(j => j.ToTable("LocationSports")); 
         }
     }
 }

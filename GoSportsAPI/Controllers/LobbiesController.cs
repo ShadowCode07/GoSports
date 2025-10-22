@@ -1,4 +1,5 @@
 ﻿using GoSportsAPI.Dtos.Lobbies;
+using GoSportsAPI.Dtos.Locations;
 using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
@@ -20,7 +21,7 @@ namespace GoSportsAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Getlobbies([FromQuery]LobbyQueryObject queryObject)
+        public async Task<ActionResult<IEnumerable<LobbyResponceDto>>> Getlobbies([FromQuery]LobbyQueryObject queryObject)
         {
             if (!ModelState.IsValid)
             {
@@ -35,7 +36,7 @@ namespace GoSportsAPI.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<IActionResult> GetLobby([FromRoute] Guid id)
+        public async Task<ActionResult<LobbyResponceDto>> GetLobby([FromRoute] Guid id)
         {
             if (!ModelState.IsValid)
             {

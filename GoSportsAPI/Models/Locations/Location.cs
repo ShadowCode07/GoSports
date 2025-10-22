@@ -1,5 +1,4 @@
 ﻿using GoSportsAPI.Mdels.Lobbies;
-using GoSportsAPI.Models.BridgeTables;
 using GoSportsAPI.Models.Sports;
 
 namespace GoSportsAPI.Mdels.Locations
@@ -18,6 +17,6 @@ namespace GoSportsAPI.Mdels.Locations
         public int MaxLobbyCount { get; set; }
 
         // Sport properties
-        public ICollection<LocationSport> LocationSports { get; set; } = new List<LocationSport>();
+        public ICollection<Sport> Sports { get; set; } = new List<Sport>();
     }
 }

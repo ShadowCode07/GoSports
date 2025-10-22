@@ -1,4 +1,6 @@
-﻿using GoSportsAPI.Helpers;
+﻿using GoSportsAPI.Dtos.Locations;
+using GoSportsAPI.Dtos.LocationTypes;
+using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +19,7 @@ namespace GoSportsAPI.Controllers
         }
 
        [HttpGet]
-        public async Task<IActionResult> GetLocationTypes([FromQuery] LocationTypeQueryObject queryObject)
+        public async Task<ActionResult<IEnumerable<LocationTypeResponceDto>>> GetLocationTypes([FromQuery] LocationTypeQueryObject queryObject)
         {
             if (!ModelState.IsValid)
             {
@@ -32,7 +34,7 @@ namespace GoSportsAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetLocationType([FromRoute] Guid id)
+        public async Task<ActionResult<LocationTypeResponceDto>> GetLocationType([FromRoute] Guid id)
         {
             if (!ModelState.IsValid)
             {

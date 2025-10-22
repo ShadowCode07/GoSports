@@ -37,10 +37,31 @@ namespace GoSportsAPI.Repositories
             return values.CurrentLobbyCount < values.MaxLobbyCount;
         }
 
+        public async Task<Location> CreateAsync(Location location, List<string> sports)
+        {
+            var locationSports = await _context.sports.Where(s => sports.Contains(s.Name)).ToListAsync();
+
+            var missingSports = sports.Except(locationSports.Select(s => s.Name)).ToList();
+           
+            if (missingSports.Any())
+            {
+                throw new Exception($"The following sports were not found: {string.Join(", ", missingSports)}");
+            }    
+
+            location.Sports = locationSports;
+
+            await _dbSet.AddAsync(location);
+
+            await _context.SaveChangesAsync();
+
+            return location;
+        }
+
         public async Task<List<Location>> GetAllAsync(LocationQueryObject queryObject)
         {
             var locations = _context.locations
                 .Include(l => l.LocationType)
+                .Include(l => l.Sports)
                 .Include(l => l.Lobbies)
                 .AsQueryable();
 
@@ -97,20 +118,28 @@ namespace GoSportsAPI.Repositories
 
         public override async Task<List<Location>> GetAllAsync()
         {
-            return await _dbSet.Include(l => l.Lobbies).Include(l => l.LocationSports).ThenInclude(ls => ls.Sport).ToListAsync();
+            return await _dbSet.Include(l => l.Lobbies).Include(l => l.Sports).Include(l => l.LocationType).ToListAsync();
         }
         public override async Task<Location?> GetByIdAsync(Guid id)
         {
-            return await _dbSet.Include(l => l.Lobbies).Include(l => l.LocationSports).ThenInclude(ls => ls.Sport).FirstOrDefaultAsync(l => l.Id == id);
+            return await _dbSet.Include(l => l.Lobbies).Include(l => l.Sports).Include(l => l.LocationType).FirstOrDefaultAsync(l => l.Id == id);
         }
 
-        public async Task<Location?> UpdateAsync(Guid id, LocationUpdateDto dto)
+        public async Task<Location?> UpdateAsync(Guid id, LocationUpdateDto dto, List<string> sports)
         {
+            var locationSports = await _context.sports.Where(s => sports.Contains(s.Name)).ToListAsync();
+
+            var missingSports = sports.Except(locationSports.Select(s => s.Name)).ToList();
+
             var update = dto.ToLocationFromUpdate();
+
+            update.Sports = locationSports;
+
             _dbSet.Update(update);
             await _context.SaveChangesAsync();
             return update;
         }
+
     }
 
 }

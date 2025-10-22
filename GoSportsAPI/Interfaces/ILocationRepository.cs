@@ -6,8 +6,9 @@ namespace GoSportsAPI.Interfaces
 {
     public interface ILocationRepository : IRepository<Location>
     {
+        Task<Location> CreateAsync(Location location, List<string> sports);
         Task<List<Location>> GetAllAsync(LocationQueryObject queryObject);
-        Task<Location?> UpdateAsync(Guid id, LocationUpdateDto dto);
+        Task<Location?> UpdateAsync(Guid id, LocationUpdateDto dto, List<string> sports);
         Task<bool> CheckLobbyCount(Guid id);
         Task AddLobbyToCount(Guid id);
     }

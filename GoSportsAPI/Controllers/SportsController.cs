@@ -19,7 +19,7 @@ namespace GoSportsAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetLocations([FromQuery] SportQueryObject queryObject)
+        public async Task<ActionResult<IEnumerable<SportResponceDto>>> GetLocations([FromQuery] SportQueryObject queryObject)
         {
             if (!ModelState.IsValid)
             {
@@ -34,7 +34,7 @@ namespace GoSportsAPI.Controllers
         }
 
         [HttpGet("{id:guid}")]
-        public async Task<IActionResult> GetSport([FromRoute] Guid id)
+        public async Task<ActionResult<SportResponceDto>> GetSport([FromRoute] Guid id)
         {
             if (!ModelState.IsValid)
             {
