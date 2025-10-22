@@ -43,7 +43,7 @@ namespace GoSportsAPI.Controllers
             await _locationRepository.AddLobbyToCount(locationGuid, lobbyModel.Id);
 
             return CreatedAtRoute(
-                routeName: "GetLobby",
+                //routeName: "GetLobby",
                 routeValues: new { lobbyId = lobbyModel.Id },
                 value: lobbyModel.ToLobbyResponceDto()
             );

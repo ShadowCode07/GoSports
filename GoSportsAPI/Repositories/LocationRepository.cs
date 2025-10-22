@@ -145,7 +145,7 @@ namespace GoSportsAPI.Repositories
 
             update.Name = dto.Name;
             update.Description = dto.Description;
-            update.LocationType = dto.LocationType.ToLocationTypeFromUpdate(),
+            update.LocationType = dto.LocationType.ToLocationTypeFromUpdate();
             update.MaxLobbyCount = dto.MaxLobbyCount;
             update.Sports = locationSports;
 
