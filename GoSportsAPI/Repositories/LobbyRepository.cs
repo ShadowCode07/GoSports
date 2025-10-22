@@ -4,7 +4,9 @@ using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
 using GoSportsAPI.Mdels.Lobbies;
+using GoSportsAPI.Models.Sports;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace GoSportsAPI.Repositories
 {
@@ -16,11 +18,20 @@ namespace GoSportsAPI.Repositories
         }
 
 
-        public async Task<Lobby> CreateAsync(Guid locationId, Lobby entity)
+        public async Task<Lobby> CreateAsync(Lobby lobby, string sportName)
         {
-            await _dbSet.AddAsync(entity);
+            var lobbySports = _context.sports.Where(s => sportName.Contains(s.Name)).FirstOrDefault();
+
+            if (lobbySports == null)
+            {
+                throw new Exception($"The following sports were not found: {string.Join(", ", sportName)}");
+            }
+
+            lobby.Sport = lobbySports;
+
+            await _dbSet.AddAsync(lobby);
             await _context.SaveChangesAsync();
-            return entity;
+            return lobby;
         }
 
         public async Task<List<Lobby>> GetAllAsync(LobbyQueryObject queryObject)
@@ -51,9 +62,20 @@ namespace GoSportsAPI.Repositories
             return await lobbies.ToListAsync();
         }
 
-        public async Task<Lobby?> UpdateAsync(Guid id, LobbyUpdateDto dto)
+        public async Task<Lobby?> UpdateAsync(Guid id, LobbyUpdateDto dto, string sportName)
         {
-            var update = dto.ToLobbyFromUpdate();
+            var lobbySports = _context.sports.Where(s => sportName.Contains(s.Name)).FirstOrDefault();
+
+            if (lobbySports == null)
+            {
+                throw new Exception($"The following sports were not found: {string.Join(", ", sportName)}");
+            }
+
+            var update = await _dbSet.FindAsync(id);
+
+            update.Name = dto.Name;
+            update.Sport = lobbySports;
+
             _dbSet.Update(update);
             await _context.SaveChangesAsync();
             return update;

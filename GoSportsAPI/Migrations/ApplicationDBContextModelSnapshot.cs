@@ -147,7 +147,7 @@ namespace GoSportsAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GoSportsAPI.Mdels.Locations.Location", "Sport")
+                    b.HasOne("GoSportsAPI.Models.Sports.Sport", "Sport")
                         .WithMany()
                         .HasForeignKey("SportId")
                         .OnDelete(DeleteBehavior.Restrict)

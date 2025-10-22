@@ -3,6 +3,7 @@ using GoSportsAPI.Dtos.Locations;
 using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
+using GoSportsAPI.Mdels.Lobbies;
 using GoSportsAPI.Mdels.Locations;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,10 +15,14 @@ namespace GoSportsAPI.Repositories
         {
         }
 
-        public async Task AddLobbyToCount(Guid id)
+        public async Task AddLobbyToCount(Guid id, Guid lobbyId)
         {
             Location update = await GetByIdAsync(id);
+            Lobby addedLobby = await _context.lobbies.FindAsync(lobbyId);
+
+            update.Lobbies.Add(addedLobby);
             update.CurrentLobbyCount += 1;
+
             _dbSet.Update(update);
             await _context.SaveChangesAsync();
         }
@@ -125,14 +130,23 @@ namespace GoSportsAPI.Repositories
             return await _dbSet.Include(l => l.Lobbies).Include(l => l.Sports).Include(l => l.LocationType).FirstOrDefaultAsync(l => l.Id == id);
         }
 
-        public async Task<Location?> UpdateAsync(Guid id, LocationUpdateDto dto, List<string> sports)
+        public async Task<Location?> UpdateAsync(Guid id, LocationUpdateDto dto)
         {
-            var locationSports = await _context.sports.Where(s => sports.Contains(s.Name)).ToListAsync();
+            var locationSports = await _context.sports.Where(s => dto.Sports.Contains(s.Name)).ToListAsync();
 
-            var missingSports = sports.Except(locationSports.Select(s => s.Name)).ToList();
+            var missingSports = dto.Sports.Except(locationSports.Select(s => s.Name)).ToList();
 
-            var update = dto.ToLocationFromUpdate();
+            if (missingSports.Any())
+            {
+                throw new Exception($"The following sports were not found: {string.Join(", ", missingSports)}");
+            }
 
+            var update = await _dbSet.FindAsync(id);
+
+            update.Name = dto.Name;
+            update.Description = dto.Description;
+            update.LocationType = dto.LocationType.ToLocationTypeFromUpdate(),
+            update.MaxLobbyCount = dto.MaxLobbyCount;
             update.Sports = locationSports;
 
             _dbSet.Update(update);

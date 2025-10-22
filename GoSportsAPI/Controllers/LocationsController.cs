@@ -84,7 +84,7 @@ namespace GoSportsAPI.Controllers
                 return NotFound();
             }
 
-            locationModel = await _repository.UpdateAsync(id, updateDto, updateDto.Sports);
+            locationModel = await _repository.UpdateAsync(id, updateDto);
 
             return Ok(locationModel.ToLocationResponceDto());
         }

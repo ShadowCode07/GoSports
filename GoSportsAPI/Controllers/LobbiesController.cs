@@ -99,7 +99,7 @@ namespace GoSportsAPI.Controllers
                 return NotFound();
             }
 
-            lobbyModel = await _repository.UpdateAsync(id, updateDto);
+            lobbyModel = await _repository.UpdateAsync(id, updateDto, updateDto.SportName);
 
             return Ok(lobbyModel.ToLobbyResponceDto());
         }

@@ -1,4 +1,5 @@
 ﻿using GoSportsAPI.Mdels.Locations;
+using GoSportsAPI.Models.Sports;
 
 namespace GoSportsAPI.Mdels.Lobbies
 {
@@ -11,6 +12,6 @@ namespace GoSportsAPI.Mdels.Lobbies
         public Location Location { get; set; } = null!;
 
         public Guid SportId { get; set; }
-        public Location Sport { get; set; } = null!;
+        public Sport Sport { get; set; } = null!;
     }
 }

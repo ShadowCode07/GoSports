@@ -5,6 +5,7 @@ using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
 using GoSportsAPI.Models.Sports;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
 
 namespace GoSportsAPI.Repositories
 {
@@ -38,10 +39,18 @@ namespace GoSportsAPI.Repositories
 
         public async Task<Sport?> UpdateAsync(Guid id, SportUpdateDto dto)
         {
-            var update = dto.ToSportFromUpdate();
-            _dbSet.Update(update);
+            var existingSport = await _dbSet.FindAsync(id);
+
+            if(existingSport == null)
+            {
+                return null;
+            }
+
+            existingSport.Name = dto.Name;
+            
             await _context.SaveChangesAsync();
-            return update;
+            
+            return existingSport;
         }
     }
 }

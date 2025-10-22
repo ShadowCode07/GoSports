@@ -8,7 +8,7 @@ namespace GoSportsAPI.Dtos.Lobbies
         [MinLength(3, ErrorMessage = "Name must be at least 3 characters long")]
         [MaxLength(14, ErrorMessage = "Name can't be longer than 14 characters")]
         public string Name { get; set; } = string.Empty;
-        [Required] 
-        public Guid SportId { get; set; }
+        [Required]
+        public string SportName { get; set; } = string.Empty;
     }
 }

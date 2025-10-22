@@ -38,9 +38,9 @@ namespace GoSportsAPI.Controllers
 
             var lobbyModel = createDto.ToLobbyFromCreate(locationGuid);
 
-            await _repository.CreateAsync(lobbyModel);
+            await _repository.CreateAsync(lobbyModel, createDto.SportName);
 
-            await _locationRepository.AddLobbyToCount(locationGuid);
+            await _locationRepository.AddLobbyToCount(locationGuid, lobbyModel.Id);
 
             return CreatedAtRoute(
                 routeName: "GetLobby",

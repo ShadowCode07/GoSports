@@ -11,7 +11,8 @@ namespace GoSportsAPI.Mappers
             {
                 Id = lobbyModel.Id,
                 Name = lobbyModel.Name,
-                LocationId = lobbyModel.LocationId
+                LocationId = lobbyModel.LocationId,
+                SportId = lobbyModel.SportId
             };
         }
 
