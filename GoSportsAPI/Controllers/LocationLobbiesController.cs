@@ -5,10 +5,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GoSportsAPI.Controllers
 {
+    /// <summary>
+    /// API controller responsible for managing lobbies within a specific location.
+    /// </summary>
+    /// <remarks>
+    /// Provides endpoints for creating, retrieving, updating, and deleting lobbies associated with a given location.
+    /// </remarks>
     [ApiController]
     [Route("locations/{locationGuid:guid}/lobbies")]
     public class LocationLobbiesController : ControllerBase
     {
+
         private readonly ILobbyRepository _repository;
         private readonly ILocationRepository _locationRepository;
 
@@ -18,8 +25,17 @@ namespace GoSportsAPI.Controllers
             _locationRepository = locationRepository;
         }
 
+        /// <summary>
+        /// Creates a new lobby for the specified location.
+        /// </summary>
+        /// <param name="locationGuid">The unique identifier of the location where the lobby will be created.</param>
+        /// <param name="createDto">The data transfer object containing the details of the lobby to create.</param>
+        /// <returns>
+        /// Returns an <see cref="IActionResult"/> containing the result of the create operation.
+        /// </returns>
         [HttpPost]
         public async Task<IActionResult> CreateLobby([FromRoute] Guid locationGuid, [FromBody] LobbyCreateDto createDto)
+
         {
             if (!ModelState.IsValid)
             {
@@ -38,7 +54,7 @@ namespace GoSportsAPI.Controllers
 
             var lobbyModel = createDto.ToLobbyFromCreate(locationGuid);
 
-            await _repository.CreateAsync(lobbyModel, createDto.SportName);
+            await _repository.CreateAsync(locationGuid, lobbyModel, createDto.SportName);
 
             await _locationRepository.AddLobbyToCount(locationGuid, lobbyModel.Id);
 

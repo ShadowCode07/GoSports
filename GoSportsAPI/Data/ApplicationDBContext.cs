@@ -1,5 +1,5 @@
-﻿using GoSportsAPI.Mdels.Lobbies;
-using GoSportsAPI.Mdels.Locations;
+﻿using GoSportsAPI.Models.Lobbies;
+using GoSportsAPI.Models.Locations;
 using GoSportsAPI.Models.Sports;
 using Microsoft.EntityFrameworkCore;
 

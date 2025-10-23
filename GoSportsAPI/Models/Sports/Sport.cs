@@ -1,4 +1,4 @@
-﻿using GoSportsAPI.Mdels.Locations;
+﻿using GoSportsAPI.Models.Locations;
 
 namespace GoSportsAPI.Models.Sports
 {

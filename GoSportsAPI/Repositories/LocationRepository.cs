@@ -3,18 +3,29 @@ using GoSportsAPI.Dtos.Locations;
 using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Mappers;
-using GoSportsAPI.Mdels.Lobbies;
-using GoSportsAPI.Mdels.Locations;
+using GoSportsAPI.Models.Lobbies;
+using GoSportsAPI.Models.Locations;
 using Microsoft.EntityFrameworkCore;
 
 namespace GoSportsAPI.Repositories
 {
+    /// <summary>
+    /// Provides repository operations for <see cref="Location"/> entities.
+    /// </summary>
+    /// <remarks>
+    /// Inherits common CRUD functionality from <see cref="Repository{T}"/> 
+    /// and implements additional methods defined in <see cref="ILocationRepository"/>.
+    /// </remarks>
     public class LocationRepository : Repository<Location>, ILocationRepository
     {
         public LocationRepository(ApplicationDBContext context) : base(context)
         {
         }
 
+
+        /// <summary>Adds a lobby to the location's lobby list</summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="lobbyId">The lobby identifier.</param>
         public async Task AddLobbyToCount(Guid id, Guid lobbyId)
         {
             Location update = await GetByIdAsync(id);
@@ -27,6 +38,10 @@ namespace GoSportsAPI.Repositories
             await _context.SaveChangesAsync();
         }
 
+
+        /// <summary>Checks the lobby count.</summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>bool</returns>
         public async Task<bool> CheckLobbyCount(Guid id)
         {
             var values = await _dbSet
@@ -42,6 +57,12 @@ namespace GoSportsAPI.Repositories
             return values.CurrentLobbyCount < values.MaxLobbyCount;
         }
 
+
+        /// <summary>Creates a location</summary>
+        /// <param name="location">The location.</param>
+        /// <param name="sports">The sports.</param>
+        /// <returns>Location</returns>
+        /// <exception cref="System.Exception">The following sports were not found: {string.Join(", ", missingSports)}</exception>
         public async Task<Location> CreateAsync(Location location, List<string> sports)
         {
             var locationSports = await _context.sports.Where(s => sports.Contains(s.Name)).ToListAsync();
@@ -62,6 +83,12 @@ namespace GoSportsAPI.Repositories
             return location;
         }
 
+
+        /// <summary>Gets all locations</summary>
+        /// <param name="queryObject">The query object.</param>
+        /// <returns>
+        ///   <para>List&lt;Location&gt;</para>
+        /// </returns>
         public async Task<List<Location>> GetAllAsync(LocationQueryObject queryObject)
         {
             var locations = _context.locations
@@ -116,20 +143,30 @@ namespace GoSportsAPI.Repositories
             return await locations.ToListAsync();
         }
 
+
+        /// <summary>Checks if the location exists</summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>bool</returns>
         public override async Task<bool> Exists(Guid id)
         {
             return await _dbSet.AnyAsync(l => l.Id == id);
         }
 
-        public override async Task<List<Location>> GetAllAsync()
-        {
-            return await _dbSet.Include(l => l.Lobbies).Include(l => l.Sports).Include(l => l.LocationType).ToListAsync();
-        }
+
+        /// <summary>Gets the location by identifier.</summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>Location</returns>
         public override async Task<Location?> GetByIdAsync(Guid id)
         {
             return await _dbSet.Include(l => l.Lobbies).Include(l => l.Sports).Include(l => l.LocationType).FirstOrDefaultAsync(l => l.Id == id);
         }
 
+
+        /// <summary>Updates given location</summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="dto">The dto.</param>
+        /// <returns>Location</returns>
+        /// <exception cref="System.Exception">The following sports were not found: {string.Join(", ", missingSports)}</exception>
         public async Task<Location?> UpdateAsync(Guid id, LocationUpdateDto dto)
         {
             var locationSports = await _context.sports.Where(s => dto.Sports.Contains(s.Name)).ToListAsync();
@@ -153,7 +190,5 @@ namespace GoSportsAPI.Repositories
             await _context.SaveChangesAsync();
             return update;
         }
-
     }
-
 }

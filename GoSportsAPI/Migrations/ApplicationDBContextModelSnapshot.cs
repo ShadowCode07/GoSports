@@ -22,7 +22,7 @@ namespace GoSportsAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("GoSportsAPI.Mdels.Lobbies.Lobby", b =>
+            modelBuilder.Entity("GoSportsAPI.Models.Lobbies.Lobby", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,7 +50,7 @@ namespace GoSportsAPI.Migrations
                     b.ToTable("lobbies");
                 });
 
-            modelBuilder.Entity("GoSportsAPI.Mdels.Locations.Location", b =>
+            modelBuilder.Entity("GoSportsAPI.Models.Locations.Location", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -75,7 +75,7 @@ namespace GoSportsAPI.Migrations
                     b.ToTable("locations");
                 });
 
-            modelBuilder.Entity("GoSportsAPI.Mdels.Locations.LocationType", b =>
+            modelBuilder.Entity("GoSportsAPI.Models.Locations.LocationType", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -139,9 +139,9 @@ namespace GoSportsAPI.Migrations
                     b.ToTable("LocationSports", (string)null);
                 });
 
-            modelBuilder.Entity("GoSportsAPI.Mdels.Lobbies.Lobby", b =>
+            modelBuilder.Entity("GoSportsAPI.Models.Lobbies.Lobby", b =>
                 {
-                    b.HasOne("GoSportsAPI.Mdels.Locations.Location", "Location")
+                    b.HasOne("GoSportsAPI.Models.Locations.Location", "Location")
                         .WithMany("Lobbies")
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -158,18 +158,18 @@ namespace GoSportsAPI.Migrations
                     b.Navigation("Sport");
                 });
 
-            modelBuilder.Entity("GoSportsAPI.Mdels.Locations.LocationType", b =>
+            modelBuilder.Entity("GoSportsAPI.Models.Locations.LocationType", b =>
                 {
-                    b.HasOne("GoSportsAPI.Mdels.Locations.Location", null)
+                    b.HasOne("GoSportsAPI.Models.Locations.Location", null)
                         .WithOne("LocationType")
-                        .HasForeignKey("GoSportsAPI.Mdels.Locations.LocationType", "LocationId")
+                        .HasForeignKey("GoSportsAPI.Models.Locations.LocationType", "LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("LocationSport", b =>
                 {
-                    b.HasOne("GoSportsAPI.Mdels.Locations.Location", null)
+                    b.HasOne("GoSportsAPI.Models.Locations.Location", null)
                         .WithMany()
                         .HasForeignKey("LocationsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -182,7 +182,7 @@ namespace GoSportsAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GoSportsAPI.Mdels.Locations.Location", b =>
+            modelBuilder.Entity("GoSportsAPI.Models.Locations.Location", b =>
                 {
                     b.Navigation("Lobbies");
 

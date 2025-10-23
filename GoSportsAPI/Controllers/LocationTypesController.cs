@@ -7,9 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GoSportsAPI.Controllers
 {
+    /// <summary>
+    /// API controller responsible for managing location types.
+    /// </summary>
+    /// <remarks>
+    /// Provides endpoints for creating, retrieving, updating, and deleting location types.
+    /// </remarks>
     [Route("api/[controller]")]
     [ApiController]
     public class LocationTypesController : ControllerBase
+
     {
         private readonly ILocationTypeRepository _repository;
 
@@ -18,8 +25,16 @@ namespace GoSportsAPI.Controllers
             _repository = locationTypeRepository;
         }
 
-       [HttpGet]
+        /// <summary>
+        /// Retrieves a collection of location types based on the specified query parameters.
+        /// </summary>
+        /// <param name="queryObject">The query object used for filtering and sorting location types.</param>
+        /// <returns>
+        /// Returns an <see cref="ActionResult{T}"/> containing a collection of <see cref="LocationTypeResponceDto"/> objects.
+        /// </returns>
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<LocationTypeResponceDto>>> GetLocationTypes([FromQuery] LocationTypeQueryObject queryObject)
+
         {
             if (!ModelState.IsValid)
             {
@@ -33,8 +48,16 @@ namespace GoSportsAPI.Controllers
             return Ok(locationTypesDto);
         }
 
+        /// <summary>
+        /// Retrieves a location type with the specified identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the location type to retrieve.</param>
+        /// <returns>
+        /// Returns an <see cref="ActionResult{T}"/> containing the <see cref="LocationTypeResponceDto"/> if found; otherwise, a not found result.
+        /// </returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<LocationTypeResponceDto>> GetLocationType([FromRoute] Guid id)
+
         {
             if (!ModelState.IsValid)
             {

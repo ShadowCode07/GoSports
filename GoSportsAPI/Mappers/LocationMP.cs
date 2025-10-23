@@ -1,10 +1,15 @@
 ﻿using GoSportsAPI.Dtos.Locations;
-using GoSportsAPI.Mdels.Locations;
+using GoSportsAPI.Models.Locations;
 
 namespace GoSportsAPI.Mappers
 {
+    /// <summary>Mapping profiles for locations.</summary>
     public static class LocationMP
     {
+
+        /// <summary>Converts to LocationResponceDto from a location model.</summary>
+        /// <param name="locationModel">The location model.</param>
+        /// <returns>LocationResponceDto</returns>
         public static LocationResponceDto ToLocationResponceDto(this Location locationModel)
         {
             return new LocationResponceDto
@@ -20,6 +25,10 @@ namespace GoSportsAPI.Mappers
             };
         }
 
+
+        /// <summary>Converts to location from a create Dto.</summary>
+        /// <param name="locationDto">The location create dto.</param>
+        /// <returns>Location</returns>
         public static Location ToLocationFromCreate(this LocationCreateDto locationDto)
         {
             return new Location
@@ -31,6 +40,10 @@ namespace GoSportsAPI.Mappers
             };
         }
 
+
+        /// <summary>Converts to location from an update Dto.</summary>
+        /// <param name="locationDto">The location update dto.</param>
+        /// <returns>Location</returns>
         public static Location ToLocationFromUpdate(this LocationUpdateDto locationDto)
         {
             return new Location
@@ -43,25 +56,3 @@ namespace GoSportsAPI.Mappers
         }
     }
 }
-
-
-
-
-
-/* Find a fix for lobbies showing as null
-"id": "c260c85f-ca27-4b67-a08e-6c47112e549d",
-  "name": "Gym",
-  "description": "A random gym that is nowhere",
-  "locationType": {
-    "id": "4f69a7d4-1e4b-4a0a-aa89-74340c94aae6",
-    "locationId": "c260c85f-ca27-4b67-a08e-6c47112e549d",
-    "name": "Gym",
-    "isIndoor": true,
-    "surface": "wood",
-    "hasLights": false
-  },
-  "lobbies": [],
-  "sports": null,
-  "currentLobbyCount": 0,
-  "maxLobbyCount": 5
-}*/

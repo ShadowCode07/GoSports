@@ -1,17 +1,28 @@
 ﻿using GoSportsAPI.Data;
 using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces;
-using GoSportsAPI.Mdels.Locations;
+using GoSportsAPI.Models.Locations;
 using Microsoft.EntityFrameworkCore;
 
 namespace GoSportsAPI.Repositories
 {
+    /// <summary>
+    /// Provides repository operations for <see cref="LocationType"/> entities.
+    /// </summary>
+    /// <remarks>
+    /// Inherits common CRUD functionality from <see cref="Repository{T}"/> 
+    /// and implements additional methods defined in <see cref="ILocationTypeRepository"/>.
+    /// </remarks>
     public class LocationTypeRepository : Repository<LocationType>, ILocationTypeRepository
     {
         public LocationTypeRepository(ApplicationDBContext context) : base(context)
         {
         }
 
+
+        /// <summary>Gets all the location types.</summary>
+        /// <param name="queryObject">The query object.</param>
+        /// <returns>List&lt;LocationTypes&gt;</returns>
         public async Task<List<LocationType>> GetAllAsync(LocationTypeQueryObject queryObject)
         {
             var locationTypes = _context.locationTypes

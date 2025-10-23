@@ -1,7 +1,7 @@
-﻿using GoSportsAPI.Mdels.Lobbies;
+﻿using GoSportsAPI.Models.Lobbies;
 using GoSportsAPI.Models.Sports;
 
-namespace GoSportsAPI.Mdels.Locations
+namespace GoSportsAPI.Models.Locations
 {
     public class Location
     {
