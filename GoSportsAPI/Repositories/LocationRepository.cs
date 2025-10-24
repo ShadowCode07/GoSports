@@ -100,7 +100,7 @@ namespace GoSportsAPI.Repositories
             if (!string.IsNullOrWhiteSpace(queryObject.LobbyName))
             {
                 locations = locations.Where(l =>
-                        l.Lobbies.Any(lb => lb.Name.Contains(queryObject.LobbyName)));
+                            l.Lobbies.Any(lb => lb.Name.Contains(queryObject.LobbyName)));
             }
 
             if (!string.IsNullOrWhiteSpace(queryObject.LocationName))
@@ -111,25 +111,31 @@ namespace GoSportsAPI.Repositories
             if (!string.IsNullOrWhiteSpace(queryObject.LocationTypeName))
             {
                 locations = locations.Where(l =>
-                        l.LocationType.Name.Contains(queryObject.LocationTypeName));
+                            l.LocationType.Name.Contains(queryObject.LocationTypeName));
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryObject.SportName))
+            {
+                locations = locations.Where(l =>
+                            l.Lobbies.Any(lb => lb.Name.Contains(queryObject.LobbyName)));
             }
 
             if (!string.IsNullOrWhiteSpace(queryObject.Surface))
             {
                 locations = locations.Where(l =>
-                         l.LocationType.Surface.Contains(queryObject.Surface));
+                            l.LocationType.Surface.Contains(queryObject.Surface));
             }
 
             if (queryObject.HasLights)
             {
                 locations = locations.Where(l =>
-                        l.LocationType.HasLights == queryObject.HasLights);
+                            l.LocationType.HasLights == queryObject.HasLights);
             }
 
             if (queryObject.IsIndoor)
             {
                 locations = locations.Where(l =>
-                        l.LocationType.HasLights == queryObject.IsIndoor);
+                            l.LocationType.HasLights == queryObject.IsIndoor);
             }
 
             if (!string.IsNullOrEmpty(queryObject.SortBy))

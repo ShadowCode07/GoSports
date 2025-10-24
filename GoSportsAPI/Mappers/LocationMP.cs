@@ -17,6 +17,8 @@ namespace GoSportsAPI.Mappers
                 Id = locationModel.Id,
                 Name = locationModel.Name,
                 Description = locationModel.Description,
+                Latitude = locationModel.Latitude,
+                Longitude = locationModel.Longitude,
                 LocationType = locationModel.LocationType,
                 Lobbies = locationModel.Lobbies.Select(l => l.ToLobbyResponceDto()).ToList(),
                 Sports = locationModel.Sports.Select(s => s.ToSportResponceDto()).ToList(),
@@ -35,6 +37,8 @@ namespace GoSportsAPI.Mappers
             {
                 Name = locationDto.Name,
                 Description = locationDto.Description,
+                Latitude = locationDto.Latitude,
+                Longitude = locationDto.Longitude,
                 LocationType = locationDto.LocationType.ToLocationTypeFromCreate(),
                 MaxLobbyCount = locationDto.MaxLobbyCount
             };

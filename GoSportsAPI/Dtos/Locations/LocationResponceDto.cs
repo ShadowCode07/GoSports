@@ -30,6 +30,9 @@ namespace GoSportsAPI.Dtos.Locations
         /// </summary>
         public LocationType LocationType { get; set; } = null!;
 
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+
         /// <summary>
         /// The collection of lobbies associated with the location.
         /// </summary>

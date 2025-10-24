@@ -11,6 +11,10 @@ namespace GoSportsAPI.Models.Locations
         public string Description { get; set; } = string.Empty;
         public LocationType LocationType { get; set; } = null!;
 
+        // Coordinates
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+
         // Lobby properties
         public ICollection<Lobby> Lobbies { get; set; } = new List<Lobby>();
         public int CurrentLobbyCount { get; set; } = 0;

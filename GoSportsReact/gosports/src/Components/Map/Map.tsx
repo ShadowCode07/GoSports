@@ -4,28 +4,44 @@ import "leaflet/dist/leaflet.css"
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { Icon, divIcon, point } from "leaflet";
+import { useEffect, useState } from "react";
 
 type Props = {}
 
-type SimpleMarker = {
-    geocode: [number, number];
-    popUp: string
-}
+type SportDto = {
+  id: string;
+  name: string;
+};
 
-const markers: SimpleMarker[] = [
-  {
-    geocode: [51.41, 5.4323],
-    popUp: "Hello, I am pop up 1"
-  },
-  {
-    geocode: [51.43, 5.4625],
-    popUp: "Hello, I am pop up 2"
-  },
-  {
-    geocode: [51.44, 5.4712],
-    popUp: "Hello, I am pop up 3"
-  }
-];
+type LobbyDto = {
+  id: string;
+  name: string;
+  locationId: string;
+  sport: SportDto;
+};
+
+type LocationTypeDto = {
+  id: string;
+  locationId: string;
+  name: string;
+  isIndoor: boolean;
+  surface: string;
+  hasLights: boolean;
+};
+
+type ApiLocation = {
+  id: string;
+  name: string;
+  description: string;
+  locationType: LocationTypeDto;
+  latitude: number;
+  longitude: number;
+  lobbies: LobbyDto[];
+  sports: SportDto[];
+  currentLobbyCount: number;
+  maxLobbyCount: number;
+};
+
 
 const customIcon = new Icon({
     iconUrl: "https://cdn-icons-png.flaticon.com/128/9131/9131546.png",
@@ -41,8 +57,39 @@ const createClusterCustomIcon = function (cluster: any) {
 };
 
 const Map = (props: Props) => {
+  const [locations, setLocations] = useState<ApiLocation[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>("");
+
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const res = await fetch("https://localhost:7112/api/Locations",
+          { headers : {
+            Accept: "application/json"
+          }}
+        );
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch locations");
+        }
+
+        const data: ApiLocation[] = await res.json();
+        setLocations(data);
+      } catch (err: any) {
+        setError(err.message ?? "Something went wrong");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchLocations();
+  }, []);
+
+  const defaultCenter: [number, number] = [51.4231, 5.4623];
+  const defaultZoom = 13;
+
   return (
-        <MapContainer center={[51.4231, 5.4623]} zoom={13}>
+        <MapContainer center={defaultCenter} zoom={defaultZoom}>
         <TileLayer
           attribution='&copy; <a href="https://www.jawg.io">Jawg Maps</a> contributors'
           url="https://{s}.tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=vdZfXLU11SocRzVHCftt2BaXk5RyOnr7Lq22YNIC7aYQX2MtyjJUXG85deeDpxpR"
@@ -51,13 +98,82 @@ const Map = (props: Props) => {
           chunkedLoading
           iconCreateFunction={createClusterCustomIcon}
         >
-          {markers.map(marker => (
-              <Marker position={marker.geocode} icon={customIcon}>
-                  <Popup><h2>{marker.popUp}</h2></Popup>
-              </Marker>    
-          ))
+          {loading && (
+          <Popup position={defaultCenter}>
+            <div>Loading locations…</div>
+          </Popup>
+        )}
 
-          }
+        {error && !loading && (
+          <Popup position={defaultCenter}>
+            <div style={{ color: "red" }}>{error}</div>
+          </Popup>
+        )}
+
+        {/* Render real data */}
+        {!loading &&
+          !error &&
+          locations.map((loc) => (
+            <Marker
+              key={loc.id}
+              position={[loc.latitude, loc.longitude]}
+              icon={customIcon}
+            >
+              <Popup>
+                <h2 style={{ margin: 0 }}>{loc.name}</h2>
+                <p style={{ margin: "4px 0 8px", fontSize: "0.9rem" }}>
+                  {loc.description}
+                </p>
+
+                <div style={{ fontSize: "0.8rem", lineHeight: 1.4 }}>
+                  <div>
+                    <strong>Type:</strong>{" "}
+                    {loc.locationType?.name}{" "}
+                    {loc.locationType?.isIndoor ? "(indoor)" : "(outdoor)"}
+                  </div>
+
+                  <div>
+                    <strong>Surface:</strong>{" "}
+                    {loc.locationType?.surface}
+                  </div>
+
+                  <div>
+                    <strong>Lights:</strong>{" "}
+                    {loc.locationType?.hasLights ? "Yes" : "No"}
+                  </div>
+
+                  <div style={{ marginTop: "6px" }}>
+                    <strong>Sports here:</strong>{" "}
+                    {loc.sports.map((s) => s.name).join(", ")}
+                  </div>
+
+                  <div>
+                    <strong>Active lobbies:</strong>{" "}
+                    {loc.currentLobbyCount}/{loc.maxLobbyCount}
+                  </div>
+
+                  <div style={{ marginTop: "6px" }}>
+                    <strong>Lobbies:</strong>
+                    <ul style={{ margin: "4px 0", paddingLeft: "16px" }}>
+                      {loc.lobbies.map((lobby) => (
+                        <li key={lobby.id}>
+                          {lobby.name}{" "}
+                          <span style={{ opacity: 0.7 }}>
+                            ({lobby.sport?.name})
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div style={{ marginTop: "6px" }}>
+                    <strong>Coords:</strong>{" "}
+                    {loc.latitude}, {loc.longitude}
+                  </div>
+                </div>
+              </Popup>
+            </Marker>
+          ))}
         </MarkerClusterGroup>
 
       </MapContainer>
