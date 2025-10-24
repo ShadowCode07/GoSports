@@ -64,5 +64,34 @@ namespace GoSportsAPI.Controllers
                 value: lobbyModel.ToLobbyResponceDto()
             );
         }
+
+        /// <summary>
+        /// Updates an existing lobby with the specified identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the lobby to update.</param>
+        /// <param name="updateDto">The data transfer object containing the updated lobby information.</param>
+        /// <returns>
+        /// Returns an <see cref="IActionResult"/> indicating the result of the update operation.
+        /// </returns>
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> UpdateLobby([FromRoute] Guid locationGuid, [FromRoute] Guid id, [FromBody] LobbyUpdateDto updateDto)
+
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var lobbyModel = await _repository.GetByIdAsync(id);
+
+            if (lobbyModel == null)
+            {
+                return NotFound();
+            }
+
+            lobbyModel = await _repository.UpdateAsync(locationGuid, id, updateDto, updateDto.SportName);
+
+            return Ok(lobbyModel.ToLobbyResponceDto());
+        }
     }
 }

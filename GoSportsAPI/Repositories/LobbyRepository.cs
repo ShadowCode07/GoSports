@@ -104,13 +104,24 @@ namespace GoSportsAPI.Repositories
         /// <param name="sportName">Name of the sport.</param>
         /// <returns>Lobby</returns>
         /// <exception cref="System.Exception">The following sports were not found: {string.Join(", ", sportName)}</exception>
-        public async Task<Lobby?> UpdateAsync(Guid id, LobbyUpdateDto dto, string sportName)
+        public async Task<Lobby?> UpdateAsync(Guid locationId, Guid id, LobbyUpdateDto dto, string sportName)
         {
             var lobbySports = _context.sports.Where(s => sportName.Contains(s.Name)).FirstOrDefault();
 
             if (lobbySports == null)
             {
                 throw new Exception($"The following sports were not found: {string.Join(", ", sportName)}");
+            }
+
+            var location = await _context.locations
+                .Include(l => l.Sports)
+                .FirstOrDefaultAsync(l => l.Id == locationId);
+
+            var locationSports = location.Sports.Where(s => sportName.Contains(s.Name));
+
+            if (!locationSports.Any())
+            {
+                throw new Exception($"The following location does not practise this sport: {sportName}");
             }
 
             var update = await _dbSet.FindAsync(id);
