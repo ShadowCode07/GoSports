@@ -1,0 +1,27 @@
+.leaflet-container {
+    height: 100vh;
+}
+
+
+#root {
+    height: 100vh;
+}
+
+.custom-marker-cluster {
+  background: rgba(0, 128, 255, 0.25);
+  border: 2px solid rgba(0, 128, 255, 0.8);
+  border-radius: 50%;
+  color: white;
+  font-weight: 600;
+  line-height: 33px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 128, 255, 0.6);
+  width: 33px;
+  height: 33px;
+}
+
+.custom-marker-cluster .cluster-icon {
+  font-size: 12px;
+  display: inline-block;
+  width: 100%;
+}

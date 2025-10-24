@@ -1,10 +1,14 @@
 import './App.css';
-import CardList from './Components/CardList/CardList';
+
+import Map from "./Components/Map/Map"
+
 
 function App() {
   return (
     <div className="App">
-      <CardList />
+      <div className="App">
+        <Map></Map>
+    </div>
     </div>
   );
 }
