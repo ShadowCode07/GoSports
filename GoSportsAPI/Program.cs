@@ -14,13 +14,12 @@ namespace GoSportsAPI
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-            builder.Services.AddDbContext <ApplicationDBContext>(options =>
-                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+            builder.Services.AddTransient<Seed>();
 
-            /*builder.Services.AddDbContext<ApplicationDBContext>(options =>
+            builder.Services.AddDbContext<ApplicationDBContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });*/
+            });
 
 
             builder.Services.AddScoped<ILocationRepository, LocationRepository>();
@@ -51,6 +50,19 @@ namespace GoSportsAPI
             });
 
             var app = builder.Build();
+
+            SeedData(app);
+
+            void SeedData(IHost app)
+            {
+                var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+                using (var scope = scopedFactory.CreateScope())
+                {
+                    var service = scope.ServiceProvider.GetService<Seed>();
+                    service.SeedDataContext();
+                }
+            }
 
             if (app.Environment.IsDevelopment())
             {

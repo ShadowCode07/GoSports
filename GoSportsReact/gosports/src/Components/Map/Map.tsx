@@ -1,12 +1,12 @@
-import "./Map.css"
-import "leaflet/dist/leaflet.css"
+import "./Map.css";
+import "leaflet/dist/leaflet.css";
 
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { Icon, divIcon, point } from "leaflet";
 import { useEffect, useState } from "react";
 
-type Props = {}
+type Props = {};
 
 type SportDto = {
   id: string;
@@ -42,17 +42,16 @@ type ApiLocation = {
   maxLobbyCount: number;
 };
 
-
 const customIcon = new Icon({
-    iconUrl: "https://cdn-icons-png.flaticon.com/128/9131/9131546.png",
-    iconSize: [38, 38]
-})
+  iconUrl: "https://cdn-icons-png.flaticon.com/128/9131/9131546.png",
+  iconSize: [38, 38],
+});
 
 const createClusterCustomIcon = function (cluster: any) {
   return divIcon({
     html: `<span class="cluster-icon">${cluster.getChildCount()}</span>`,
     className: "custom-marker-cluster",
-    iconSize: point(33, 33, true)
+    iconSize: point(33, 33, true),
   });
 };
 
@@ -64,11 +63,11 @@ const Map = (props: Props) => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const res = await fetch("https://localhost:7112/api/Locations",
-          { headers : {
-            Accept: "application/json"
-          }}
-        );
+        const res = await fetch("https://localhost:7112/api/Locations", {
+          headers: {
+            Accept: "application/json",
+          },
+        });
 
         if (!res.ok) {
           throw new Error("Failed to fetch locations");
@@ -89,16 +88,17 @@ const Map = (props: Props) => {
   const defaultZoom = 13;
 
   return (
-        <MapContainer center={defaultCenter} zoom={defaultZoom}>
-        <TileLayer
-          attribution='&copy; <a href="https://www.jawg.io">Jawg Maps</a> contributors'
-          url="https://{s}.tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=vdZfXLU11SocRzVHCftt2BaXk5RyOnr7Lq22YNIC7aYQX2MtyjJUXG85deeDpxpR"
-        />
-        <MarkerClusterGroup
-          chunkedLoading
-          iconCreateFunction={createClusterCustomIcon}
-        >
-          {loading && (
+    <MapContainer center={defaultCenter} zoom={defaultZoom}>
+      <TileLayer
+        attribution='&copy; <a href="https://www.jawg.io">Jawg Maps</a> contributors'
+        url="https://{s}.tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=vdZfXLU11SocRzVHCftt2BaXk5RyOnr7Lq22YNIC7aYQX2MtyjJUXG85deeDpxpR"
+      />
+      <MarkerClusterGroup
+        maxClusterRadius={15}
+        chunkedLoading
+        iconCreateFunction={createClusterCustomIcon}
+      >
+        {loading && (
           <Popup position={defaultCenter}>
             <div>Loading locations…</div>
           </Popup>
@@ -127,14 +127,12 @@ const Map = (props: Props) => {
 
                 <div style={{ fontSize: "0.8rem", lineHeight: 1.4 }}>
                   <div>
-                    <strong>Type:</strong>{" "}
-                    {loc.locationType?.name}{" "}
+                    <strong>Type:</strong> {loc.locationType?.name}{" "}
                     {loc.locationType?.isIndoor ? "(indoor)" : "(outdoor)"}
                   </div>
 
                   <div>
-                    <strong>Surface:</strong>{" "}
-                    {loc.locationType?.surface}
+                    <strong>Surface:</strong> {loc.locationType?.surface}
                   </div>
 
                   <div>
@@ -148,8 +146,8 @@ const Map = (props: Props) => {
                   </div>
 
                   <div>
-                    <strong>Active lobbies:</strong>{" "}
-                    {loc.currentLobbyCount}/{loc.maxLobbyCount}
+                    <strong>Active lobbies:</strong> {loc.currentLobbyCount}/
+                    {loc.maxLobbyCount}
                   </div>
 
                   <div style={{ marginTop: "6px" }}>
@@ -167,17 +165,15 @@ const Map = (props: Props) => {
                   </div>
 
                   <div style={{ marginTop: "6px" }}>
-                    <strong>Coords:</strong>{" "}
-                    {loc.latitude}, {loc.longitude}
+                    <strong>Coords:</strong> {loc.latitude}, {loc.longitude}
                   </div>
                 </div>
               </Popup>
             </Marker>
           ))}
-        </MarkerClusterGroup>
+      </MarkerClusterGroup>
+    </MapContainer>
+  );
+};
 
-      </MapContainer>
-  )
-}
-
-export default Map
+export default Map;
