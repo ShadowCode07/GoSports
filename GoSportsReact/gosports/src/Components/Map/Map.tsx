@@ -5,42 +5,11 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { Icon, divIcon, point } from "leaflet";
 import { useEffect, useState } from "react";
+import { JSX } from "react/jsx-runtime";
+import { LocationGet } from "../../Models/Location";
+import { getAllLocations } from "../../api";
 
 type Props = {};
-
-type SportDto = {
-  id: string;
-  name: string;
-};
-
-type LobbyDto = {
-  id: string;
-  name: string;
-  locationId: string;
-  sport: SportDto;
-};
-
-type LocationTypeDto = {
-  id: string;
-  locationId: string;
-  name: string;
-  isIndoor: boolean;
-  surface: string;
-  hasLights: boolean;
-};
-
-type ApiLocation = {
-  id: string;
-  name: string;
-  description: string;
-  locationType: LocationTypeDto;
-  latitude: number;
-  longitude: number;
-  lobbies: LobbyDto[];
-  sports: SportDto[];
-  currentLobbyCount: number;
-  maxLobbyCount: number;
-};
 
 const customIcon = new Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/128/9131/9131546.png",
@@ -55,32 +24,27 @@ const createClusterCustomIcon = function (cluster: any) {
   });
 };
 
-const Map = (props: Props) => {
-  const [locations, setLocations] = useState<ApiLocation[]>([]);
+const Map : React.FC<Props> = (props: Props): JSX.Element => {
+  const [locations, setLocations] = useState<LocationGet[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
 
-  useEffect(() => {
+    useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const res = await fetch("https://localhost:7112/api/Locations", {
-          headers: {
-            Accept: "application/json",
-          },
-        });
+        setLoading(true);
+        setError("");
 
-        if (!res.ok) {
-          throw new Error("Failed to fetch locations");
-        }
-
-        const data: ApiLocation[] = await res.json();
+        const data = await getAllLocations();
         setLocations(data);
       } catch (err: any) {
-        setError(err.message ?? "Something went wrong");
+        console.error(err);
+        setError("Failed to load locations.");
       } finally {
         setLoading(false);
       }
     };
+
     fetchLocations();
   }, []);
 
@@ -110,7 +74,6 @@ const Map = (props: Props) => {
           </Popup>
         )}
 
-        {/* Render real data */}
         {!loading &&
           !error &&
           locations.map((loc) => (
