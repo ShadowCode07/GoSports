@@ -13,7 +13,7 @@ namespace GoSportsAPI.Dtos.Locations
         /// <summary>
         /// The unique identifier of the location.
         /// </summary>
-        public Guid Id { get; init; } = Guid.NewGuid();
+        public Guid LocationId { get; init; } = Guid.NewGuid();
 
         /// <summary>
         /// The name of the location.
@@ -30,7 +30,14 @@ namespace GoSportsAPI.Dtos.Locations
         /// </summary>
         public LocationType LocationType { get; set; } = null!;
 
+        /// <summary>
+        /// The latitude of the location.
+        /// </summary>
         public double Latitude { get; set; }
+
+        /// <summary>
+        /// The logtitude of the location.
+        /// </summary>
         public double Longitude { get; set; }
 
         /// <summary>

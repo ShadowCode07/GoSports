@@ -96,7 +96,7 @@ namespace GoSportsAPI.Controllers
 
             return CreatedAtAction(
                 nameof(GetLocation),
-                new { id = locationModel.Id },
+                new { id = locationModel.LocationId },
                 locationModel.ToLocationResponceDto());
         }
 

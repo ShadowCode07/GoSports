@@ -6,7 +6,7 @@ namespace GoSportsAPI.Models.Locations
     public class Location
     {
         // Locations properties
-        public Guid Id { get; init; } = Guid.NewGuid();
+        public Guid LocationId { get; init; } = Guid.NewGuid();
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public LocationType LocationType { get; set; } = null!;

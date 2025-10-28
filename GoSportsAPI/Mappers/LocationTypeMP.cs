@@ -17,7 +17,7 @@ namespace GoSportsAPI.Mappers
         {
             return new LocationTypeResponceDto
             {
-                Id = locationTypeModel.Id,
+                LocationTypeId = locationTypeModel.LocationTypeId,
                 Name = locationTypeModel.Name,
                 LocationId = locationTypeModel.LocationId,
                 Surface = locationTypeModel.Surface,

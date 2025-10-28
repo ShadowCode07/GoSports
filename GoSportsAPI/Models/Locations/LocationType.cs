@@ -5,7 +5,7 @@
         /// <summary>
         /// The unique identifier of this location type.
         /// </summary>
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid LocationTypeId { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// The identifier of the parent location.

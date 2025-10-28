@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GoSportsAPI.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20251024122527_AddLatitudeAndLongitude")]
-    partial class AddLatitudeAndLongitude
+    [Migration("20251028080631_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,27 +21,27 @@ namespace GoSportsAPI.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.20")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
             modelBuilder.Entity("GoSportsAPI.Models.Lobbies.Lobby", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("LobbyId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("LocationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<Guid>("SportId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
-                    b.HasKey("Id");
+                    b.HasKey("LobbyId");
 
                     b.HasIndex("LocationId");
 
@@ -55,59 +55,59 @@ namespace GoSportsAPI.Migrations
 
             modelBuilder.Entity("GoSportsAPI.Models.Locations.Location", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("LocationId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<int>("CurrentLobbyCount")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<double>("Latitude")
-                        .HasColumnType("float");
+                        .HasColumnType("double");
 
                     b.Property<double>("Longitude")
-                        .HasColumnType("float");
+                        .HasColumnType("double");
 
                     b.Property<int>("MaxLobbyCount")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.HasKey("LocationId");
 
                     b.ToTable("locations");
                 });
 
             modelBuilder.Entity("GoSportsAPI.Models.Locations.LocationType", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("LocationTypeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<bool>("HasLights")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsIndoor")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<Guid>("LocationId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Surface")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.HasKey("LocationTypeId");
 
                     b.HasIndex("LocationId")
                         .IsUnique();
@@ -117,15 +117,15 @@ namespace GoSportsAPI.Migrations
 
             modelBuilder.Entity("GoSportsAPI.Models.Sports.Sport", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("SportId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("varchar(255)");
 
-                    b.HasKey("Id");
+                    b.HasKey("SportId");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -135,15 +135,15 @@ namespace GoSportsAPI.Migrations
 
             modelBuilder.Entity("LocationSport", b =>
                 {
-                    b.Property<Guid>("LocationsId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("LocationsLocationId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<Guid>("SportsId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid>("SportsSportId")
+                        .HasColumnType("char(36)");
 
-                    b.HasKey("LocationsId", "SportsId");
+                    b.HasKey("LocationsLocationId", "SportsSportId");
 
-                    b.HasIndex("SportsId");
+                    b.HasIndex("SportsSportId");
 
                     b.ToTable("LocationSports", (string)null);
                 });
@@ -180,13 +180,13 @@ namespace GoSportsAPI.Migrations
                 {
                     b.HasOne("GoSportsAPI.Models.Locations.Location", null)
                         .WithMany()
-                        .HasForeignKey("LocationsId")
+                        .HasForeignKey("LocationsLocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("GoSportsAPI.Models.Sports.Sport", null)
                         .WithMany()
-                        .HasForeignKey("SportsId")
+                        .HasForeignKey("SportsSportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

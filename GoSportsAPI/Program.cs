@@ -2,6 +2,7 @@ using GoSportsAPI.Data;
 using GoSportsAPI.Interfaces;
 using GoSportsAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace GoSportsAPI
 {
@@ -11,10 +12,16 @@ namespace GoSportsAPI
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddDbContext<ApplicationDBContext>(options =>
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+            builder.Services.AddDbContext <ApplicationDBContext>(options =>
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+            /*builder.Services.AddDbContext<ApplicationDBContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
+            });*/
+
 
             builder.Services.AddScoped<ILocationRepository, LocationRepository>();
             builder.Services.AddScoped<ILocationTypeRepository, LocationTypeRepository>();
@@ -24,7 +31,7 @@ namespace GoSportsAPI
             builder.Services.AddControllers();
 
             builder.Services.AddControllers().AddNewtonsoftJson(options =>
-{
+            {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
 

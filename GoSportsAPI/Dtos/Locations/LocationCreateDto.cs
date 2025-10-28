@@ -61,10 +61,22 @@ namespace GoSportsAPI.Dtos.Locations
         [MinLength(1, ErrorMessage = "You must add at least one sport.")]
         public List<string> Sports { get; set; } = new();
 
+        /// <summary>
+        /// The latitude of the location
+        /// </summary>
+        /// <remarks>
+        /// This field is required and must be between -90 and 90.
+        /// </remarks>
         [Required]
         [Range(-90, 90)]
         public double Latitude { get; set; }
-        
+
+        /// <summary>
+        /// The longitude of the location
+        /// </summary>
+        /// <remarks>
+        /// This field is required and must be between -180 and 180.
+        /// </remarks>
         [Required]
         [Range(-180, 180)]
         public double Longitude { get; set; }

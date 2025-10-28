@@ -14,7 +14,7 @@ namespace GoSportsAPI.Mappers
         {
             return new LobbyResponceDto
             {
-                Id = lobbyModel.Id,
+                LobbyId = lobbyModel.LobbyId,
                 Name = lobbyModel.Name,
                 LocationId = lobbyModel.LocationId,
                 sport = lobbyModel.Sport.ToSportResponceDto()

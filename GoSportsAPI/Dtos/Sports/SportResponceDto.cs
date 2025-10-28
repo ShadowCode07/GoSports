@@ -8,7 +8,7 @@
         /// <summary>
         /// The unique identifier of the sport.
         /// </summary>
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid SportId { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// The name of the sport.

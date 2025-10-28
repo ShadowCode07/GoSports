@@ -20,15 +20,15 @@ namespace GoSportsAPI.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Location>()
-                .Property(f => f.Id)
+                .Property(f => f.LocationId)
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<LocationType>()
-                .Property(f => f.Id)
+                .Property(f => f.LocationTypeId)
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Lobby>()
-                .Property(f => f.Id)
+                .Property(f => f.LobbyId)
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Lobby>()
@@ -36,7 +36,7 @@ namespace GoSportsAPI.Data
                 .IsUnique();
 
             modelBuilder.Entity<Sport>()
-                .Property(f => f.Id)
+                .Property(f => f.SportId)
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Sport>()

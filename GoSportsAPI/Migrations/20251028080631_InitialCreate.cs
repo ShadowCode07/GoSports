@@ -6,109 +6,125 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GoSportsAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class InitalCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.CreateTable(
                 name: "locations",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LocationId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Latitude = table.Column<double>(type: "double", nullable: false),
+                    Longitude = table.Column<double>(type: "double", nullable: false),
                     CurrentLobbyCount = table.Column<int>(type: "int", nullable: false),
                     MaxLobbyCount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_locations", x => x.Id);
-                });
+                    table.PrimaryKey("PK_locations", x => x.LocationId);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "sports",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    SportId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_sports", x => x.Id);
-                });
+                    table.PrimaryKey("PK_sports", x => x.SportId);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "locationTypes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsIndoor = table.Column<bool>(type: "bit", nullable: false),
-                    Surface = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HasLights = table.Column<bool>(type: "bit", nullable: false)
+                    LocationTypeId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    LocationId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IsIndoor = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Surface = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    HasLights = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_locationTypes", x => x.Id);
+                    table.PrimaryKey("PK_locationTypes", x => x.LocationTypeId);
                     table.ForeignKey(
                         name: "FK_locationTypes_locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "locations",
-                        principalColumn: "Id",
+                        principalColumn: "LocationId",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "lobbies",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SportId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    LobbyId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Name = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LocationId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    SportId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_lobbies", x => x.Id);
+                    table.PrimaryKey("PK_lobbies", x => x.LobbyId);
                     table.ForeignKey(
                         name: "FK_lobbies_locations_LocationId",
                         column: x => x.LocationId,
                         principalTable: "locations",
-                        principalColumn: "Id",
+                        principalColumn: "LocationId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_lobbies_sports_SportId",
                         column: x => x.SportId,
                         principalTable: "sports",
-                        principalColumn: "Id",
+                        principalColumn: "SportId",
                         onDelete: ReferentialAction.Restrict);
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "LocationSports",
                 columns: table => new
                 {
-                    LocationsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SportsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    LocationsLocationId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    SportsSportId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LocationSports", x => new { x.LocationsId, x.SportsId });
+                    table.PrimaryKey("PK_LocationSports", x => new { x.LocationsLocationId, x.SportsSportId });
                     table.ForeignKey(
-                        name: "FK_LocationSports_locations_LocationsId",
-                        column: x => x.LocationsId,
+                        name: "FK_LocationSports_locations_LocationsLocationId",
+                        column: x => x.LocationsLocationId,
                         principalTable: "locations",
-                        principalColumn: "Id",
+                        principalColumn: "LocationId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_LocationSports_sports_SportsId",
-                        column: x => x.SportsId,
+                        name: "FK_LocationSports_sports_SportsSportId",
+                        column: x => x.SportsSportId,
                         principalTable: "sports",
-                        principalColumn: "Id",
+                        principalColumn: "SportId",
                         onDelete: ReferentialAction.Cascade);
-                });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
                 name: "IX_lobbies_LocationId",
@@ -127,9 +143,9 @@ namespace GoSportsAPI.Migrations
                 column: "SportId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LocationSports_SportsId",
+                name: "IX_LocationSports_SportsSportId",
                 table: "LocationSports",
-                column: "SportsId");
+                column: "SportsSportId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_locationTypes_LocationId",

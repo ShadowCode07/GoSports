@@ -16,7 +16,7 @@ namespace GoSportsAPI.Mappers
         {
             return new SportResponceDto
             {
-                Id = sportModel.Id,
+                SportId = sportModel.SportId,
                 Name = sportModel.Name
             };
         }
