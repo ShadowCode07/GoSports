@@ -89,65 +89,65 @@ namespace GoSportsAPI.Repositories
         /// <returns>
         ///   <para>List&lt;Location&gt;</para>
         /// </returns>
-        public async Task<List<Location>> GetAllAsync(LocationQueryObject queryObject)
-        {
-            var locations = _context.locations
-                .Include(l => l.LocationType)
-                .Include(l => l.Sports)
-                .Include(l => l.Lobbies)
-                .AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(queryObject.LobbyName))
+            public async Task<List<Location>> GetAllAsync(LocationQueryObject queryObject)
             {
-                locations = locations.Where(l =>
-                            l.Lobbies.Any(lb => lb.Name.Contains(queryObject.LobbyName)));
-            }
+                var locations = _context.locations
+                    .Include(l => l.LocationType)
+                    .Include(l => l.Sports)
+                    .Include(l => l.Lobbies)
+                    .AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(queryObject.LocationName))
-            {
-                locations = locations.Where(l => l.Name.Contains(queryObject.LocationName));
-            }
-
-            if (!string.IsNullOrWhiteSpace(queryObject.LocationTypeName))
-            {
-                locations = locations.Where(l =>
-                            l.LocationType.Name.Contains(queryObject.LocationTypeName));
-            }
-
-            if (!string.IsNullOrWhiteSpace(queryObject.SportName))
-            {
-                locations = locations.Where(l =>
-                            l.Lobbies.Any(lb => lb.Name.Contains(queryObject.LobbyName)));
-            }
-
-            if (!string.IsNullOrWhiteSpace(queryObject.Surface))
-            {
-                locations = locations.Where(l =>
-                            l.LocationType.Surface.Contains(queryObject.Surface));
-            }
-
-            if (queryObject.HasLights)
-            {
-                locations = locations.Where(l =>
-                            l.LocationType.HasLights == queryObject.HasLights);
-            }
-
-            if (queryObject.IsIndoor)
-            {
-                locations = locations.Where(l =>
-                            l.LocationType.HasLights == queryObject.IsIndoor);
-            }
-
-            if (!string.IsNullOrEmpty(queryObject.SortBy))
-            {
-                if (queryObject.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                if (!string.IsNullOrWhiteSpace(queryObject.LobbyName))
                 {
-                    locations = queryObject.IsDescending ? locations.OrderByDescending(l => l.Name) : locations.OrderBy(l => l.Name);
+                    locations = locations.Where(l =>
+                                l.Lobbies.Any(lb => lb.Name.Contains(queryObject.LobbyName)));
                 }
-            }
 
-            return await locations.ToListAsync();
-        }
+                if (!string.IsNullOrWhiteSpace(queryObject.LocationName))
+                {
+                    locations = locations.Where(l => l.Name.Contains(queryObject.LocationName));
+                }
+
+                if (!string.IsNullOrWhiteSpace(queryObject.LocationTypeName))
+                {
+                    locations = locations.Where(l =>
+                                l.LocationType.Name.Contains(queryObject.LocationTypeName));
+                }
+
+                if (!string.IsNullOrWhiteSpace(queryObject.SportName))
+                {
+                    locations = locations.Where(l =>
+                                l.Lobbies.Any(lb => lb.Name.Contains(queryObject.SportName)));
+                }
+
+                if (!string.IsNullOrWhiteSpace(queryObject.Surface))
+                {
+                    locations = locations.Where(l =>
+                                l.LocationType.Surface.Contains(queryObject.Surface));
+                }
+
+                if (queryObject.HasLights == true)
+                {
+                    locations = locations.Where(l =>
+                                l.LocationType.HasLights == queryObject.HasLights);
+                }
+
+                if (queryObject.IsIndoor == true)
+                {
+                    locations = locations.Where(l =>
+                                l.LocationType.IsIndoor == queryObject.IsIndoor);
+                }
+
+                if (!string.IsNullOrEmpty(queryObject.SortBy))
+                {
+                    if (queryObject.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                    {
+                        locations = queryObject.IsDescending ? locations.OrderByDescending(l => l.Name) : locations.OrderBy(l => l.Name);
+                    }
+                }
+
+                return await locations.ToListAsync();
+            }
 
 
         /// <summary>Checks if the location exists</summary>

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { JSX } from "react/jsx-runtime";
 import { LocationGet } from "../../Models/Location";
 import { getAllLocations } from "../../api";
+import { LocationQuery } from "../../Models/Queries/LocationQuery";
 
 type Props = {};
 
@@ -24,12 +25,15 @@ const createClusterCustomIcon = function (cluster: any) {
   });
 };
 
-const Map : React.FC<Props> = (props: Props): JSX.Element => {
+const Map: React.FC<Props> = (props: Props): JSX.Element => {
   const [locations, setLocations] = useState<LocationGet[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
+  const [query, setQuery] = useState<LocationQuery>({
+    LocationName: 'Green'
+  });
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchLocations = async () => {
       try {
         setLoading(true);
@@ -46,7 +50,7 @@ const Map : React.FC<Props> = (props: Props): JSX.Element => {
     };
 
     fetchLocations();
-  }, []);
+  }, [query]);
 
   const defaultCenter: [number, number] = [51.4231, 5.4623];
   const defaultZoom = 13;
@@ -83,7 +87,7 @@ const Map : React.FC<Props> = (props: Props): JSX.Element => {
               icon={customIcon}
             >
               <Popup>
-                <h2 style={{ margin: 0 }}>{loc.name}</h2>
+                <h2 style={{ margin: 0 }}>{loc.Locationname}</h2>
                 <p style={{ margin: "4px 0 8px", fontSize: "0.9rem" }}>
                   {loc.description}
                 </p>

@@ -10,7 +10,7 @@ const Search: React.FC<Props> = (props: Props): JSX.Element => {
     setSearch(e.target.value);
   };
 
-  const onClick = (e : SyntheticEvent) => {
+  const onClick = async (e: SyntheticEvent) => {
 
   };
 
