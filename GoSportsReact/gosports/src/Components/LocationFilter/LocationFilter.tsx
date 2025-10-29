@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { getAllLocations } from "../../api";
 import { LocationQuery } from "../../Models/Queries/LocationQuery";
+import "./LocationFilter.css";
 
 type Props = {
   onResults?: (data: any[]) => void;
@@ -76,86 +77,75 @@ const LocationFilter: React.FC<Props> = ({ onResults }) => {
   };
 
   return (
-    <form
-      onSubmit={handleApplyFilters}
-      className="w-full max-w-4xl rounded-xl border border-gray-200 bg-white p-4 shadow-sm space-y-4"
-    >
-      <h2 className="text-lg font-semibold text-gray-900">Location Filters</h2>
+    <form onSubmit={handleApplyFilters} className="lf-form">
+      <h2 className="lf-title">Location Filters</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700">
-            Lobby name
-          </label>
-          <input
-            type="text"
-            value={lobbyName}
-            onChange={(e) => setLobbyName(e.target.value)}
-            placeholder="e.g. Main Hall"
-            className="mt-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
-          />
-        </div>
-
-        <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700">
-            Location name
-          </label>
+      <div className="lf-grid">
+        <div className="lf-field">
+          <label className="lf-label">Location name</label>
           <input
             type="text"
             value={locationName}
             onChange={(e) => setLocationName(e.target.value)}
             placeholder="e.g. Court A"
-            className="mt-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+            className="lf-input"
           />
         </div>
 
-        <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700">
-            Location type
-          </label>
+        <div className="lf-field">
+          <label className="lf-label">Lobby name</label>
+          <input
+            type="text"
+            value={lobbyName}
+            onChange={(e) => setLobbyName(e.target.value)}
+            placeholder="e.g. Main Hall"
+            className="lf-input"
+          />
+        </div>
+
+        <div className="lf-field">
+          <label className="lf-label">Location type</label>
           <input
             type="text"
             value={locationTypeName}
             onChange={(e) => setLocationTypeName(e.target.value)}
             placeholder="e.g. Gym / Field"
-            className="mt-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+            className="lf-input"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700">Sport</label>
+      <div className="lf-grid">
+        <div className="lf-field">
+          <label className="lf-label">Sport</label>
           <input
             type="text"
             value={sportName}
             onChange={(e) => setSportName(e.target.value)}
             placeholder="e.g. Basketball"
-            className="mt-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+            className="lf-input"
           />
         </div>
 
-        <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700">Surface</label>
+        <div className="lf-field">
+          <label className="lf-label">Surface</label>
           <input
             type="text"
             value={surface}
             onChange={(e) => setSurface(e.target.value)}
             placeholder="e.g. Hardwood / Grass / Turf"
-            className="mt-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+            className="lf-input"
           />
         </div>
 
-        <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700">
-            Indoor / Outdoor
-          </label>
+        <div className="lf-field">
+          <label className="lf-label">Indoor / Outdoor</label>
           <select
             value={isIndoor}
             onChange={(e) =>
               setIsIndoor(e.target.value as "" | "true" | "false")
             }
-            className="mt-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+            className="lf-select"
           >
             <option value="">Any</option>
             <option value="true">Indoor</option>
@@ -164,15 +154,15 @@ const LocationFilter: React.FC<Props> = ({ onResults }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700">Has lights</label>
+      <div className="lf-grid">
+        <div className="lf-field">
+          <label className="lf-label">Has lights</label>
           <select
             value={hasLights}
             onChange={(e) =>
               setHasLights(e.target.value as "" | "true" | "false")
             }
-            className="mt-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+            className="lf-select"
           >
             <option value="">Any</option>
             <option value="true">Yes</option>
@@ -180,14 +170,14 @@ const LocationFilter: React.FC<Props> = ({ onResults }) => {
           </select>
         </div>
 
-        <div className="flex flex-col">
-          <label className="text-sm font-medium text-gray-700">Sort by</label>
+        <div className="lf-field">
+          <label className="lf-label">Sort by</label>
           <select
             value={sortBy}
             onChange={(e) =>
               setSortBy(e.target.value as keyof LocationQuery | "")
             }
-            className="mt-1 rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500"
+            className="lf-select"
           >
             <option value="">Default</option>
             <option value="LobbyName">Lobby name</option>
@@ -198,43 +188,34 @@ const LocationFilter: React.FC<Props> = ({ onResults }) => {
           </select>
         </div>
 
-        <div className="flex items-center gap-2 pt-6">
+        <div className="lf-checkbox-wrapper">
           <input
             id="desc"
             type="checkbox"
             checked={isDescending}
             onChange={(e) => setIsDescending(e.target.checked)}
-            className="h-4 w-4 rounded border-gray-300"
+            className="lf-checkbox"
           />
-          <label
-            htmlFor="desc"
-            className="text-sm font-medium text-gray-700 select-none"
-          >
+          <label htmlFor="desc" className="lf-checkbox-label">
             Descending
           </label>
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row md:items-center gap-3 pt-2">
-        <button
-          type="submit"
-          disabled={loading}
-          className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 disabled:opacity-50"
-        >
+      <div className="lf-actions">
+        <button type="submit" disabled={loading} className="lf-btn-primary">
           {loading ? "Loading..." : "Apply filters"}
         </button>
 
         <button
           type="button"
           onClick={handleClear}
-          className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="lf-btn-secondary"
         >
           Clear
         </button>
 
-        {errorMsg && (
-          <p className="text-sm text-red-600">{errorMsg}</p>
-        )}
+        {errorMsg && <p className="lf-error">{errorMsg}</p>}
       </div>
     </form>
   );

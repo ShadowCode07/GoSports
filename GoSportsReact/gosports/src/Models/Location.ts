@@ -9,7 +9,7 @@ export type LocationTypeGet = {
 
 export type LocationGet = {
   id: string;
-  Locationname: string;
+  LocationName: string;
   description: string;
   locationType: LocationTypeGet;
   latitude: number;
