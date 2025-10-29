@@ -18,7 +18,6 @@ const LocationFilter: React.FC<Props> = ({ onResults }) => {
   const [hasLights, setHasLights] = useState<"" | "true" | "false">("");
 
   const [sortBy, setSortBy] = useState<keyof LocationQuery | "">("");
-  const [isDescending, setIsDescending] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -44,7 +43,6 @@ const LocationFilter: React.FC<Props> = ({ onResults }) => {
     }
 
     if (sortBy !== "") query.SortBy = sortBy;
-    if (isDescending) query.IsDescending = true;
 
     try {
       setLoading(true);
@@ -72,7 +70,6 @@ const LocationFilter: React.FC<Props> = ({ onResults }) => {
     setIsIndoor("");
     setHasLights("");
     setSortBy("");
-    setIsDescending(false);
     setErrorMsg(null);
   };
 
@@ -188,18 +185,6 @@ const LocationFilter: React.FC<Props> = ({ onResults }) => {
           </select>
         </div>
 
-        <div className="lf-checkbox-wrapper">
-          <input
-            id="desc"
-            type="checkbox"
-            checked={isDescending}
-            onChange={(e) => setIsDescending(e.target.checked)}
-            className="lf-checkbox"
-          />
-          <label htmlFor="desc" className="lf-checkbox-label">
-            Descending
-          </label>
-        </div>
       </div>
 
       <div className="lf-actions">

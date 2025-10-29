@@ -7,5 +7,4 @@ export interface LocationQuery {
   Surface?: string;
   HasLights?: boolean;
   SortBy?: string;
-  IsDescending?: boolean;
 }
