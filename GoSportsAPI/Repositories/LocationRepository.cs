@@ -102,7 +102,7 @@ namespace GoSportsAPI.Repositories
                     locations = locations.Where(l =>
                                 l.Lobbies.Any(lb => lb.Name.Contains(queryObject.LobbyName)));
                 }
-
+                    
                 if (!string.IsNullOrWhiteSpace(queryObject.LocationName))
                 {
                     locations = locations.Where(l => l.Name.Contains(queryObject.LocationName));
@@ -126,13 +126,14 @@ namespace GoSportsAPI.Repositories
                                 l.LocationType.Surface.Contains(queryObject.Surface));
                 }
 
-                if (queryObject.HasLights == true)
+                if (queryObject.HasLights != null)
                 {
                     locations = locations.Where(l =>
                                 l.LocationType.HasLights == queryObject.HasLights);
                 }
+    
 
-                if (queryObject.IsIndoor == true)
+                if (queryObject.IsIndoor != null)
                 {
                     locations = locations.Where(l =>
                                 l.LocationType.IsIndoor == queryObject.IsIndoor);

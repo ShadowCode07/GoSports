@@ -38,13 +38,13 @@ namespace GoSportsAPI.Repositories
                 locationTypes = locationTypes.Where(l => l.Name.Contains(queryObject.Surface));
             }
 
-            if (queryObject.HasLights)
+            if (queryObject.HasLights != null)
             {
                 locationTypes = locationTypes.Where(l => l.HasLights == queryObject.HasLights);
 
             }
 
-            if (queryObject.IsIndoor)
+            if (queryObject.IsIndoor != null)
             {
 
                 locationTypes = locationTypes.Where(l => l.HasLights == queryObject.IsIndoor);

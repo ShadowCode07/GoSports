@@ -8,7 +8,6 @@ function App() {
   return (
     <div className="App">
       <div className="App">
-        <Search></Search>
         <Map></Map>
     </div>
     </div>
