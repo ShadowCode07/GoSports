@@ -1,3 +1,6 @@
+import { LobbyGet } from "./Lobby";
+import { SportGet } from "./Sport";
+
 export type LocationTypeGet = {
   id: string;
   locationId: string;
@@ -14,8 +17,8 @@ export type LocationGet = {
   locationType: LocationTypeGet;
   latitude: number;
   longitude: number;
-  lobbies: any[];
-  sports: any[];
+  lobbies: LobbyGet[];
+  sports: SportGet[];
   currentLobbyCount: number;
   maxLobbyCount: number;
 };

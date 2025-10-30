@@ -1,5 +1,6 @@
 ﻿using GoSportsAPI.Dtos.LocationTypes;
 using GoSportsAPI.Models.Locations;
+using Mapster;
 
 namespace GoSportsAPI.Mappers
 {
@@ -15,15 +16,9 @@ namespace GoSportsAPI.Mappers
         /// <returns>LocationTypeResponceDto</returns>
         public static LocationTypeResponceDto ToLocationTypeResponceDto(this LocationType locationTypeModel)
         {
-            return new LocationTypeResponceDto
-            {
-                LocationTypeId = locationTypeModel.LocationTypeId,
-                Name = locationTypeModel.Name,
-                LocationId = locationTypeModel.LocationId,
-                Surface = locationTypeModel.Surface,
-                IsIndoor = locationTypeModel.IsIndoor,
-                HasLights = locationTypeModel.HasLights
-            };
+            var locationTypeResponceDto = locationTypeModel.Adapt<LocationTypeResponceDto>();
+
+            return locationTypeResponceDto;
         }
 
 
@@ -34,13 +29,9 @@ namespace GoSportsAPI.Mappers
         /// </returns>
         public static LocationType ToLocationTypeFromCreate(this LocationTypeCreateDto locationTypeDto)
         {
-            return new LocationType
-            {
-                Name = locationTypeDto.Name,
-                Surface = locationTypeDto.Surface,
-                HasLights = locationTypeDto.HasLights,
-                IsIndoor = locationTypeDto.IsIndoor
-            };
+            var locationType = locationTypeDto.Adapt<LocationType>();
+
+            return locationType;
         }
 
 
@@ -49,13 +40,9 @@ namespace GoSportsAPI.Mappers
         /// <returns>LocationType</returns>
         public static LocationType ToLocationTypeFromUpdate(this LocationTypeUpdateDto locationTypeDto)
         {
-            return new LocationType
-            {
-                Name = locationTypeDto.Name,
-                Surface = locationTypeDto.Surface,
-                HasLights = locationTypeDto.HasLights,
-                IsIndoor = locationTypeDto.IsIndoor
-            };
+            var locationType = locationTypeDto.Adapt<LocationType>();
+
+            return locationType;
         }
     }
 }

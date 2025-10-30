@@ -1,5 +1,6 @@
 ﻿using GoSportsAPI.Dtos.Locations;
 using GoSportsAPI.Models.Locations;
+using Mapster;
 
 namespace GoSportsAPI.Mappers
 {
@@ -12,19 +13,9 @@ namespace GoSportsAPI.Mappers
         /// <returns>LocationResponceDto</returns>
         public static LocationResponceDto ToLocationResponceDto(this Location locationModel)
         {
-            return new LocationResponceDto
-            {
-                LocationId = locationModel.LocationId,
-                Name = locationModel.Name,
-                Description = locationModel.Description,
-                Latitude = locationModel.Latitude,
-                Longitude = locationModel.Longitude,
-                LocationType = locationModel.LocationType,
-                Lobbies = locationModel.Lobbies.Select(l => l.ToLobbyResponceDto()).ToList(),
-                Sports = locationModel.Sports.Select(s => s.ToSportResponceDto()).ToList(),
-                CurrentLobbyCount = locationModel.CurrentLobbyCount,
-                MaxLobbyCount = locationModel.MaxLobbyCount
-            };
+            var locationResponceDto = locationModel.Adapt<LocationResponceDto>();
+
+            return locationResponceDto;
         }
 
 
@@ -33,15 +24,9 @@ namespace GoSportsAPI.Mappers
         /// <returns>Location</returns>
         public static Location ToLocationFromCreate(this LocationCreateDto locationDto)
         {
-            return new Location
-            {
-                Name = locationDto.Name,
-                Description = locationDto.Description,
-                Latitude = locationDto.Latitude,
-                Longitude = locationDto.Longitude,
-                LocationType = locationDto.LocationType.ToLocationTypeFromCreate(),
-                MaxLobbyCount = locationDto.MaxLobbyCount
-            };
+            var location = locationDto.Adapt<Location>();
+
+            return location;
         }
 
 
@@ -50,13 +35,9 @@ namespace GoSportsAPI.Mappers
         /// <returns>Location</returns>
         public static Location ToLocationFromUpdate(this LocationUpdateDto locationDto)
         {
-            return new Location
-            {
-                Name = locationDto.Name,
-                Description = locationDto.Description,
-                LocationType = locationDto.LocationType.ToLocationTypeFromUpdate(),
-                MaxLobbyCount = locationDto.MaxLobbyCount
-            };
+            var location = locationDto.Adapt<Location>();
+
+            return location;
         }
     }
 }

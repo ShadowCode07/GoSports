@@ -1,24 +1,20 @@
 ﻿using GoSportsAPI.Dtos.Lobbies;
 using GoSportsAPI.Models.Lobbies;
+using Mapster;
 
 namespace GoSportsAPI.Mappers
 {
     /// <summary>Mapping profiles for lobbies.</summary>
     public static class LobbyMP
     {
-
         /// <summary>Converts to LobbyResponceDto from a lobby model</summary>
         /// <param name="lobbyModel">The lobby model.</param>
         /// <returns>LobbyResponceDto</returns>
         public static LobbyResponceDto ToLobbyResponceDto(this Lobby lobbyModel)
         {
-            return new LobbyResponceDto
-            {
-                LobbyId = lobbyModel.LobbyId,
-                Name = lobbyModel.Name,
-                LocationId = lobbyModel.LocationId,
-                sport = lobbyModel.Sport.ToSportResponceDto()
-            };
+            var lobbyResponceDto = lobbyModel.Adapt<LobbyResponceDto>();
+
+            return lobbyResponceDto;
         }
 
 
@@ -28,11 +24,9 @@ namespace GoSportsAPI.Mappers
         /// <returns>Lobby</returns>
         public static Lobby ToLobbyFromCreate(this LobbyCreateDto lobbyDto, Guid locationID)
         {
-            return new Lobby
-            {
-                Name = lobbyDto.Name,
-                LocationId = locationID
-            };
+            var lobby = lobbyDto.Adapt<Lobby>();
+
+            return lobby;
         }
 
 
@@ -41,10 +35,9 @@ namespace GoSportsAPI.Mappers
         /// <returns>Lobby</returns>
         public static Lobby ToLobbyFromUpdate(this LobbyUpdateDto lobbyDto)
         {
-            return new Lobby
-            {
-                Name = lobbyDto.Name
-            };
+            var lobby = lobbyDto.Adapt<Lobby>();
+
+            return lobby;
         }
     }
 }

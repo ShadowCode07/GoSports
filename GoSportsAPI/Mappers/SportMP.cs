@@ -1,5 +1,6 @@
 ﻿using GoSportsAPI.Dtos.Sports;
 using GoSportsAPI.Models.Sports;
+using Mapster;
 
 namespace GoSportsAPI.Mappers
 {
@@ -14,11 +15,9 @@ namespace GoSportsAPI.Mappers
         /// <returns>SportResponceDto</returns>
         public static SportResponceDto ToSportResponceDto(this Sport sportModel)
         {
-            return new SportResponceDto
-            {
-                SportId = sportModel.SportId,
-                Name = sportModel.Name
-            };
+            var sportResponceDto = sportModel.Adapt<SportResponceDto>();
+
+            return sportResponceDto;
         }
 
 
@@ -27,10 +26,9 @@ namespace GoSportsAPI.Mappers
         /// <returns>Sport</returns>
         public static Sport ToSportFromCreate(this SportCreateDto sportDto)
         {
-            return new Sport
-            {
-                Name = sportDto.Name,
-            };
+            var sport = sportDto.Adapt<Sport>();
+
+            return sport;
         }
 
 
@@ -39,10 +37,9 @@ namespace GoSportsAPI.Mappers
         /// <returns>Sport</returns>
         public static Sport ToSportFromUpdate(this SportUpdateDto sportDto)
         {
-            return new Sport
-            {
-                Name = sportDto.Name,
-            };
+            var sport = sportDto.Adapt<Sport>();
+
+            return sport;
         }
     }
 }

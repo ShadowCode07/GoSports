@@ -1,5 +1,6 @@
 using GoSportsAPI.Data;
 using GoSportsAPI.Interfaces;
+using GoSportsAPI.Mappers;
 using GoSportsAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,6 +22,7 @@ namespace GoSportsAPI
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            builder.Services.RegisterMapsterConfiguration();
 
             builder.Services.AddScoped<ILocationRepository, LocationRepository>();
             builder.Services.AddScoped<ILocationTypeRepository, LocationTypeRepository>();
