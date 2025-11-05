@@ -1,4 +1,6 @@
-﻿namespace GoSportsAPI.Dtos.Sports
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace GoSportsAPI.Dtos.Sports
 {
     /// <summary>
     /// Represents the data transfer object used to return sport information.
@@ -14,6 +16,8 @@
         /// The name of the sport.
         /// </summary>
         public string Name { get; set; } = string.Empty;
+
+        public string Version { get; set; }
     }
 
 }

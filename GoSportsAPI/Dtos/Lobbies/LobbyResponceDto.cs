@@ -1,4 +1,5 @@
 ﻿using GoSportsAPI.Dtos.Sports;
+using System.ComponentModel.DataAnnotations;
 
 namespace GoSportsAPI.Dtos.Lobbies
 {
@@ -25,6 +26,8 @@ namespace GoSportsAPI.Dtos.Lobbies
         /// <summary>
         /// The sport associated with the lobby.
         /// </summary>
-        public SportResponceDto sport { get; set; }
+        public SportResponceDto Sport { get; set; }
+
+        public string Version { get; set; }
     }
 }

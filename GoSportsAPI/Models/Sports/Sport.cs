@@ -1,4 +1,5 @@
 ﻿using GoSportsAPI.Models.Locations;
+using System.ComponentModel.DataAnnotations;
 
 namespace GoSportsAPI.Models.Sports
 {
@@ -7,5 +8,8 @@ namespace GoSportsAPI.Models.Sports
         public Guid SportId { get; set; } = Guid.NewGuid();
         public string Name { get; set; } = string.Empty;
         public ICollection<Location> Locations { get; set; } = new List<Location>();
+
+        [Timestamp]
+        public byte[] Version { get; set; }
     }
 }

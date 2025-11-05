@@ -80,7 +80,6 @@ namespace GoSportsAPI.Dtos.Locations
         [Required]
         [Range(-180, 180)]
         public double Longitude { get; set; }
-        public string Version { get; set; }
     }
 
 }

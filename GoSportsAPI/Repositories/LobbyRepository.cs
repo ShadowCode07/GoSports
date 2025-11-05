@@ -56,9 +56,11 @@ namespace GoSportsAPI.Repositories
                 throw new Exception($"The following location does not practise this sport: {sportName}");
             }
 
+            lobby.Location = location;
             lobby.Sport = lobbySports;
 
             await _dbSet.AddAsync(lobby);
+
             await _context.SaveChangesAsync();
 
             return lobby;
@@ -93,7 +95,6 @@ namespace GoSportsAPI.Repositories
                 }
             }
 
-
             return await lobbies.ToListAsync();
         }
 
@@ -107,6 +108,15 @@ namespace GoSportsAPI.Repositories
         /// <exception cref="System.Exception">The following sports were not found: {string.Join(", ", sportName)}</exception>
         public async Task<Lobby?> UpdateAsync(Guid locationId, Guid id, LobbyUpdateDto dto, string sportName)
         {
+            var update = await _dbSet
+                .Include(l => l.Sport)
+                .FirstOrDefaultAsync(l => l.LobbyId == id);
+
+            if (update == null) return null;
+
+            var locationVersionBytes = Convert.FromBase64String(dto.Version);
+            _context.Entry(update).Property(l => l.Version).OriginalValue = locationVersionBytes;
+
             var lobbySports = _context.sports.Where(s => sportName.Contains(s.Name)).FirstOrDefault();
 
             if (lobbySports == null)
@@ -125,13 +135,18 @@ namespace GoSportsAPI.Repositories
                 throw new Exception($"The following location does not practise this sport: {sportName}");
             }
 
-            var update = await _dbSet.FindAsync(id);
-
             update.Name = dto.Name;
             update.Sport = lobbySports;
 
-            _dbSet.Update(update);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new DbUpdateConcurrencyException("Lobby was modified elsewhere. Try again.");
+            }
+
             return update;
         }
     }

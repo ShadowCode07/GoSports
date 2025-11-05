@@ -28,6 +28,14 @@ namespace GoSportsAPI.Data
                 .Property(p => p.Version)
                 .IsRowVersion();
 
+            modelBuilder.Entity<LocationType>()
+                .Property(p => p.Version)
+                .IsRowVersion();
+
+            modelBuilder.Entity<LocationType>()
+                .Property(p => p.Version)
+                .IsRowVersion();
+
             modelBuilder.Entity<Location>()
                 .Property(f => f.LocationId)
                 .ValueGeneratedOnAdd();

@@ -26,6 +26,9 @@ namespace GoSportsAPI.Dtos.Lobbies
         /// </remarks>
         [Required]
         public string SportName { get; set; } = string.Empty;
+
+        [Required]
+        public string Version { get; set; }
     }
 
 }
