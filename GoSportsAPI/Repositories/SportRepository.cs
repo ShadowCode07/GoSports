@@ -55,18 +55,29 @@ namespace GoSportsAPI.Repositories
         /// <returns>Sports</returns>
         public async Task<Sport?> UpdateAsync(Guid id, SportUpdateDto dto)
         {
-            var existingSport = await _dbSet.FindAsync(id);
+            var update = await _dbSet
+                .FirstOrDefaultAsync(s => s.SportId == id);
 
-            if(existingSport == null)
+            if (update == null)
             {
                 return null;
             }
 
-            existingSport.Name = dto.Name;
-            
-            await _context.SaveChangesAsync();
-            
-            return existingSport;
+            var locationVersionBytes = Convert.FromBase64String(dto.Version);
+            _context.Entry(update).Property(l => l.Version).OriginalValue = locationVersionBytes;
+
+            update.Name = dto.Name;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new DbUpdateConcurrencyException("Lobby was modified elsewhere. Try again.");
+            }
+
+            return update;
         }
     }
 }
