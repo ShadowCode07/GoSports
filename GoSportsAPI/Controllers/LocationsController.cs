@@ -98,7 +98,7 @@ namespace GoSportsAPI.Controllers
                 new { id = locationModel.LocationId },
                 locationModel.ToLocationResponceDto());
         }
-
+            
         /// <summary>
         /// Updates an existing location with the specified identifier.
         /// </summary>

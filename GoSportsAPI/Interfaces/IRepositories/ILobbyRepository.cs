@@ -36,7 +36,7 @@ namespace GoSportsAPI.Interfaces.IRepositories
         /// <param name="dto">The DTO containing updated lobby data.</param>
         /// <param name="sportName">The name of the sport associated with the lobby.</param>
         /// <returns>Lobby</returns>
-        Task<Lobby?> UpdateAsync(Guid locationId, Guid id, LobbyUpdateDto dto, string sportName);
+        Task<Lobby?> UpdateAsync(Guid locationId, Guid id, LobbyUpdateDto dto);
 
     }
 }

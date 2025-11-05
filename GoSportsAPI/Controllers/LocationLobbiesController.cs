@@ -1,6 +1,8 @@
 ﻿using GoSportsAPI.Dtos.Lobbies;
 using GoSportsAPI.Interfaces.IRepositories;
+using GoSportsAPI.Interfaces.IServices;
 using GoSportsAPI.Mappers;
+using GoSportsAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoSportsAPI.Controllers
@@ -15,14 +17,13 @@ namespace GoSportsAPI.Controllers
     [Route("locations/{locationGuid:guid}/lobbies")]
     public class LocationLobbiesController : ControllerBase
     {
+        private readonly ILobbyService _lobbyService;
+        private readonly LocationLobbiesService _locationLobbieService;
 
-        private readonly ILobbyRepository _repository;
-        private readonly ILocationRepository _locationRepository;
-
-        public LocationLobbiesController(ILobbyRepository repository, ILocationRepository locationRepository)
+        public LocationLobbiesController(LocationLobbiesService locationLobbieService, ILobbyService lobbyService)
         {
-            _repository = repository;
-            _locationRepository = locationRepository;
+            _locationLobbieService = locationLobbieService;
+            _lobbyService = lobbyService;
         }
 
         /// <summary>
@@ -42,26 +43,22 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (!await _locationRepository.Exists(locationGuid))
+            if (!await _locationLobbieService.CheckLobby(locationGuid))
             {
                 return NotFound("Location doesn't exist");
             }
 
-            if (!await _locationRepository.CheckLobbyCount(locationGuid))
+            if (!await _locationLobbieService.CheckLobbyCount(locationGuid))
             {
                 return BadRequest("Lobby count full for this location");
             }
 
-            var lobbyModel = createDto.ToLobbyFromCreate(locationGuid);
-
-            await _repository.CreateAsync(locationGuid, lobbyModel, createDto.SportName);
-
-            await _locationRepository.AddLobbyToCount(locationGuid, lobbyModel.LobbyId);
+            var lobbyModel = _locationLobbieService.CreateAsync(locationGuid, createDto);
 
             return CreatedAtRoute(
                 //routeName: "GetLobby",
-                routeValues: new { lobbyId = lobbyModel.LobbyId },
-                value: lobbyModel.ToLobbyResponceDto()
+                routeValues: new { lobbyId = lobbyModel.Id },
+                value: lobbyModel
             );
         }
 
@@ -82,16 +79,16 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var lobbyModel = await _repository.GetByIdAsync(id);
+            var lobbyModel = await _lobbyService.GetByIdAsync(id);
 
             if (lobbyModel == null)
             {
                 return NotFound();
             }
 
-            lobbyModel = await _repository.UpdateAsync(locationGuid, id, updateDto, updateDto.SportName);
+            lobbyModel = await _locationLobbieService.UpdateAsync(locationGuid, id, updateDto);
 
-            return Ok(lobbyModel.ToLobbyResponceDto());
+            return Ok(lobbyModel);
         }
     }
 }

@@ -2,6 +2,7 @@
 using GoSportsAPI.Dtos.Locations;
 using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces.IRepositories;
+using GoSportsAPI.Interfaces.IServices;
 using GoSportsAPI.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,13 +19,11 @@ namespace GoSportsAPI.Controllers
     public class LobbiesController : ControllerBase
 
     {
-        private readonly ILobbyRepository _repository;
-        private readonly ILocationRepository _locationRepository;
+        private readonly ILobbyService _lobbySerivce;
 
-        public LobbiesController(ILobbyRepository lobbyRepository, ILocationRepository locationRepository)
+        public LobbiesController(ILobbyService lobbyService)
         {
-            _repository = lobbyRepository;
-            _locationRepository = locationRepository;
+            _lobbySerivce = lobbyService;
         }
 
         /// <summary>
@@ -42,11 +41,9 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var lobbies = await _repository.GetAllAsync(queryObject);
+            var lobbies = _lobbySerivce.GetAllAsync(queryObject);
 
-            var lobbyDto = lobbies.Select(l => l.ToLobbyResponceDto());
-
-            return Ok(lobbyDto);
+            return Ok(lobbies);
         }
 
         /// <summary>
@@ -65,14 +62,14 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var lobby = await _repository.GetByIdAsync(id);
+            var lobby = _lobbySerivce.GetByIdAsync(id);
 
             if (lobby == null)
             {
                 return NotFound();
             }
 
-            return Ok(lobby.ToLobbyResponceDto());
+            return Ok();
         }
 
         // Move to locations controllers
@@ -122,16 +119,15 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var lobby = await _repository.GetByIdAsync(id);
+            var lobby = await _lobbySerivce.GetByIdAsync(id);
             if (lobby == null)
             {
                 return NotFound();
             }
 
-            await _repository.DeleteAsync(id);
+            await _lobbySerivce.DeleteAsync(id);
 
             return NoContent();
         }
-
     }
 }
