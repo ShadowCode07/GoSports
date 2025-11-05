@@ -1,4 +1,6 @@
-﻿namespace GoSportsAPI.Models.Locations
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace GoSportsAPI.Models.Locations
 {
     public class LocationType
     {
@@ -31,5 +33,8 @@
         /// Indicates whether the location is equipped with lighting for night use.
         /// </summary>
         public bool HasLights { get; set; }
+
+        [Timestamp]
+        public byte[] Version { get; set; }
     }
 }

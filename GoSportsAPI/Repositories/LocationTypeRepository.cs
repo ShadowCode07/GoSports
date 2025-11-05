@@ -1,6 +1,6 @@
 ﻿using GoSportsAPI.Data;
 using GoSportsAPI.Helpers;
-using GoSportsAPI.Interfaces;
+using GoSportsAPI.Interfaces.IRepositories;
 using GoSportsAPI.Models.Locations;
 using Microsoft.EntityFrameworkCore;
 

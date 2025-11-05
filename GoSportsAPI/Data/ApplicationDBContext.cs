@@ -2,6 +2,7 @@
 using GoSportsAPI.Models.Locations;
 using GoSportsAPI.Models.Sports;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace GoSportsAPI.Data
 {
@@ -19,6 +20,14 @@ namespace GoSportsAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Location>()
+                .Property(p => p.Version)
+                .IsRowVersion();
+
+            modelBuilder.Entity<LocationType>()
+                .Property(p => p.Version)
+                .IsRowVersion();
+
             modelBuilder.Entity<Location>()
                 .Property(f => f.LocationId)
                 .ValueGeneratedOnAdd();
@@ -64,7 +73,7 @@ namespace GoSportsAPI.Data
             modelBuilder.Entity<Location>()
                 .HasMany(l => l.Sports)
                 .WithMany(s => s.Locations)
-                .UsingEntity(j => j.ToTable("LocationSports")); 
+                .UsingEntity(j => j.ToTable("LocationSports"));
         }
     }
 }

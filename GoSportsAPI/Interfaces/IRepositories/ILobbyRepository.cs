@@ -2,7 +2,7 @@
 using GoSportsAPI.Helpers;
 using GoSportsAPI.Models.Lobbies;
 
-namespace GoSportsAPI.Interfaces
+namespace GoSportsAPI.Interfaces.IRepositories
 {
     /// <summary>
     /// Defines repository operations specific to <see cref="Lobby"/> entities.

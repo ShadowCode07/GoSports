@@ -1,7 +1,7 @@
 ﻿using GoSportsAPI.Data;
 using GoSportsAPI.Dtos.Sports;
 using GoSportsAPI.Helpers;
-using GoSportsAPI.Interfaces;
+using GoSportsAPI.Interfaces.IRepositories;
 using GoSportsAPI.Mappers;
 using GoSportsAPI.Models.Sports;
 using Microsoft.EntityFrameworkCore;

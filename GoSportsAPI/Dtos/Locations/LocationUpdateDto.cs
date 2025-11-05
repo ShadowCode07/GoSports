@@ -59,6 +59,9 @@ namespace GoSportsAPI.Dtos.Locations
         [Required]
         [MinLength(1, ErrorMessage = "You must add at least one sport.")]
         public List<string> Sports { get; set; } = new();
+
+        [Required]
+        public string Version { get; set; } = string.Empty;
     }
 
 }

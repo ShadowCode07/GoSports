@@ -1,4 +1,4 @@
-﻿namespace GoSportsAPI.Interfaces
+﻿namespace GoSportsAPI.Interfaces.IRepositories
 {
     /// <summary>
     /// Defines the contract for basic asynchronous CRUD operations.

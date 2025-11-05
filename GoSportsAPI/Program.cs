@@ -1,8 +1,11 @@
 using GoSportsAPI.Data;
-using GoSportsAPI.Interfaces;
+using GoSportsAPI.Interfaces.IRepositories;
+using GoSportsAPI.Interfaces.IServices;
 using GoSportsAPI.Mappers;
 using GoSportsAPI.Repositories;
+using GoSportsAPI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 
 namespace GoSportsAPI
@@ -20,6 +23,7 @@ namespace GoSportsAPI
             builder.Services.AddDbContext<ApplicationDBContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                options.EnableSensitiveDataLogging(true);
             });
 
             builder.Services.RegisterMapsterConfiguration();
@@ -28,6 +32,8 @@ namespace GoSportsAPI
             builder.Services.AddScoped<ILocationTypeRepository, LocationTypeRepository>();
             builder.Services.AddScoped<ILobbyRepository, LobbyRepository>();
             builder.Services.AddScoped<ISportRepository, SportRepository>();
+
+            builder.Services.AddScoped<ILocationService, LocationService>();
 
             builder.Services.AddControllers();
 
@@ -38,6 +44,14 @@ namespace GoSportsAPI
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddConsole()
+                    .AddFilter(DbLoggerCategory.Database.Command.Name, LogLevel.Information);
+                loggingBuilder.AddDebug();
+            })
+;
 
             builder.Services.AddCors(options =>
             {

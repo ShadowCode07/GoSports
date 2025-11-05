@@ -1,5 +1,5 @@
 ﻿using GoSportsAPI.Data;
-using GoSportsAPI.Interfaces;
+using GoSportsAPI.Interfaces.IRepositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace GoSportsAPI.Repositories

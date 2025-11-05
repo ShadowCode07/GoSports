@@ -59,6 +59,8 @@ namespace GoSportsAPI.Dtos.Locations
         /// The maximum number of lobbies allowed at the location.
         /// </summary>
         public int MaxLobbyCount { get; set; }
+
+        public string? Version { get; set; }
     }
 
 }

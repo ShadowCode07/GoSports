@@ -1,7 +1,7 @@
 ﻿using GoSportsAPI.Data;
 using GoSportsAPI.Dtos.Locations;
 using GoSportsAPI.Helpers;
-using GoSportsAPI.Interfaces;
+using GoSportsAPI.Interfaces.IRepositories;
 using GoSportsAPI.Mappers;
 using GoSportsAPI.Models.Lobbies;
 using GoSportsAPI.Models.Locations;
@@ -68,11 +68,11 @@ namespace GoSportsAPI.Repositories
             var locationSports = await _context.sports.Where(s => sports.Contains(s.Name)).ToListAsync();
 
             var missingSports = sports.Except(locationSports.Select(s => s.Name)).ToList();
-           
+
             if (missingSports.Any())
             {
                 throw new Exception($"The following sports were not found: {string.Join(", ", missingSports)}");
-            }    
+            }
 
             location.Sports = locationSports;
 
@@ -89,66 +89,66 @@ namespace GoSportsAPI.Repositories
         /// <returns>
         ///   <para>List&lt;Location&gt;</para>
         /// </returns>
-            public async Task<List<Location>> GetAllAsync(LocationQueryObject queryObject)
+        public async Task<List<Location>> GetAllAsync(LocationQueryObject queryObject)
+        {
+            var locations = _context.locations
+                .Include(l => l.LocationType)
+                .Include(l => l.Sports)
+                .Include(l => l.Lobbies)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(queryObject.LobbyName))
             {
-                var locations = _context.locations
-                    .Include(l => l.LocationType)
-                    .Include(l => l.Sports)
-                    .Include(l => l.Lobbies)
-                    .AsQueryable();
-
-                if (!string.IsNullOrWhiteSpace(queryObject.LobbyName))
-                {
-                    locations = locations.Where(l =>
-                                l.Lobbies.Any(lb => lb.Name.Contains(queryObject.LobbyName)));
-                }
-                    
-                if (!string.IsNullOrWhiteSpace(queryObject.LocationName))
-                {
-                    locations = locations.Where(l => l.Name.Contains(queryObject.LocationName));
-                }
-
-                if (!string.IsNullOrWhiteSpace(queryObject.LocationTypeName))
-                {
-                    locations = locations.Where(l =>
-                                l.LocationType.Name.Contains(queryObject.LocationTypeName));
-                }
-
-                if (!string.IsNullOrWhiteSpace(queryObject.SportName))
-                {
-                    locations = locations.Where(l =>
-                                l.Lobbies.Any(lb => lb.Name.Contains(queryObject.SportName)));
-                }
-
-                if (!string.IsNullOrWhiteSpace(queryObject.Surface))
-                {
-                    locations = locations.Where(l =>
-                                l.LocationType.Surface.Contains(queryObject.Surface));
-                }
-
-                if (queryObject.HasLights != null)
-                {
-                    locations = locations.Where(l =>
-                                l.LocationType.HasLights == queryObject.HasLights);
-                }
-    
-
-                if (queryObject.IsIndoor != null)
-                {
-                    locations = locations.Where(l =>
-                                l.LocationType.IsIndoor == queryObject.IsIndoor);
-                }
-
-                if (!string.IsNullOrEmpty(queryObject.SortBy))
-                {
-                    if (queryObject.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
-                    {
-                        locations = queryObject.IsDescending ? locations.OrderByDescending(l => l.Name) : locations.OrderBy(l => l.Name);
-                    }
-                }
-
-                return await locations.ToListAsync();
+                locations = locations.Where(l =>
+                            l.Lobbies.Any(lb => lb.Name.Contains(queryObject.LobbyName)));
             }
+
+            if (!string.IsNullOrWhiteSpace(queryObject.LocationName))
+            {
+                locations = locations.Where(l => l.Name.Contains(queryObject.LocationName));
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryObject.LocationTypeName))
+            {
+                locations = locations.Where(l =>
+                            l.LocationType.Name.Contains(queryObject.LocationTypeName));
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryObject.SportName))
+            {
+                locations = locations.Where(l =>
+                            l.Lobbies.Any(lb => lb.Name.Contains(queryObject.SportName)));
+            }
+
+            if (!string.IsNullOrWhiteSpace(queryObject.Surface))
+            {
+                locations = locations.Where(l =>
+                            l.LocationType.Surface.Contains(queryObject.Surface));
+            }
+
+            if (queryObject.HasLights != null)
+            {
+                locations = locations.Where(l =>
+                            l.LocationType.HasLights == queryObject.HasLights);
+            }
+
+
+            if (queryObject.IsIndoor != null)
+            {
+                locations = locations.Where(l =>
+                            l.LocationType.IsIndoor == queryObject.IsIndoor);
+            }
+
+            if (!string.IsNullOrEmpty(queryObject.SortBy))
+            {
+                if (queryObject.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    locations = queryObject.IsDescending ? locations.OrderByDescending(l => l.Name) : locations.OrderBy(l => l.Name);
+                }
+            }
+
+            return await locations.ToListAsync();
+        }
 
 
         /// <summary>Checks if the location exists</summary>
@@ -176,7 +176,19 @@ namespace GoSportsAPI.Repositories
         /// <exception cref="System.Exception">The following sports were not found: {string.Join(", ", missingSports)}</exception>
         public async Task<Location?> UpdateAsync(Guid id, LocationUpdateDto dto)
         {
-            var locationSports = await _context.sports.Where(s => dto.Sports.Contains(s.Name)).ToListAsync();
+            var update = await _dbSet
+                .Include(l => l.Sports)
+                .Include(l => l.LocationType)
+                .FirstOrDefaultAsync(l => l.LocationId == id);
+
+            if (update == null) return null;
+
+            var locationVersionBytes = Convert.FromBase64String(dto.Version);
+            _context.Entry(update).Property(l => l.Version).OriginalValue = locationVersionBytes;
+
+            var locationSports = await _context.sports
+                .Where(s => dto.Sports.Contains(s.Name))
+                .ToListAsync();
 
             var missingSports = dto.Sports.Except(locationSports.Select(s => s.Name)).ToList();
 
@@ -185,17 +197,49 @@ namespace GoSportsAPI.Repositories
                 throw new Exception($"The following sports were not found: {string.Join(", ", missingSports)}");
             }
 
-            var update = await _dbSet.FindAsync(id);
+            if (!string.IsNullOrWhiteSpace(dto.LocationType.Version))
+            {
+                var ltVersionBytes = Convert.FromBase64String(dto.LocationType.Version);
+                _context.Entry(update.LocationType).Property(lt => lt.Version).OriginalValue = ltVersionBytes;
+            }
 
             update.Name = dto.Name;
             update.Description = dto.Description;
-            update.LocationType = dto.LocationType.ToLocationTypeFromUpdate();
-            update.MaxLobbyCount = dto.MaxLobbyCount;
-            update.Sports = locationSports;
 
-            _dbSet.Update(update);
-            await _context.SaveChangesAsync();
+            var existingLt = update.LocationType;
+
+            update.LocationType = dto.LocationType.ToLocationTypeFromUpdate();
+
+            var tempLt = update.LocationType;
+            if (existingLt == null)
+                throw new Exception("LocationType not found.");
+
+            existingLt.Name = tempLt.Name;
+            existingLt.HasLights = tempLt.HasLights;
+            existingLt.IsIndoor = tempLt.IsIndoor;
+            existingLt.Surface = tempLt.Surface;
+
+            update.LocationType = existingLt;
+
+            _context.Entry(tempLt).State = EntityState.Detached;
+
+            update.MaxLobbyCount = dto.MaxLobbyCount;
+
+            update.Sports.Clear();
+            foreach (var s in locationSports)
+                update.Sports.Add(s);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new DbUpdateConcurrencyException("Location was modified elsewhere. Try again.");
+            }
+
             return update;
         }
+
     }
 }

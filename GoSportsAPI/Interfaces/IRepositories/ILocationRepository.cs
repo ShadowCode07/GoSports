@@ -3,7 +3,7 @@ using GoSportsAPI.Helpers;
 using GoSportsAPI.Models.Lobbies;
 using GoSportsAPI.Models.Locations;
 
-namespace GoSportsAPI.Interfaces
+namespace GoSportsAPI.Interfaces.IRepositories
 {
     /// <summary>
     /// Defines repository operations specific to <see cref="Location"/> entities.

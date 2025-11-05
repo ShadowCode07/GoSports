@@ -1,5 +1,6 @@
 ﻿using GoSportsAPI.Models.Lobbies;
 using GoSportsAPI.Models.Sports;
+using System.ComponentModel.DataAnnotations;
 
 namespace GoSportsAPI.Models.Locations
 {
@@ -22,5 +23,8 @@ namespace GoSportsAPI.Models.Locations
 
         // Sport properties
         public ICollection<Sport> Sports { get; set; } = new List<Sport>();
+
+        [Timestamp]
+        public byte[] Version { get; set; }
     }
 }
