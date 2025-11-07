@@ -1,6 +1,7 @@
 ﻿using GoSportsAPI.Dtos.Sports;
 using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces.IRepositories;
+using GoSportsAPI.Interfaces.IServices;
 using GoSportsAPI.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,12 +18,12 @@ namespace GoSportsAPI.Controllers
     public class SportsController : ControllerBase
 
     {
-        private readonly ISportRepository _repository;
+        private readonly ISportService _sportService;
 
 
-        public SportsController(ISportRepository repository)
+        public SportsController(ISportService sportService)
         {
-            _repository = repository;
+            _sportService = sportService;
         }
 
         /// <summary>
@@ -33,7 +34,7 @@ namespace GoSportsAPI.Controllers
         /// Returns an <see cref="ActionResult{T}"/> containing a collection of <see cref="SportResponceDto"/> objects.
         /// </returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SportResponceDto>>> GetLocations([FromQuery] SportQueryObject queryObject)
+        public async Task<ActionResult<IEnumerable<SportResponceDto>>> GetSports([FromQuery] SportQueryObject queryObject)
 
         {
             if (!ModelState.IsValid)
@@ -41,11 +42,9 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var sports = await _repository.GetAllAsync(queryObject);
+            var sports = _sportService.GetAllAsync(queryObject);
 
-            var sportsDto = sports.Select(l => l.ToSportResponceDto());
-
-            return Ok(sportsDto);
+            return Ok(sports);
         }
 
         /// <summary>
@@ -64,14 +63,14 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var location = await _repository.GetByIdAsync(id);
+            var sport = _sportService.GetByIdAsync(id);
 
-            if (location == null)
+            if (sport == null)
             {
                 return NotFound();
             }
 
-            return Ok(location.ToSportResponceDto());
+            return Ok(sport);
         }
 
         /// <summary>
@@ -92,7 +91,7 @@ namespace GoSportsAPI.Controllers
 
             var sportModel = createDto.ToSportFromCreate();
 
-            await _repository.CreateAsync(sportModel);
+            await _sportService.CreateAsync(sportModel);
 
             return CreatedAtAction(
                 nameof(GetSport),
@@ -117,14 +116,14 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var sportModel = await _repository.GetByIdAsync(id);
+            var sportModel = await _sportService.GetByIdAsync(id);
 
             if (sportModel == null)
             {
                 return NotFound();
             }
 
-            sportModel = await _repository.UpdateAsync(id, updateDto);
+            sportModel = await _sportService.UpdateAsync(id, updateDto);
 
             return Ok(sportModel.ToSportResponceDto());
         }
@@ -145,13 +144,13 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var sport = await _repository.GetByIdAsync(id);
+            var sport = await _sportService.GetByIdAsync(id);
             if (sport == null)
             {
                 return NotFound();
             }
 
-            await _repository.DeleteAsync(id);
+            await _sportService.DeleteAsync(id);
 
             return NoContent();
         }

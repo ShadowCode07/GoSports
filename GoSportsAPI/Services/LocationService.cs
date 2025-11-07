@@ -42,7 +42,7 @@ namespace GoSportsAPI.Services
             return location;
         }
 
-        public async Task<Location> UpdateAsync(Guid id, LocationUpdateDto updateDto)
+        public async Task<Location?> UpdateAsync(Guid id, LocationUpdateDto updateDto)
         {
             var locationModel = await _locationRepository.UpdateAsync(id, updateDto);
 

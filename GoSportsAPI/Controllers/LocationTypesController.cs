@@ -2,6 +2,7 @@
 using GoSportsAPI.Dtos.LocationTypes;
 using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces.IRepositories;
+using GoSportsAPI.Interfaces.IServices;
 using GoSportsAPI.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,11 +19,11 @@ namespace GoSportsAPI.Controllers
     public class LocationTypesController : ControllerBase
 
     {
-        private readonly ILocationTypeRepository _repository;
+        private readonly ILocationTypeService _LocationTypeService;
 
-        public LocationTypesController(ILocationTypeRepository locationTypeRepository)
+        public LocationTypesController(ILocationTypeService LocationTypeService)
         {
-            _repository = locationTypeRepository;
+            _LocationTypeService = LocationTypeService;
         }
 
         /// <summary>
@@ -41,11 +42,9 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var locationTypes = await _repository.GetAllAsync(queryObject);
+            var locationTypes = _LocationTypeService.GetLocationTypes(queryObject);
 
-            var locationTypesDto = locationTypes.Select(l => l.ToLocationTypeResponceDto());
-
-            return Ok(locationTypesDto);
+            return Ok(locationTypes);
         }
 
         /// <summary>
@@ -64,14 +63,14 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var location = await _repository.GetByIdAsync(id);
+            var location = _LocationTypeService.GetLocationTypeById(id);
 
             if (location == null)
             {
                 return NotFound();
             }
 
-            return Ok(location.ToLocationTypeResponceDto());
+            return Ok(location);
         }
 
         /*[HttpDelete("{id}")]
