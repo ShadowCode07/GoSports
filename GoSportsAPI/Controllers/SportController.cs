@@ -79,6 +79,7 @@ namespace GoSportsAPI.Controllers
         /// <returns>
         /// Returns an <see cref="IActionResult"/> containing the result of the create operation.
         /// </returns>
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateSport([FromBody] SportCreateDto createDto)
 
@@ -106,6 +107,7 @@ namespace GoSportsAPI.Controllers
         /// <returns>
         /// Returns an <see cref="IActionResult"/> indicating the result of the update operation.
         /// </returns>
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateSport([FromRoute] Guid id, [FromBody] SportUpdateDto updateDto)
 
@@ -134,6 +136,7 @@ namespace GoSportsAPI.Controllers
         /// <returns>
         /// Returns an <see cref="IActionResult"/> indicating the result of the delete operation.
         /// </returns>
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteSport([FromRoute] Guid id)
 

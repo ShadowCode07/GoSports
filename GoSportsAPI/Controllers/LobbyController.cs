@@ -108,6 +108,7 @@ namespace GoSportsAPI.Controllers
         /// <returns>
         /// Returns an <see cref="IActionResult"/> indicating the result of the delete operation.
         /// </returns>
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteLobby(Guid id)
 

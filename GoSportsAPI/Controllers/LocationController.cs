@@ -79,6 +79,7 @@ namespace GoSportsAPI.Controllers
         /// <returns>
         /// Returns an <see cref="IActionResult"/> containing the result of the create operation.
         /// </returns>
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateLocation([FromBody] LocationCreateDto createDto)
 
@@ -97,7 +98,7 @@ namespace GoSportsAPI.Controllers
                 new { id = locationModel.LocationId },
                 locationModel.ToLocationResponceDto());
         }
-            
+
         /// <summary>
         /// Updates an existing location with the specified identifier.
         /// </summary>
@@ -106,6 +107,7 @@ namespace GoSportsAPI.Controllers
         /// <returns>
         /// Returns an <see cref="IActionResult"/> indicating the result of the update operation.
         /// </returns>
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateLocation([FromRoute] Guid id, [FromBody] LocationUpdateDto updateDto)
 
@@ -134,6 +136,7 @@ namespace GoSportsAPI.Controllers
         /// <returns>
         /// Returns an <see cref="IActionResult"/> indicating the result of the delete operation.
         /// </returns>
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteLocation([FromRoute] Guid id)
 
