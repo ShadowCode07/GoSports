@@ -1,6 +1,7 @@
 ﻿using GoSportsAPI.Dtos.Account;
 using GoSportsAPI.Interfaces.IServices;
 using GoSportsAPI.Models.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +42,7 @@ namespace GoSportsAPI.Controllers
 
                 if(createdUser.Succeeded)
                 {
-                    var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
+                    var roleResult = await _userManager.AddToRoleAsync(appUser, "Admin");
                     if(roleResult.Succeeded)
                     {
                         return Ok(

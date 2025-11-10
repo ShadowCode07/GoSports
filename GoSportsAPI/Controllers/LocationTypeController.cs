@@ -1,6 +1,7 @@
 ﻿using GoSportsAPI.Dtos.LocationTypes;
 using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoSportsAPI.Controllers
@@ -11,6 +12,7 @@ namespace GoSportsAPI.Controllers
     /// <remarks>
     /// Provides endpoints for creating, retrieving, updating, and deleting location types.
     /// </remarks>
+    [Authorize]
     [ApiController]
     [Route("api/locationType")]
     public class LocationTypeController : ControllerBase

@@ -1,6 +1,7 @@
 ﻿using GoSportsAPI.Dtos.Lobbies;
 using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoSportsAPI.Controllers
@@ -11,6 +12,7 @@ namespace GoSportsAPI.Controllers
     /// <remarks>
     /// Provides endpoints for creating, retrieving, updating, and deleting lobbies.
     /// </remarks>
+    [Authorize]
     [Route("api/lobby")]
     [ApiController]
     public class LobbyController : ControllerBase

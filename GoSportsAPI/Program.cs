@@ -53,8 +53,8 @@ namespace GoSportsAPI
                 {
                     ValidateIssuer = true,
                     ValidIssuer = builder.Configuration["JWT:Issuer"],
-                    ValidateActor = true,
-                    ValidAudience = builder.Configuration["JWT: Audience"],
+                    ValidateAudience = true,
+                    ValidAudience = builder.Configuration["JWT:Audience"],
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(
 
