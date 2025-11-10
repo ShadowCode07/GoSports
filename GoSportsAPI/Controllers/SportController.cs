@@ -39,7 +39,7 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var sports = _sportService.GetAllAsync(queryObject);
+            var sports = await _sportService.GetAllAsync(queryObject);
 
             return Ok(sports);
         }
@@ -60,7 +60,7 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var sport = _sportService.GetByIdAsync(id);
+            var sport = await _sportService.GetByIdAsync(id);
 
             if (sport == null)
             {

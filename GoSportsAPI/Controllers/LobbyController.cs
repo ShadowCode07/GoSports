@@ -37,7 +37,7 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var lobbies = _lobbySerivce.GetAllAsync(queryObject);
+            var lobbies = await _lobbySerivce.GetAllAsync(queryObject);
 
             return Ok(lobbies);
         }
@@ -58,7 +58,7 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var lobby = _lobbySerivce.GetByIdAsync(id);
+            var lobby = await _lobbySerivce.GetByIdAsync(id);
 
             if (lobby == null)
             {

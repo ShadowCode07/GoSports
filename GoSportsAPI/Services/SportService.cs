@@ -36,7 +36,6 @@ namespace GoSportsAPI.Services
         public async Task<Sport?> GetByIdAsync(Guid id)
         {
             var sport = await _sprotRepository.GetByIdAsync(id);
-
            
             return sport;
         }

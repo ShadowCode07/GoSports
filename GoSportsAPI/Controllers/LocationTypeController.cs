@@ -39,7 +39,7 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var locationTypes = _LocationTypeService.GetLocationTypes(queryObject);
+            var locationTypes = await _LocationTypeService.GetLocationTypes(queryObject);
 
             return Ok(locationTypes);
         }
@@ -60,7 +60,7 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var location = _LocationTypeService.GetLocationTypeById(id);
+            var location = await _LocationTypeService.GetLocationTypeById(id);
 
             if (location == null)
             {

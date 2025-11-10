@@ -51,11 +51,11 @@ namespace GoSportsAPI.Controllers
                 return BadRequest("Lobby count full for this location");
             }
 
-            var lobbyModel = _locationLobbieService.CreateAsync(locationGuid, createDto);
+            var lobbyModel = await _locationLobbieService.CreateAsync(locationGuid, createDto);
 
             return CreatedAtRoute(
                 //routeName: "GetLobby",
-                routeValues: new { lobbyId = lobbyModel.Id },
+                routeValues: new { lobbyId = lobbyModel.LobbyId },
                 value: lobbyModel
             );
         }
