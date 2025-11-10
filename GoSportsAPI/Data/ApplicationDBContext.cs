@@ -1,12 +1,13 @@
 ﻿using GoSportsAPI.Models.Lobbies;
 using GoSportsAPI.Models.Locations;
 using GoSportsAPI.Models.Sports;
+using GoSportsAPI.Models.Users;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace GoSportsAPI.Data
 {
-    public class ApplicationDBContext : DbContext
+    public class ApplicationDBContext : IdentityDbContext<AppUser>
     {
         public ApplicationDBContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
         {
@@ -20,20 +21,22 @@ namespace GoSportsAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Location>()
-                .Property(p => p.Version)
+                .Property(l => l.Version)
                 .IsRowVersion();
 
             modelBuilder.Entity<LocationType>()
-                .Property(p => p.Version)
+                .Property(l => l.Version)
                 .IsRowVersion();
 
-            modelBuilder.Entity<LocationType>()
-                .Property(p => p.Version)
+            modelBuilder.Entity<Lobby>()
+                .Property(l => l.Version)
                 .IsRowVersion();
 
-            modelBuilder.Entity<LocationType>()
-                .Property(p => p.Version)
+            modelBuilder.Entity<Sport>()
+                .Property(s => s.Version)
                 .IsRowVersion();
 
             modelBuilder.Entity<Location>()
@@ -46,6 +49,10 @@ namespace GoSportsAPI.Data
 
             modelBuilder.Entity<Lobby>()
                 .Property(f => f.LobbyId)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<AppUser>()
+                .Property(u => u.Id)
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Lobby>()

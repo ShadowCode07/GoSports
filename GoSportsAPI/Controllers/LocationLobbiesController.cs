@@ -1,7 +1,5 @@
 ﻿using GoSportsAPI.Dtos.Lobbies;
-using GoSportsAPI.Interfaces.IRepositories;
 using GoSportsAPI.Interfaces.IServices;
-using GoSportsAPI.Mappers;
 using GoSportsAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
