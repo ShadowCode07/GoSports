@@ -12,15 +12,13 @@ namespace GoSportsAPI.Controllers
     /// <remarks>
     /// Provides endpoints for creating, retrieving, updating, and deleting sports.
     /// </remarks>
-    [Route("api/[controller]")]
     [ApiController]
-    public class SportsController : ControllerBase
-
+    [Route("api/sport")]
+    public class SportController : ControllerBase
     {
         private readonly ISportService _sportService;
 
-
-        public SportsController(ISportService sportService)
+        public SportController(ISportService sportService)
         {
             _sportService = sportService;
         }

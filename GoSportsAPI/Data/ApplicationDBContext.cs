@@ -2,6 +2,7 @@
 using GoSportsAPI.Models.Locations;
 using GoSportsAPI.Models.Sports;
 using GoSportsAPI.Models.Users;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -89,6 +90,21 @@ namespace GoSportsAPI.Data
                 .HasMany(l => l.Sports)
                 .WithMany(s => s.Locations)
                 .UsingEntity(j => j.ToTable("LocationSports"));
+
+            List<IdentityRole> roles = new List<IdentityRole>
+            {
+                new IdentityRole
+                {
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Name = "User",
+                    NormalizedName = "USER"
+                }
+            };
+            modelBuilder.Entity<IdentityRole>().HasData(roles);
         }
     }
 }

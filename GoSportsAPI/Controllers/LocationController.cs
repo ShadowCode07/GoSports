@@ -12,15 +12,13 @@ namespace GoSportsAPI.Controllers
     /// <remarks>
     /// Provides endpoints for creating, retrieving, updating, and deleting locations.
     /// </remarks>
-    [Route("api/[controller]")]
     [ApiController]
-    public class LocationsController : ControllerBase
-
+    [Route("api/location")]
+    public class LocationController : ControllerBase
     {
         private readonly ILocationService _locationService;
 
-
-        public LocationsController(ILocationService locationService)
+        public LocationController(ILocationService locationService)
         {
             _locationService = locationService;
         }

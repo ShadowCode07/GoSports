@@ -25,7 +25,7 @@ namespace GoSportsAPI
             builder.Services.AddDbContext<ApplicationDBContext>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-                //options.EnableSensitiveDataLogging(true);
+                options.EnableSensitiveDataLogging(true);
             });
 
             builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
@@ -70,6 +70,10 @@ namespace GoSportsAPI
             builder.Services.AddScoped<ISportRepository, SportRepository>();
 
             builder.Services.AddScoped<ILocationService, LocationService>();
+            builder.Services.AddScoped<ILobbyService, LobbyService>();
+            builder.Services.AddScoped<ILocationTypeService, LocationTypeService>();
+            builder.Services.AddScoped<ISportService, SportService>();
+            builder.Services.AddScoped<ILocationLobbiesService, LocationLobbiesService>();
 
             builder.Services.AddControllers();
 

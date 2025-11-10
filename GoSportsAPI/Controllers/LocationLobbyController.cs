@@ -13,12 +13,12 @@ namespace GoSportsAPI.Controllers
     /// </remarks>
     [ApiController]
     [Route("locations/{locationGuid:guid}/lobbies")]
-    public class LocationLobbiesController : ControllerBase
+    public class LocationLobbyController : ControllerBase
     {
         private readonly ILobbyService _lobbyService;
-        private readonly LocationLobbiesService _locationLobbieService;
+        private readonly ILocationLobbiesService _locationLobbieService;
 
-        public LocationLobbiesController(LocationLobbiesService locationLobbieService, ILobbyService lobbyService)
+        public LocationLobbyController(ILocationLobbiesService locationLobbieService, ILobbyService lobbyService)
         {
             _locationLobbieService = locationLobbieService;
             _lobbyService = lobbyService;

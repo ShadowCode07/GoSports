@@ -11,14 +11,14 @@ namespace GoSportsAPI.Controllers
     /// <remarks>
     /// Provides endpoints for creating, retrieving, updating, and deleting location types.
     /// </remarks>
-    [Route("api/[controller]")]
     [ApiController]
-    public class LocationTypesController : ControllerBase
+    [Route("api/locationType")]
+    public class LocationTypeController : ControllerBase
 
     {
         private readonly ILocationTypeService _LocationTypeService;
 
-        public LocationTypesController(ILocationTypeService LocationTypeService)
+        public LocationTypeController(ILocationTypeService LocationTypeService)
         {
             _LocationTypeService = LocationTypeService;
         }

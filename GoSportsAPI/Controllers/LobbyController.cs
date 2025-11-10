@@ -11,14 +11,13 @@ namespace GoSportsAPI.Controllers
     /// <remarks>
     /// Provides endpoints for creating, retrieving, updating, and deleting lobbies.
     /// </remarks>
-    [Route("api/[controller]")]
+    [Route("api/lobby")]
     [ApiController]
-    public class LobbiesController : ControllerBase
-
+    public class LobbyController : ControllerBase
     {
         private readonly ILobbyService _lobbySerivce;
 
-        public LobbiesController(ILobbyService lobbyService)
+        public LobbyController(ILobbyService lobbyService)
         {
             _lobbySerivce = lobbyService;
         }
