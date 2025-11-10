@@ -20,7 +20,7 @@ namespace GoSportsAPI.Controllers
         {
             try
             {
-                if(ModelState.IsValid)
+                if(!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
