@@ -1,6 +1,6 @@
 import axios from 'axios';
-import type { LocationGet } from "./Models/Location";
-import { LocationQuery } from './Models/Queries/LocationQuery';
+import type { LocationGet } from "../Models/Location";
+import { LocationQuery } from '../Models/Queries/LocationQuery';
 
 const baseURL = 'https://localhost:7112/api'
 

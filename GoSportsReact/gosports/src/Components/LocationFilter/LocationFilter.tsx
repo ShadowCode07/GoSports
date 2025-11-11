@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getAllLocations } from "../../api";
+import { getAllLocations } from "../../lib/LocationsCall";
 import { LocationQuery } from "../../Models/Queries/LocationQuery";
 import "./LocationFilter.css";
 

@@ -4,8 +4,9 @@ import "./SideBar.css";
 
 import Map from "./Components/Map/Map";
 import LocationFilter from "./Components/LocationFilter/LocationFilter";
-import { getAllLocations } from "./api";
+import { getAllLocations } from "./lib/LocationsCall";
 import { LocationGet } from "./Models/Location";
+import AuthForm from "./Components/AuthForm/AuthForm";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,27 +38,7 @@ function App() {
 
   return (
     <div className="app-shell">
-      <button
-        className="hamburger-btn"
-        onClick={() => setIsOpen((prev) => !prev)}
-      >
-        <span className="hamb-line" />
-        <span className="hamb-line" />
-        <span className="hamb-line" />
-      </button>
-
-      <aside
-        className={`side-panel ${isOpen ? "side-panel-open" : ""}`}
-        aria-hidden={!isOpen}
-      >
-        <div className="side-panel-inner">
-          <LocationFilter onResults={handleFilterResults} />
-        </div>
-      </aside>
-
-      <main className="map-area">
-        <Map locations={locations} loading={loading} error={error} />
-      </main>
+      <AuthForm></AuthForm>
     </div>
   );
 }
