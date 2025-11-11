@@ -8,13 +8,13 @@ import "./AuthForm.css";
 
 // ===== Schemas =====
 const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email"),
+  email: z.email("Please enter a valid email"),
   password: z.string().min(8, "Password must be at least 8 characters"),
   remember: z.boolean().default(false),
 });
 
 const registerSchema = z.object({
-  email: z.string().email("Please enter a valid email"),
+  email: z.email("Please enter a valid email"),
   username: z
     .string()
     .min(3, "Username must be at least 3 characters")
@@ -91,7 +91,7 @@ const AuthForms: React.FC = () => {
       setError(null);
       setIsLoading(true);
       // Adjust path if your API differs (e.g., "/api/auth/login")
-      const res = await api.post<{ token: string; user?: unknown }>("/auth/login", {
+      const res = await api.post<{ token: string; user?: unknown }>("/account/login", {
         email: data.email,
         password: data.password,
       });
@@ -119,14 +119,14 @@ const AuthForms: React.FC = () => {
       setError(null);
       setIsLoading(true);
       // Adjust path if your API differs (e.g., "/api/auth/register")
-      await api.post("/auth/register", {
+      await api.post("/account/register", {
         email: data.email,
         username: data.username,
         password: data.password,
       });
 
       // Optional: auto-login right after register
-      const res = await api.post<{ token: string }>("/auth/login", {
+      const res = await api.post<{ token: string }>("/account/login", {
         email: data.email,
         password: data.password,
       });

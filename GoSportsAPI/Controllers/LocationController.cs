@@ -9,7 +9,7 @@ namespace GoSportsAPI.Controllers
 {
     /// <summary>
     /// API controller responsible for managing locations.
-    /// </summary>
+    /// <   summary>
     /// <remarks>
     /// Provides endpoints for creating, retrieving, updating, and deleting locations.
     /// </remarks>
