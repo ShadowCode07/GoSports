@@ -7,7 +7,7 @@ const baseURL = 'https://localhost:7112/api'
 
 export const getAllLocations = async (query?: LocationQuery) => {
     try {
-        const responce = await axios.get<LocationGet[]>(`${baseURL}/Locations`,{
+        const responce = await axios.get<LocationGet[]>(`${baseURL}/location`,{
             params: query
         });
 
