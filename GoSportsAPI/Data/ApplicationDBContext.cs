@@ -58,7 +58,7 @@ namespace GoSportsAPI.Data
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<UserProfile>()
-            .HasKey(p => p.Id);
+                .HasKey(p => p.Id);
 
             modelBuilder.Entity<Lobby>()
                 .HasIndex(l => l.Name)
@@ -112,21 +112,6 @@ namespace GoSportsAPI.Data
                 .WithMany(s => s.Users)
                 .HasForeignKey(u => u.LobbyId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            List<IdentityRole> roles = new List<IdentityRole>
-            {
-                new IdentityRole
-                {
-                    Name = "Admin",
-                    NormalizedName = "ADMIN"
-                },
-                new IdentityRole
-                {
-                    Name = "User",
-                    NormalizedName = "USER"
-                }
-            };
-            modelBuilder.Entity<IdentityRole>().HasData(roles);
         }
     }
 }

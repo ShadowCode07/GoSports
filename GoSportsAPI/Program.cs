@@ -10,12 +10,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Threading.Tasks;
 
 namespace GoSportsAPI
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -134,17 +135,21 @@ namespace GoSportsAPI
 
             var app = builder.Build();
 
-            SeedData(app);
+            await SeedData(app);
 
-            void SeedData(IHost app)
+            async Task SeedData(IHost app)
             {
-                var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+                var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
 
-                using (var scope = scopedFactory.CreateScope())
-                {
-                    var service = scope.ServiceProvider.GetService<Seed>();
-                    service.SeedDataContext();
-                }
+                using var scope = scopeFactory.CreateScope();
+
+                var db = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
+                await db.Database.MigrateAsync();
+
+                var seed = scope.ServiceProvider.GetRequiredService<Seed>();
+                seed.SeedDataContext();
+
+                await IdentitySeed.SeedAsync(scope.ServiceProvider);
             }
 
             if (app.Environment.IsDevelopment())
