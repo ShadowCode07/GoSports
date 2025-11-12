@@ -95,7 +95,7 @@ namespace GoSportsAPI.Controllers
 
             return CreatedAtAction(
                 nameof(GetSport),
-                new { id = sportModel.SportId },
+                new { id = sportModel.Id },
                 sportModel.ToSportResponceDto());
         }
 

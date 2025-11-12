@@ -33,7 +33,7 @@ namespace GoSportsAPI.Services
 
             await _lobbyRepository.CreateAsync(locationGuid, lobbyModel, createDto.SportName);
 
-            await _locationRepository.AddLobbyToCount(locationGuid, lobbyModel.LobbyId);
+            await _locationRepository.AddLobbyToCount(locationGuid, lobbyModel.Id);
 
             return lobbyModel.ToLobbyResponceDto();
         }

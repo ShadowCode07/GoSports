@@ -45,7 +45,7 @@ namespace GoSportsAPI.Repositories
         public async Task<bool> CheckLobbyCount(Guid id)
         {
             var values = await _dbSet
-                .Where(l => l.LocationId == id)
+                .Where(l => l.Id == id)
                 .Select(l => new { l.CurrentLobbyCount, l.MaxLobbyCount })
                 .FirstOrDefaultAsync();
 
@@ -156,7 +156,7 @@ namespace GoSportsAPI.Repositories
         /// <returns>bool</returns>
         public override async Task<bool> Exists(Guid id)
         {
-            return await _dbSet.AnyAsync(l => l.LocationId == id);
+            return await _dbSet.AnyAsync(l => l.Id == id);
         }
 
 
@@ -165,7 +165,7 @@ namespace GoSportsAPI.Repositories
         /// <returns>Location</returns>
         public override async Task<Location?> GetByIdAsync(Guid id)
         {
-            return await _dbSet.Include(l => l.Lobbies).Include(l => l.Sports).Include(l => l.LocationType).FirstOrDefaultAsync(l => l.LocationId == id);
+            return await _dbSet.Include(l => l.Lobbies).Include(l => l.Sports).Include(l => l.LocationType).FirstOrDefaultAsync(l => l.Id == id);
         }
 
 
@@ -179,7 +179,7 @@ namespace GoSportsAPI.Repositories
             var update = await _dbSet
                 .Include(l => l.Sports)
                 .Include(l => l.LocationType)
-                .FirstOrDefaultAsync(l => l.LocationId == id);
+                .FirstOrDefaultAsync(l => l.Id == id);
 
             if (update == null) return null;
 

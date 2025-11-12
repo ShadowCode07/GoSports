@@ -29,7 +29,7 @@ namespace GoSportsAPI
                 options.EnableSensitiveDataLogging(true);
             });
 
-            builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
+            builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
             {
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = true;

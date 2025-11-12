@@ -9,7 +9,7 @@ namespace GoSportsAPI.Controllers
 {
     /// <summary>
     /// API controller responsible for managing locations.
-    /// <   summary>
+    /// <summary>
     /// <remarks>
     /// Provides endpoints for creating, retrieving, updating, and deleting locations.
     /// </remarks>
@@ -95,7 +95,7 @@ namespace GoSportsAPI.Controllers
 
             return CreatedAtAction(
                 nameof(GetLocation),
-                new { id = locationModel.LocationId },
+                new { id = locationModel.Id },
                 locationModel.ToLocationResponceDto());
         }
 

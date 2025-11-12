@@ -18,16 +18,16 @@ namespace GoSportsAPI
         {
             if (!_context.sports.Any() && !_context.locations.Any() && !_context.locationTypes.Any())
             {
-                var football = new Sport { SportId = Guid.NewGuid(), Name = "Football" };
-                var basketball = new Sport { SportId = Guid.NewGuid(), Name = "Basketball" };
-                var tennis = new Sport { SportId = Guid.NewGuid(), Name = "Tennis" };
-                var swimming = new Sport { SportId = Guid.NewGuid(), Name = "Swimming" };
+                var football = new Sport { Id = Guid.NewGuid(), Name = "Football" };
+                var basketball = new Sport { Id = Guid.NewGuid(), Name = "Basketball" };
+                var tennis = new Sport { Id = Guid.NewGuid(), Name = "Tennis" };
+                var swimming = new Sport { Id = Guid.NewGuid(), Name = "Swimming" };
 
                 var sports = new List<Sport> { football, basketball, tennis, swimming };
 
                 var park = new Location
                 {
-                    LocationId = Guid.NewGuid(),
+                    Id = Guid.NewGuid(),
                     Name = "Greenfield Park",
                     Description = "A large open park perfect for football and outdoor sports.",
                     Latitude = 51.4416,
@@ -36,7 +36,7 @@ namespace GoSportsAPI
                     MaxLobbyCount = 10,
                     LocationType = new LocationType
                     {
-                        LocationTypeId = Guid.NewGuid(),
+                        Id = Guid.NewGuid(),
                         Name = "Outdoor Field",
                         IsIndoor = false,
                         Surface = "Grass",
@@ -47,7 +47,7 @@ namespace GoSportsAPI
 
                 var arena = new Location
                 {
-                    LocationId = Guid.NewGuid(),
+                    Id = Guid.NewGuid(),
                     Name = "City Arena",
                     Description = "Indoor arena suitable for basketball games and tournaments.",
                     Latitude = 51.4415,
@@ -56,7 +56,7 @@ namespace GoSportsAPI
                     MaxLobbyCount = 8,
                     LocationType = new LocationType
                     {
-                        LocationTypeId = Guid.NewGuid(),
+                        Id = Guid.NewGuid(),
                         Name = "Indoor Court",
                         IsIndoor = true,
                         Surface = "Hardwood",
@@ -67,7 +67,7 @@ namespace GoSportsAPI
 
                 var tennisClub = new Location
                 {
-                    LocationId = Guid.NewGuid(),
+                    Id = Guid.NewGuid(),
                     Name = "Ace Tennis Club",
                     Description = "High-quality outdoor and indoor tennis courts.",
                     Latitude = 51.4420,
@@ -76,7 +76,7 @@ namespace GoSportsAPI
                     MaxLobbyCount = 6,
                     LocationType = new LocationType
                     {
-                        LocationTypeId = Guid.NewGuid(),
+                        Id = Guid.NewGuid(),
                         Name = "Clay Court",
                         IsIndoor = false,
                         Surface = "Clay",
@@ -87,7 +87,7 @@ namespace GoSportsAPI
 
                 var pool = new Location
                 {
-                    LocationId = Guid.NewGuid(),
+                    Id = Guid.NewGuid(),
                     Name = "BlueWave Swimming Complex",
                     Description = "Olympic-size indoor swimming pool with professional facilities.",
                     Latitude = 51.4430,
@@ -96,7 +96,7 @@ namespace GoSportsAPI
                     MaxLobbyCount = 5,
                     LocationType = new LocationType
                     {
-                        LocationTypeId = Guid.NewGuid(),
+                        Id = Guid.NewGuid(),
                         Name = "Indoor Pool",
                         IsIndoor = true,
                         Surface = "Tile",

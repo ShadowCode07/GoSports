@@ -46,7 +46,7 @@ namespace GoSportsAPI.Repositories
 
             var location = await _context.locations
                 .Include(l => l.Sports)
-                .FirstOrDefaultAsync(l => l.LocationId == locationId);
+                .FirstOrDefaultAsync(l => l.Id == locationId);
 
             var locationSports = location.Sports.Where(s => sportName.Contains(s.Name));
 
@@ -110,7 +110,7 @@ namespace GoSportsAPI.Repositories
         {
             var update = await _dbSet
                 .Include(l => l.Sport)
-                .FirstOrDefaultAsync(l => l.LobbyId == id);
+                .FirstOrDefaultAsync(l => l.Id == id);
 
             if (update == null) return null;
 
@@ -126,7 +126,7 @@ namespace GoSportsAPI.Repositories
 
             var location = await _context.locations
                 .Include(l => l.Sports)
-                .FirstOrDefaultAsync(l => l.LocationId == locationId);
+                .FirstOrDefaultAsync(l => l.Id == locationId);
 
             var locationSports = location.Sports.Where(s => dto.SportName.Contains(s.Name));
 

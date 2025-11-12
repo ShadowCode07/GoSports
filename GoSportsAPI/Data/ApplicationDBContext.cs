@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GoSportsAPI.Data
 {
-    public class ApplicationDBContext : IdentityDbContext<AppUser>
+    public class ApplicationDBContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
     {
         public ApplicationDBContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
         {
@@ -19,6 +19,7 @@ namespace GoSportsAPI.Data
         public DbSet<LocationType> locationTypes { get; set; }
         public DbSet<Lobby> lobbies { get; set; }
         public DbSet<Sport> sports { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,32 +42,42 @@ namespace GoSportsAPI.Data
                 .IsRowVersion();
 
             modelBuilder.Entity<Location>()
-                .Property(f => f.LocationId)
+                .Property(f => f.Id)
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<LocationType>()
-                .Property(f => f.LocationTypeId)
+                .Property(f => f.Id)
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Lobby>()
-                .Property(f => f.LobbyId)
+                .Property(f => f.Id)
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<AppUser>()
                 .Property(u => u.Id)
                 .ValueGeneratedOnAdd();
 
+            modelBuilder.Entity<UserProfile>()
+            .HasKey(p => p.Id);
+
             modelBuilder.Entity<Lobby>()
                 .HasIndex(l => l.Name)
                 .IsUnique();
 
             modelBuilder.Entity<Sport>()
-                .Property(f => f.SportId)
+                .Property(f => f.Id)
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Sport>()
                 .HasIndex(l => l.Name)
                 .IsUnique();
+
+            modelBuilder.Entity<UserProfile>()
+            .HasOne(p => p.User)
+            .WithOne(u => u.Profile)
+            .HasForeignKey<UserProfile>(p => p.Id)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Location>()
                 .HasOne(l => l.LocationType)
@@ -90,6 +101,17 @@ namespace GoSportsAPI.Data
                 .HasMany(l => l.Sports)
                 .WithMany(s => s.Locations)
                 .UsingEntity(j => j.ToTable("LocationSports"));
+
+            modelBuilder.Entity<UserProfile>()
+                .HasMany(u => u.Sports)
+                .WithMany(s => s.AppUsers)
+                .UsingEntity(j => j.ToTable("UserSports"));
+            
+            modelBuilder.Entity<UserProfile>()
+                .HasOne(u => u.Lobby)
+                .WithMany(s => s.Users)
+                .HasForeignKey(u => u.LobbyId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             List<IdentityRole> roles = new List<IdentityRole>
             {

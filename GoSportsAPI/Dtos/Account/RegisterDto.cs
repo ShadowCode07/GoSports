@@ -13,5 +13,7 @@ namespace GoSportsAPI.Dtos.Account
 
         [Required]
         public string? Password { get; set; } = string.Empty;
+
+        public List<string>? Sports { get; set; } = new();
     }
 }

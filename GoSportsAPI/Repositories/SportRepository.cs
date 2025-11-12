@@ -56,7 +56,7 @@ namespace GoSportsAPI.Repositories
         public async Task<Sport?> UpdateAsync(Guid id, SportUpdateDto dto)
         {
             var update = await _dbSet
-                .FirstOrDefaultAsync(s => s.SportId == id);
+                .FirstOrDefaultAsync(s => s.Id == id);
 
             if (update == null)
             {

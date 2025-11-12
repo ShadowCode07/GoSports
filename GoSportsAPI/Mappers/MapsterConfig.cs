@@ -31,7 +31,7 @@ namespace GoSportsAPI.Mappers
             TypeAdapterConfig<LocationUpdateDto, Location>
                 .NewConfig()
                 .Ignore(dest => dest.Version)
-                .Ignore(dest => dest.LocationId)
+                .Ignore(dest => dest.Id)
                 .IgnoreNullValues(true);
 
             TypeAdapterConfig<LocationType, LocationTypeResponceDto>
@@ -42,7 +42,7 @@ namespace GoSportsAPI.Mappers
                 .NewConfig()
                 .Ignore(dest => dest.Version)
                 .Ignore(dest => dest.LocationId)
-                .Ignore(dest => dest.LocationTypeId)
+                .Ignore(dest => dest.Id)
                 .IgnoreNullValues(true);
 
             TypeAdapterConfig<Lobby, LobbyResponceDto>

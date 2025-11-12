@@ -1,0 +1,15 @@
+﻿using GoSportsAPI.Models.Lobbies;
+using GoSportsAPI.Models.Sports;
+
+namespace GoSportsAPI.Models.Users
+{
+    public class UserProfile
+    {
+        public Guid Id { get; set; } = new Guid();
+        public AppUser User { get; set; } = default!;
+
+        public Guid LobbyId { get; set; }
+        public Lobby Lobby { get; set; } = null!;
+        public ICollection<Sport> Sports { get; set; } = new List<Sport>();
+    }
+}

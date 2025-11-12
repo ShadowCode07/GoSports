@@ -24,12 +24,22 @@ namespace GoSportsAPI.Migrations
 
             modelBuilder.Entity("GoSportsAPI.Models.Lobbies.Lobby", b =>
                 {
-                    b.Property<Guid>("LobbyId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CurrentPlayerCount")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("LocationId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("MaxPlayerCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -44,7 +54,7 @@ namespace GoSportsAPI.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.HasKey("LobbyId");
+                    b.HasKey("Id");
 
                     b.HasIndex("LocationId");
 
@@ -58,7 +68,7 @@ namespace GoSportsAPI.Migrations
 
             modelBuilder.Entity("GoSportsAPI.Models.Locations.Location", b =>
                 {
-                    b.Property<Guid>("LocationId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -88,14 +98,14 @@ namespace GoSportsAPI.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.HasKey("LocationId");
+                    b.HasKey("Id");
 
                     b.ToTable("locations");
                 });
 
             modelBuilder.Entity("GoSportsAPI.Models.Locations.LocationType", b =>
                 {
-                    b.Property<Guid>("LocationTypeId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -122,7 +132,7 @@ namespace GoSportsAPI.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.HasKey("LocationTypeId");
+                    b.HasKey("Id");
 
                     b.HasIndex("LocationId")
                         .IsUnique();
@@ -132,7 +142,7 @@ namespace GoSportsAPI.Migrations
 
             modelBuilder.Entity("GoSportsAPI.Models.Sports.Sport", b =>
                 {
-                    b.Property<Guid>("SportId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -146,7 +156,7 @@ namespace GoSportsAPI.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.HasKey("SportId");
+                    b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -156,9 +166,9 @@ namespace GoSportsAPI.Migrations
 
             modelBuilder.Entity("GoSportsAPI.Models.Users.AppUser", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -220,17 +230,32 @@ namespace GoSportsAPI.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("GoSportsAPI.Models.Users.UserProfile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("LobbyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LobbyId");
+
+                    b.ToTable("UserProfiles");
+                });
+
             modelBuilder.Entity("LocationSport", b =>
                 {
-                    b.Property<Guid>("LocationsLocationId")
+                    b.Property<Guid>("LocationsId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("SportsSportId")
+                    b.Property<Guid>("SportsId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("LocationsLocationId", "SportsSportId");
+                    b.HasKey("LocationsId", "SportsId");
 
-                    b.HasIndex("SportsSportId");
+                    b.HasIndex("SportsId");
 
                     b.ToTable("LocationSports", (string)null);
                 });
@@ -239,6 +264,40 @@ namespace GoSportsAPI.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IdentityRole");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "9a21ee04-110e-41d5-8c5e-2bddee9703ec",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "88ca84f9-a12a-44bc-9696-5299083400a1",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -260,23 +319,9 @@ namespace GoSportsAPI.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "e39ffa68-3081-4efa-a0ff-adac74c76b24",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "832acd90-d2d9-4798-9467-b38e62a67572",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -290,9 +335,8 @@ namespace GoSportsAPI.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -301,7 +345,7 @@ namespace GoSportsAPI.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -315,9 +359,8 @@ namespace GoSportsAPI.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -326,7 +369,7 @@ namespace GoSportsAPI.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -337,9 +380,8 @@ namespace GoSportsAPI.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -348,13 +390,13 @@ namespace GoSportsAPI.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -363,10 +405,10 @@ namespace GoSportsAPI.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -380,6 +422,21 @@ namespace GoSportsAPI.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("SportUserProfile", b =>
+                {
+                    b.Property<Guid>("AppUsersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SportsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("AppUsersId", "SportsId");
+
+                    b.HasIndex("SportsId");
+
+                    b.ToTable("UserSports", (string)null);
                 });
 
             modelBuilder.Entity("GoSportsAPI.Models.Lobbies.Lobby", b =>
@@ -410,31 +467,50 @@ namespace GoSportsAPI.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("GoSportsAPI.Models.Users.UserProfile", b =>
+                {
+                    b.HasOne("GoSportsAPI.Models.Users.AppUser", "User")
+                        .WithOne("Profile")
+                        .HasForeignKey("GoSportsAPI.Models.Users.UserProfile", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GoSportsAPI.Models.Lobbies.Lobby", "Lobby")
+                        .WithMany("Users")
+                        .HasForeignKey("LobbyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Lobby");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("LocationSport", b =>
                 {
                     b.HasOne("GoSportsAPI.Models.Locations.Location", null)
                         .WithMany()
-                        .HasForeignKey("LocationsLocationId")
+                        .HasForeignKey("LocationsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("GoSportsAPI.Models.Sports.Sport", null)
                         .WithMany()
-                        .HasForeignKey("SportsSportId")
+                        .HasForeignKey("SportsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.HasOne("GoSportsAPI.Models.Users.AppUser", null)
                         .WithMany()
@@ -443,7 +519,7 @@ namespace GoSportsAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.HasOne("GoSportsAPI.Models.Users.AppUser", null)
                         .WithMany()
@@ -452,9 +528,9 @@ namespace GoSportsAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -467,13 +543,33 @@ namespace GoSportsAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("GoSportsAPI.Models.Users.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SportUserProfile", b =>
+                {
+                    b.HasOne("GoSportsAPI.Models.Users.UserProfile", null)
+                        .WithMany()
+                        .HasForeignKey("AppUsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GoSportsAPI.Models.Sports.Sport", null)
+                        .WithMany()
+                        .HasForeignKey("SportsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GoSportsAPI.Models.Lobbies.Lobby", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("GoSportsAPI.Models.Locations.Location", b =>
@@ -481,6 +577,12 @@ namespace GoSportsAPI.Migrations
                     b.Navigation("Lobbies");
 
                     b.Navigation("LocationType")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GoSportsAPI.Models.Users.AppUser", b =>
+                {
+                    b.Navigation("Profile")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
