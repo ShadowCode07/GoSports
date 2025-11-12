@@ -1,7 +1,6 @@
 ﻿using GoSportsAPI.Dtos.Lobbies;
+using GoSportsAPI.Dtos.LocationTypes;
 using GoSportsAPI.Dtos.Sports;
-using GoSportsAPI.Models.Locations;
-using GoSportsAPI.Models.Sports;
 
 namespace GoSportsAPI.Dtos.Locations
 {
@@ -28,7 +27,7 @@ namespace GoSportsAPI.Dtos.Locations
         /// <summary>
         /// The type of the location.
         /// </summary>
-        public LocationType LocationType { get; set; } = null!;
+        public LocationTypeResponceDto LocationType { get; set; } = null!;
 
         /// <summary>
         /// The latitude of the location.
