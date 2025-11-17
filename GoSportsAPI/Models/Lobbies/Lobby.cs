@@ -5,9 +5,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GoSportsAPI.Models.Lobbies
 {
-    public class Lobby
+    public class Lobby : Base
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; } = string.Empty;
 
         public Guid LocationId { get; set; }
@@ -20,8 +19,5 @@ namespace GoSportsAPI.Models.Lobbies
         public int CurrentPlayerCount { get; set; } = 0;
         public int MaxPlayerCount { get; set; }
         public ICollection<UserProfile>? Users { get; set; } = new List<UserProfile>();
-
-        [Timestamp]
-        public byte[] Version { get; set; }
     }
 }

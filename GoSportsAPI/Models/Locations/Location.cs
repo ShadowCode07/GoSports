@@ -4,10 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GoSportsAPI.Models.Locations
 {
-    public class Location
+    public class Location : Base
     {
-        // Locations properties
-        public Guid Id { get; init; } = Guid.NewGuid();
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public LocationType LocationType { get; set; } = null!;
@@ -23,8 +21,5 @@ namespace GoSportsAPI.Models.Locations
 
         // Sport properties
         public ICollection<Sport> Sports { get; set; } = new List<Sport>();
-
-        [Timestamp]
-        public byte[] Version { get; set; }
     }
 }

@@ -49,7 +49,7 @@ namespace GoSportsAPI.Controllers
                             new NewUserDto
                             {
                                 UserName = appUser.UserName,
-                                Emial = appUser.Email,
+                                Email = appUser.Email,
                                 Token = await _tokenService.CreateToken(appUser)
                             }
                         );
@@ -96,7 +96,7 @@ namespace GoSportsAPI.Controllers
                 new NewUserDto
                 {
                     UserName = user.UserName,
-                    Emial = user.Email,
+                    Email = user.Email,
                     Token = await _tokenService.CreateToken(user)
                 }
             );

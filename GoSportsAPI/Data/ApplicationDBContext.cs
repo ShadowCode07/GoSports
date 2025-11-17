@@ -1,4 +1,5 @@
-﻿using GoSportsAPI.Models.Lobbies;
+﻿using GoSportsAPI.Models;
+using GoSportsAPI.Models.Lobbies;
 using GoSportsAPI.Models.Locations;
 using GoSportsAPI.Models.Sports;
 using GoSportsAPI.Models.Users;
@@ -25,36 +26,12 @@ namespace GoSportsAPI.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Location>()
+            modelBuilder.Entity<Base>()
                 .Property(l => l.Version)
                 .IsRowVersion();
 
-            modelBuilder.Entity<LocationType>()
-                .Property(l => l.Version)
-                .IsRowVersion();
-
-            modelBuilder.Entity<Lobby>()
-                .Property(l => l.Version)
-                .IsRowVersion();
-
-            modelBuilder.Entity<Sport>()
-                .Property(s => s.Version)
-                .IsRowVersion();
-
-            modelBuilder.Entity<Location>()
+            modelBuilder.Entity<Base>()
                 .Property(f => f.Id)
-                .ValueGeneratedOnAdd();
-
-            modelBuilder.Entity<LocationType>()
-                .Property(f => f.Id)
-                .ValueGeneratedOnAdd();
-
-            modelBuilder.Entity<Lobby>()
-                .Property(f => f.Id)
-                .ValueGeneratedOnAdd();
-
-            modelBuilder.Entity<AppUser>()
-                .Property(u => u.Id)
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<UserProfile>()

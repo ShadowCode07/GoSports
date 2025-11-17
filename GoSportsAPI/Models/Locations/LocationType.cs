@@ -2,13 +2,8 @@
 
 namespace GoSportsAPI.Models.Locations
 {
-    public class LocationType
+    public class LocationType : Base
     {
-        /// <summary>
-        /// The unique identifier of this location type.
-        /// </summary>
-        public Guid Id { get; set; } = Guid.NewGuid();
-
         /// <summary>
         /// The identifier of the parent location.
         /// </summary>
@@ -33,8 +28,5 @@ namespace GoSportsAPI.Models.Locations
         /// Indicates whether the location is equipped with lighting for night use.
         /// </summary>
         public bool HasLights { get; set; }
-
-        [Timestamp]
-        public byte[] Version { get; set; }
     }
 }
