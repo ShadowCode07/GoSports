@@ -78,7 +78,7 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email.ToLower());
+            var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
             if(user == null)
             {

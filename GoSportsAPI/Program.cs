@@ -31,6 +31,7 @@ namespace GoSportsAPI
 
             builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(options =>
             {
+                options.User.RequireUniqueEmail = true;
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireUppercase = true;

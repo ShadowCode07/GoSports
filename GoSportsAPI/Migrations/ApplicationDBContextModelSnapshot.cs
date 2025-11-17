@@ -301,6 +301,9 @@ namespace GoSportsAPI.Migrations
                     b.Property<int>("CurrentPlayerCount")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("HostProfileId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("LocationId")
                         .HasColumnType("uniqueidentifier");
 
@@ -313,6 +316,8 @@ namespace GoSportsAPI.Migrations
 
                     b.Property<Guid>("SportId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.HasIndex("HostProfileId");
 
                     b.HasIndex("LocationId");
 
@@ -517,10 +522,16 @@ namespace GoSportsAPI.Migrations
 
             modelBuilder.Entity("GoSportsAPI.Models.Lobbies.Lobby", b =>
                 {
+                    b.HasOne("GoSportsAPI.Models.Users.UserProfile", "HostProfile")
+                        .WithMany()
+                        .HasForeignKey("HostProfileId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("GoSportsAPI.Models.Locations.Location", "Location")
                         .WithMany("Lobbies")
                         .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("GoSportsAPI.Models.Sports.Sport", "Sport")
@@ -528,6 +539,8 @@ namespace GoSportsAPI.Migrations
                         .HasForeignKey("SportId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("HostProfile");
 
                     b.Navigation("Location");
 
@@ -539,7 +552,7 @@ namespace GoSportsAPI.Migrations
                     b.HasOne("GoSportsAPI.Models.Locations.Location", null)
                         .WithOne("LocationType")
                         .HasForeignKey("GoSportsAPI.Models.Locations.LocationType", "LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

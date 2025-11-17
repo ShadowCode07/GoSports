@@ -9,7 +9,7 @@ namespace GoSportsAPI.Models.Users
         public AppUser User { get; set; } = default!;
 
         public Guid? LobbyId { get; set; }
-        public Lobby? Lobby { get; set; } = null!;
+        public Lobby? Lobby { get; set; }
         public ICollection<Sport>? Sports { get; set; } = new List<Sport>();
     }
 }

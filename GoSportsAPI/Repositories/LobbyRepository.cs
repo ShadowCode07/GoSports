@@ -66,6 +66,37 @@ namespace GoSportsAPI.Repositories
             return lobby;
         }
 
+        public async Task<Lobby> CreateAsync(Guid locationId, Lobby lobby, string sportName, Guid HostProfileId)
+        {
+            var lobbySports = _context.sports.Where(s => sportName.Contains(s.Name)).FirstOrDefault();
+
+            if (lobbySports == null)
+            {
+                throw new Exception($"The following sports were not found: {sportName}");
+            }
+
+            var location = await _context.locations
+                .Include(l => l.Sports)
+                .FirstOrDefaultAsync(l => l.Id == locationId);
+
+            var locationSports = location.Sports.Where(s => sportName.Contains(s.Name));
+
+
+            if (!locationSports.Any())
+            {
+                throw new Exception($"The following location does not practise this sport: {sportName}");
+            }
+
+            lobby.Location = location;
+            lobby.Sport = lobbySports;
+
+            await _dbSet.AddAsync(lobby);
+
+            await _context.SaveChangesAsync();
+
+            return lobby;
+        }
+
 
         /// <summary>Returs all lobbies</summary>
         /// <param name="queryObject">The query object.</param>

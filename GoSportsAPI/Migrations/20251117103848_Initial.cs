@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace GoSportsAPI.Migrations
 {
     /// <inheritdoc />
@@ -50,51 +48,6 @@ namespace GoSportsAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "IdentityRole",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_IdentityRole", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "locations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Latitude = table.Column<double>(type: "float", nullable: false),
-                    Longitude = table.Column<double>(type: "float", nullable: false),
-                    CurrentLobbyCount = table.Column<int>(type: "int", nullable: false),
-                    MaxLobbyCount = table.Column<int>(type: "int", nullable: false),
-                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_locations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "sports",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_sports", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -204,54 +157,51 @@ namespace GoSportsAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "locationTypes",
+                name: "Base",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsIndoor = table.Column<bool>(type: "bit", nullable: false),
-                    Surface = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HasLights = table.Column<bool>(type: "bit", nullable: false),
-                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
+                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    SportId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrentPlayerCount = table.Column<int>(type: "int", nullable: true),
+                    MaxPlayerCount = table.Column<int>(type: "int", nullable: true),
+                    HostProfileId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Location_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Latitude = table.Column<double>(type: "float", nullable: true),
+                    Longitude = table.Column<double>(type: "float", nullable: true),
+                    CurrentLobbyCount = table.Column<int>(type: "int", nullable: true),
+                    MaxLobbyCount = table.Column<int>(type: "int", nullable: true),
+                    LocationType_LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LocationType_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsIndoor = table.Column<bool>(type: "bit", nullable: true),
+                    Surface = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HasLights = table.Column<bool>(type: "bit", nullable: true),
+                    Sport_Name = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_locationTypes", x => x.Id);
+                    table.PrimaryKey("PK_Base", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_locationTypes_locations_LocationId",
+                        name: "FK_Base_Base_LocationId",
                         column: x => x.LocationId,
-                        principalTable: "locations",
+                        principalTable: "Base",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "lobbies",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SportId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CurrentPlayerCount = table.Column<int>(type: "int", nullable: false),
-                    MaxPlayerCount = table.Column<int>(type: "int", nullable: false),
-                    Version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_lobbies", x => x.Id);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_lobbies_locations_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "locations",
+                        name: "FK_Base_Base_LocationType_LocationId",
+                        column: x => x.LocationType_LocationId,
+                        principalTable: "Base",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_lobbies_sports_SportId",
+                        name: "FK_Base_Base_SportId",
                         column: x => x.SportId,
-                        principalTable: "sports",
+                        principalTable: "Base",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -267,15 +217,14 @@ namespace GoSportsAPI.Migrations
                 {
                     table.PrimaryKey("PK_LocationSports", x => new { x.LocationsId, x.SportsId });
                     table.ForeignKey(
-                        name: "FK_LocationSports_locations_LocationsId",
+                        name: "FK_LocationSports_Base_LocationsId",
                         column: x => x.LocationsId,
-                        principalTable: "locations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Base",
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_LocationSports_sports_SportsId",
+                        name: "FK_LocationSports_Base_SportsId",
                         column: x => x.SportsId,
-                        principalTable: "sports",
+                        principalTable: "Base",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -285,7 +234,7 @@ namespace GoSportsAPI.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LobbyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    LobbyId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -297,9 +246,9 @@ namespace GoSportsAPI.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserProfiles_lobbies_LobbyId",
+                        name: "FK_UserProfiles_Base_LobbyId",
                         column: x => x.LobbyId,
-                        principalTable: "lobbies",
+                        principalTable: "Base",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -315,26 +264,17 @@ namespace GoSportsAPI.Migrations
                 {
                     table.PrimaryKey("PK_UserSports", x => new { x.AppUsersId, x.SportsId });
                     table.ForeignKey(
+                        name: "FK_UserSports_Base_SportsId",
+                        column: x => x.SportsId,
+                        principalTable: "Base",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_UserSports_UserProfiles_AppUsersId",
                         column: x => x.AppUsersId,
                         principalTable: "UserProfiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserSports_sports_SportsId",
-                        column: x => x.SportsId,
-                        principalTable: "sports",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.InsertData(
-                table: "IdentityRole",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[,]
-                {
-                    { "88ca84f9-a12a-44bc-9696-5299083400a1", null, "User", "USER" },
-                    { "9a21ee04-110e-41d5-8c5e-2bddee9703ec", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -377,37 +317,45 @@ namespace GoSportsAPI.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_lobbies_LocationId",
-                table: "lobbies",
+                name: "IX_Base_HostProfileId",
+                table: "Base",
+                column: "HostProfileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Base_LocationId",
+                table: "Base",
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_lobbies_Name",
-                table: "lobbies",
-                column: "Name",
-                unique: true);
+                name: "IX_Base_LocationType_LocationId",
+                table: "Base",
+                column: "LocationType_LocationId",
+                unique: true,
+                filter: "[LocationId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_lobbies_SportId",
-                table: "lobbies",
+                name: "IX_Base_Name",
+                table: "Base",
+                column: "Name",
+                unique: true,
+                filter: "[Name] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Base_Sport_Name",
+                table: "Base",
+                column: "Sport_Name",
+                unique: true,
+                filter: "[Name] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Base_SportId",
+                table: "Base",
                 column: "SportId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LocationSports_SportsId",
                 table: "LocationSports",
                 column: "SportsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_locationTypes_LocationId",
-                table: "locationTypes",
-                column: "LocationId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_sports_Name",
-                table: "sports",
-                column: "Name",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserProfiles_LobbyId",
@@ -418,11 +366,27 @@ namespace GoSportsAPI.Migrations
                 name: "IX_UserSports_SportsId",
                 table: "UserSports",
                 column: "SportsId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Base_UserProfiles_HostProfileId",
+                table: "Base",
+                column: "HostProfileId",
+                principalTable: "UserProfiles",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_UserProfiles_AspNetUsers_Id",
+                table: "UserProfiles");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Base_UserProfiles_HostProfileId",
+                table: "Base");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -439,13 +403,7 @@ namespace GoSportsAPI.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "IdentityRole");
-
-            migrationBuilder.DropTable(
                 name: "LocationSports");
-
-            migrationBuilder.DropTable(
-                name: "locationTypes");
 
             migrationBuilder.DropTable(
                 name: "UserSports");
@@ -454,19 +412,13 @@ namespace GoSportsAPI.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "UserProfiles");
-
-            migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "lobbies");
+                name: "UserProfiles");
 
             migrationBuilder.DropTable(
-                name: "locations");
-
-            migrationBuilder.DropTable(
-                name: "sports");
+                name: "Base");
         }
     }
 }

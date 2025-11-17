@@ -50,23 +50,23 @@ namespace GoSportsAPI.Data
                 .IsUnique();
 
             modelBuilder.Entity<UserProfile>()
-            .HasOne(p => p.User)
-            .WithOne(u => u.Profile)
-            .HasForeignKey<UserProfile>(p => p.Id)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(p => p.User)
+                .WithOne(u => u.Profile)
+                .HasForeignKey<UserProfile>(p => p.Id)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Location>()
                 .HasOne(l => l.LocationType)
                 .WithOne()
                 .HasForeignKey<LocationType>(t => t.LocationId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Lobby>()
                 .HasOne(l => l.Location)
                 .WithMany(loc => loc.Lobbies)
                 .HasForeignKey(l => l.LocationId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Lobby>()
                 .HasOne(l => l.Sport)
@@ -83,10 +83,16 @@ namespace GoSportsAPI.Data
                 .HasMany(u => u.Sports)
                 .WithMany(s => s.AppUsers)
                 .UsingEntity(j => j.ToTable("UserSports"));
-            
+
+            modelBuilder.Entity<Lobby>()
+                .HasOne(l => l.HostProfile)
+                .WithMany()
+                .HasForeignKey(l => l.HostProfileId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<UserProfile>()
                 .HasOne(u => u.Lobby)
-                .WithMany(s => s.Users)
+                .WithMany(l => l.Users)
                 .HasForeignKey(u => u.LobbyId)
                 .OnDelete(DeleteBehavior.Restrict);
         }

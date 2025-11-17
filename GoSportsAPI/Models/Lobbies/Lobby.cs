@@ -18,6 +18,10 @@ namespace GoSportsAPI.Models.Lobbies
         public string Code { get; set; } = string.Empty;
         public int CurrentPlayerCount { get; set; } = 0;
         public int MaxPlayerCount { get; set; }
+
+
+        public Guid HostProfileId { get; set; }
+        public UserProfile HostProfile { get; set; } = null!;
         public ICollection<UserProfile>? Users { get; set; } = new List<UserProfile>();
     }
 }
