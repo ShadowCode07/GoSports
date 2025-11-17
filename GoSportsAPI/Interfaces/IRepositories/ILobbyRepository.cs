@@ -21,7 +21,7 @@ namespace GoSportsAPI.Interfaces.IRepositories
         /// <param name="sportName">The name of the sport associated with the lobby.</param>
         /// <returns>Lobby</returns>
         Task<Lobby> CreateAsync(Guid locationId, Lobby lobby, string sportName);
-        Task<Lobby> CreateAsync(Guid locationId, Lobby lobbt, string sportName, Guid HostProfileId);
+        Task<Lobby> CreateAsync(Guid locationId, Lobby lobbt, string sportName, Guid hostProfileId);
 
         /// <summary>
         /// Gets all the lobbies.

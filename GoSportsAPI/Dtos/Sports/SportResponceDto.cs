@@ -10,7 +10,7 @@ namespace GoSportsAPI.Dtos.Sports
         /// <summary>
         /// The unique identifier of the sport.
         /// </summary>
-        public Guid SportId { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
 
         /// <summary>
         /// The name of the sport.

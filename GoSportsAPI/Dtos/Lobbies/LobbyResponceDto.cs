@@ -11,7 +11,7 @@ namespace GoSportsAPI.Dtos.Lobbies
         /// <summary>
         /// The unique identifier of the lobby.
         /// </summary>
-        public Guid LobbyId { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// The name of the lobby.

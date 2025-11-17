@@ -26,11 +26,36 @@ namespace GoSportsAPI.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Base>()
+            modelBuilder.Entity<Location>()
                 .Property(l => l.Version)
                 .IsRowVersion();
 
-            modelBuilder.Entity<Base>()
+            modelBuilder.Entity<LocationType>()
+                .Property(l => l.Version)
+                .IsRowVersion();
+
+            modelBuilder.Entity<Lobby>()
+                .Property(l => l.Version)
+                .IsRowVersion();
+
+            modelBuilder.Entity<Sport>()
+                .Property(l => l.Version)
+                .IsRowVersion();
+
+
+            modelBuilder.Entity<Location>()
+                .Property(f => f.Id)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<LocationType>()
+                .Property(f => f.Id)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Lobby>()
+                .Property(f => f.Id)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Sport>()
                 .Property(f => f.Id)
                 .ValueGeneratedOnAdd();
 

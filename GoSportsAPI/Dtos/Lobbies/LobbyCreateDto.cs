@@ -18,6 +18,10 @@ namespace GoSportsAPI.Dtos.Lobbies
         [MaxLength(14, ErrorMessage = "Name can't be longer than 14 characters")]
         public string Name { get; set; } = string.Empty;
 
+        [Required]
+        [Range(2, 8, ErrorMessage = "The number of players must be between 2 and 8.")]
+        public int MaxPlayerCount { get; set; }
+
         /// <summary>
         /// The name of the sport associated with the lobby.
         /// </summary>

@@ -6,6 +6,7 @@ using GoSportsAPI.Mappers;
 using GoSportsAPI.Models.Lobbies;
 using GoSportsAPI.Models.Locations;
 using GoSportsAPI.Models.Sports;
+using GoSportsAPI.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -48,8 +49,12 @@ namespace GoSportsAPI.Repositories
                 .Include(l => l.Sports)
                 .FirstOrDefaultAsync(l => l.Id == locationId);
 
-            var locationSports = location.Sports.Where(s => sportName.Contains(s.Name));
+            if (location == null)
+            {
+                throw new Exception($"Location with id {locationId} was not found.");
+            }
 
+            var locationSports = location.Sports.Where(s => sportName.Contains(s.Name));
 
             if (!locationSports.Any())
             {
@@ -66,32 +71,59 @@ namespace GoSportsAPI.Repositories
             return lobby;
         }
 
-        public async Task<Lobby> CreateAsync(Guid locationId, Lobby lobby, string sportName, Guid HostProfileId)
+        public async Task<Lobby> CreateAsync(Guid locationId, Lobby lobby, string sportName, Guid hostProfileId)
         {
-            var lobbySports = _context.sports.Where(s => sportName.Contains(s.Name)).FirstOrDefault();
+            var hostProfile = await _context.UserProfiles
+                .FirstOrDefaultAsync(p => p.Id == hostProfileId);
 
-            if (lobbySports == null)
+            if (hostProfile == null)
             {
-                throw new Exception($"The following sports were not found: {sportName}");
+                throw new Exception("User profile not found.");
+            }
+
+            if (hostProfile.LobbyId != null)
+            {
+                throw new Exception("User is already in a lobby.");
+            }
+
+            var lobbySport = await _context.sports
+                .FirstOrDefaultAsync(s => s.Name == sportName);
+
+            if (lobbySport == null)
+            {
+                throw new Exception($"The following sport was not found: {sportName}");
             }
 
             var location = await _context.locations
                 .Include(l => l.Sports)
                 .FirstOrDefaultAsync(l => l.Id == locationId);
 
-            var locationSports = location.Sports.Where(s => sportName.Contains(s.Name));
+            if (location == null)
+            {
+                throw new Exception($"Location with id {locationId} was not found.");
+            }
 
+            var locationHasSport = location.Sports.Any(s => s.Name == sportName);
 
-            if (!locationSports.Any())
+            if (!locationHasSport)
             {
                 throw new Exception($"The following location does not practise this sport: {sportName}");
             }
 
             lobby.Location = location;
-            lobby.Sport = lobbySports;
+            lobby.LocationId = location.Id;
+
+            lobby.Sport = lobbySport;
+            lobby.SportId = lobbySport.Id;
+
+            lobby.HostProfileId = hostProfile.Id;
+
+            lobby.Users ??= new List<UserProfile>();
+            lobby.Users.Add(hostProfile);
+
+            hostProfile.Lobby = lobby;
 
             await _dbSet.AddAsync(lobby);
-
             await _context.SaveChangesAsync();
 
             return lobby;

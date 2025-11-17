@@ -1,10 +1,12 @@
 ﻿using GoSportsAPI.Models.Lobbies;
 using GoSportsAPI.Models.Sports;
+using System.ComponentModel.DataAnnotations;
 
 namespace GoSportsAPI.Models.Users
 {
     public class UserProfile
     {
+        [Key]
         public Guid Id { get; set; }
         public AppUser User { get; set; } = default!;
 

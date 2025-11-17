@@ -8,12 +8,12 @@
         /// <summary>
         /// The unique identifier of the location type.
         /// </summary>
-        public Guid LocationTypeId { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
 
         /// <summary>
         /// The identifier of the location associated with this location type.
         /// </summary>
-        public Guid LocationId { get; set; } = Guid.NewGuid();
+        public Guid LocationId { get; set; }
 
         /// <summary>
         /// The name of the location type.

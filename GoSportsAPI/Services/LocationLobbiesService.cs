@@ -27,11 +27,11 @@ namespace GoSportsAPI.Services
             return _locationRepository.CheckLobbyCount(locationGuid);
         }
 
-        public async Task<LobbyResponceDto> CreateAsync(Guid locationGuid, LobbyCreateDto createDto)
+        public async Task<LobbyResponceDto> CreateAsync(Guid locationGuid, LobbyCreateDto createDto, Guid hostId)
         {
             var lobbyModel = createDto.ToLobbyFromCreate(locationGuid);
 
-            await _lobbyRepository.CreateAsync(locationGuid, lobbyModel, createDto.SportName);
+            await _lobbyRepository.CreateAsync(locationGuid, lobbyModel, createDto.SportName, hostId);
 
             await _locationRepository.AddLobbyToCount(locationGuid, lobbyModel.Id);
 

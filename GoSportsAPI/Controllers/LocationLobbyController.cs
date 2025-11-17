@@ -3,6 +3,7 @@ using GoSportsAPI.Interfaces.IServices;
 using GoSportsAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace GoSportsAPI.Controllers
 {
@@ -34,7 +35,7 @@ namespace GoSportsAPI.Controllers
         /// <returns>
         /// Returns an <see cref="IActionResult"/> containing the result of the create operation.
         /// </returns>
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateLobby([FromRoute] Guid locationGuid, [FromBody] LobbyCreateDto createDto)
 
@@ -54,11 +55,14 @@ namespace GoSportsAPI.Controllers
                 return BadRequest("Lobby count full for this location");
             }
 
-            var lobbyModel = await _locationLobbieService.CreateAsync(locationGuid, createDto);
+            var appUserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+
+            var lobbyModel = await _locationLobbieService.CreateAsync(locationGuid, createDto, appUserId);
 
             return CreatedAtRoute(
                 //routeName: "GetLobby",
-                routeValues: new { lobbyId = lobbyModel.LobbyId },
+                routeValues: new { lobbyId = lobbyModel.Id },
                 value: lobbyModel
             );
         }
@@ -71,7 +75,7 @@ namespace GoSportsAPI.Controllers
         /// <returns>
         /// Returns an <see cref="IActionResult"/> indicating the result of the update operation.
         /// </returns>
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateLobby([FromRoute] Guid locationGuid, [FromRoute] Guid id, [FromBody] LobbyUpdateDto updateDto)
 

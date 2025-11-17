@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GoSportsAPI.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20251117103848_Initial")]
+    [Migration("20251117141022_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -25,16 +25,34 @@ namespace GoSportsAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("GoSportsAPI.Models.Base", b =>
+            modelBuilder.Entity("GoSportsAPI.Models.Lobbies.Lobby", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Discriminator")
+                    b.Property<string>("Code")
                         .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CurrentPlayerCount")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("HostProfileId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("MaxPlayerCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("SportId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
@@ -44,11 +62,114 @@ namespace GoSportsAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Base");
+                    b.HasIndex("HostProfileId");
 
-                    b.HasDiscriminator().HasValue("Base");
+                    b.HasIndex("LocationId");
 
-                    b.UseTphMappingStrategy();
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("SportId");
+
+                    b.ToTable("lobbies");
+                });
+
+            modelBuilder.Entity("GoSportsAPI.Models.Locations.Location", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CurrentLobbyCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("float");
+
+                    b.Property<int>("MaxLobbyCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("locations");
+                });
+
+            modelBuilder.Entity("GoSportsAPI.Models.Locations.LocationType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("HasLights")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsIndoor")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Surface")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId")
+                        .IsUnique();
+
+                    b.ToTable("locationTypes");
+                });
+
+            modelBuilder.Entity("GoSportsAPI.Models.Sports.Sport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("sports");
                 });
 
             modelBuilder.Entity("GoSportsAPI.Models.Users.AppUser", b =>
@@ -295,133 +416,38 @@ namespace GoSportsAPI.Migrations
 
             modelBuilder.Entity("GoSportsAPI.Models.Lobbies.Lobby", b =>
                 {
-                    b.HasBaseType("GoSportsAPI.Models.Base");
+                    b.HasOne("GoSportsAPI.Models.Users.UserProfile", "HostProfile")
+                        .WithMany()
+                        .HasForeignKey("HostProfileId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasOne("GoSportsAPI.Models.Locations.Location", "Location")
+                        .WithMany("Lobbies")
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.Property<int>("CurrentPlayerCount")
-                        .HasColumnType("int");
+                    b.HasOne("GoSportsAPI.Models.Sports.Sport", "Sport")
+                        .WithMany()
+                        .HasForeignKey("SportId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
-                    b.Property<Guid>("HostProfileId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Navigation("HostProfile");
 
-                    b.Property<Guid>("LocationId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Navigation("Location");
 
-                    b.Property<int>("MaxPlayerCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("SportId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("HostProfileId");
-
-                    b.HasIndex("LocationId");
-
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
-
-                    b.HasIndex("SportId");
-
-                    b.HasDiscriminator().HasValue("Lobby");
-                });
-
-            modelBuilder.Entity("GoSportsAPI.Models.Locations.Location", b =>
-                {
-                    b.HasBaseType("GoSportsAPI.Models.Base");
-
-                    b.Property<int>("CurrentLobbyCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Latitude")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Longitude")
-                        .HasColumnType("float");
-
-                    b.Property<int>("MaxLobbyCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("Base", t =>
-                        {
-                            t.Property("Name")
-                                .HasColumnName("Location_Name");
-                        });
-
-                    b.HasDiscriminator().HasValue("Location");
+                    b.Navigation("Sport");
                 });
 
             modelBuilder.Entity("GoSportsAPI.Models.Locations.LocationType", b =>
                 {
-                    b.HasBaseType("GoSportsAPI.Models.Base");
-
-                    b.Property<bool>("HasLights")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsIndoor")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("LocationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Surface")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasIndex("LocationId")
-                        .IsUnique()
-                        .HasFilter("[LocationId] IS NOT NULL");
-
-                    b.ToTable("Base", t =>
-                        {
-                            t.Property("LocationId")
-                                .HasColumnName("LocationType_LocationId");
-
-                            t.Property("Name")
-                                .HasColumnName("LocationType_Name");
-                        });
-
-                    b.HasDiscriminator().HasValue("LocationType");
-                });
-
-            modelBuilder.Entity("GoSportsAPI.Models.Sports.Sport", b =>
-                {
-                    b.HasBaseType("GoSportsAPI.Models.Base");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
-
-                    b.ToTable("Base", t =>
-                        {
-                            t.Property("Name")
-                                .HasColumnName("Sport_Name");
-                        });
-
-                    b.HasDiscriminator().HasValue("Sport");
+                    b.HasOne("GoSportsAPI.Models.Locations.Location", null)
+                        .WithOne("LocationType")
+                        .HasForeignKey("GoSportsAPI.Models.Locations.LocationType", "LocationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("GoSportsAPI.Models.Users.UserProfile", b =>
@@ -447,7 +473,7 @@ namespace GoSportsAPI.Migrations
                     b.HasOne("GoSportsAPI.Models.Locations.Location", null)
                         .WithMany()
                         .HasForeignKey("LocationsId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("GoSportsAPI.Models.Sports.Sport", null)
@@ -525,48 +551,6 @@ namespace GoSportsAPI.Migrations
 
             modelBuilder.Entity("GoSportsAPI.Models.Lobbies.Lobby", b =>
                 {
-                    b.HasOne("GoSportsAPI.Models.Users.UserProfile", "HostProfile")
-                        .WithMany()
-                        .HasForeignKey("HostProfileId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("GoSportsAPI.Models.Locations.Location", "Location")
-                        .WithMany("Lobbies")
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("GoSportsAPI.Models.Sports.Sport", "Sport")
-                        .WithMany()
-                        .HasForeignKey("SportId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("HostProfile");
-
-                    b.Navigation("Location");
-
-                    b.Navigation("Sport");
-                });
-
-            modelBuilder.Entity("GoSportsAPI.Models.Locations.LocationType", b =>
-                {
-                    b.HasOne("GoSportsAPI.Models.Locations.Location", null)
-                        .WithOne("LocationType")
-                        .HasForeignKey("GoSportsAPI.Models.Locations.LocationType", "LocationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("GoSportsAPI.Models.Users.AppUser", b =>
-                {
-                    b.Navigation("Profile")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("GoSportsAPI.Models.Lobbies.Lobby", b =>
-                {
                     b.Navigation("Users");
                 });
 
@@ -575,6 +559,12 @@ namespace GoSportsAPI.Migrations
                     b.Navigation("Lobbies");
 
                     b.Navigation("LocationType")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GoSportsAPI.Models.Users.AppUser", b =>
+                {
+                    b.Navigation("Profile")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

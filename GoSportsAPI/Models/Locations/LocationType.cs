@@ -2,8 +2,13 @@
 
 namespace GoSportsAPI.Models.Locations
 {
-    public class LocationType : Base
+    public class LocationType
     {
+        [Key]
+        public Guid Id { get; set; }
+
+        [Timestamp]
+        public byte[] Version { get; set; }
         /// <summary>
         /// The identifier of the parent location.
         /// </summary>

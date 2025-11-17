@@ -5,7 +5,7 @@ namespace GoSportsAPI.Interfaces.IServices
 {
     public interface ILocationLobbiesService
     {
-        Task<LobbyResponceDto> CreateAsync(Guid locationGuid, LobbyCreateDto createDto);
+        Task<LobbyResponceDto> CreateAsync(Guid locationGuid, LobbyCreateDto createDto, Guid hostId);
         Task<LobbyResponceDto> UpdateAsync(Guid locationGuid, Guid lobbyId, LobbyUpdateDto updateDto);
         Task<bool> CheckLobby(Guid id);
         Task<bool> CheckLobbyCount(Guid locationGuid);
