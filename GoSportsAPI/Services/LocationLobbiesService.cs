@@ -17,9 +17,9 @@ namespace GoSportsAPI.Services
             _locationRepository = locationRepository;
         }
 
-        public Task<bool> CheckLobby(Guid id)
+        public Task<bool> CheckLocation(Guid locationId)
         {
-            return _lobbyRepository.Exists(id);
+            return _locationRepository.Exists(locationId);
         }
 
         public Task<bool> CheckLobbyCount(Guid locationGuid)

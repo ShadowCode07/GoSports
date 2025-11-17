@@ -45,7 +45,7 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (!await _locationLobbieService.CheckLobby(locationGuid))
+            if (!await _locationLobbieService.CheckLocation(locationGuid))
             {
                 return NotFound("Location doesn't exist");
             }
