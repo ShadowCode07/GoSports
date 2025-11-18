@@ -30,7 +30,7 @@ namespace GoSportsAPI.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CurrentPlayerCount")
                         .HasColumnType("int");
@@ -59,6 +59,9 @@ namespace GoSportsAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Code")
+                        .IsUnique();
+
                     b.HasIndex("HostProfileId");
 
                     b.HasIndex("LocationId");
@@ -68,7 +71,7 @@ namespace GoSportsAPI.Migrations
 
                     b.HasIndex("SportId");
 
-                    b.ToTable("lobbies");
+                    b.ToTable("Lobbies");
                 });
 
             modelBuilder.Entity("GoSportsAPI.Models.Locations.Location", b =>
@@ -105,7 +108,7 @@ namespace GoSportsAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("locations");
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("GoSportsAPI.Models.Locations.LocationType", b =>
@@ -142,7 +145,7 @@ namespace GoSportsAPI.Migrations
                     b.HasIndex("LocationId")
                         .IsUnique();
 
-                    b.ToTable("locationTypes");
+                    b.ToTable("LocationTypes");
                 });
 
             modelBuilder.Entity("GoSportsAPI.Models.Sports.Sport", b =>
@@ -166,7 +169,7 @@ namespace GoSportsAPI.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("sports");
+                    b.ToTable("Sports");
                 });
 
             modelBuilder.Entity("GoSportsAPI.Models.Users.AppUser", b =>
@@ -242,6 +245,15 @@ namespace GoSportsAPI.Migrations
 
                     b.Property<Guid?>("LobbyId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.HasKey("Id");
 
@@ -398,15 +410,15 @@ namespace GoSportsAPI.Migrations
 
             modelBuilder.Entity("SportUserProfile", b =>
                 {
-                    b.Property<Guid>("AppUsersId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("SportsId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("AppUsersId", "SportsId");
+                    b.Property<Guid>("UserProfilesId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.HasIndex("SportsId");
+                    b.HasKey("SportsId", "UserProfilesId");
+
+                    b.HasIndex("UserProfilesId");
 
                     b.ToTable("UserSports", (string)null);
                 });
@@ -443,7 +455,7 @@ namespace GoSportsAPI.Migrations
                     b.HasOne("GoSportsAPI.Models.Locations.Location", null)
                         .WithOne("LocationType")
                         .HasForeignKey("GoSportsAPI.Models.Locations.LocationType", "LocationId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -533,15 +545,15 @@ namespace GoSportsAPI.Migrations
 
             modelBuilder.Entity("SportUserProfile", b =>
                 {
-                    b.HasOne("GoSportsAPI.Models.Users.UserProfile", null)
-                        .WithMany()
-                        .HasForeignKey("AppUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("GoSportsAPI.Models.Sports.Sport", null)
                         .WithMany()
                         .HasForeignKey("SportsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GoSportsAPI.Models.Users.UserProfile", null)
+                        .WithMany()
+                        .HasForeignKey("UserProfilesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

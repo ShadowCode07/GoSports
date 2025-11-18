@@ -16,7 +16,7 @@ namespace GoSportsAPI
 
         public void SeedDataContext()
         {
-            if (!_context.sports.Any() && !_context.locations.Any() && !_context.locationTypes.Any())
+            if (!_context.Sports.Any() && !_context.Locations.Any() && !_context.LocationTypes.Any())
             {
                 var football = new Sport { Id = Guid.NewGuid(), Name = "Football" };
                 var basketball = new Sport { Id = Guid.NewGuid(), Name = "Basketball" };
@@ -107,8 +107,8 @@ namespace GoSportsAPI
 
                 var locations = new List<Location> { park, arena, tennisClub, pool };
 
-                _context.sports.AddRange(sports);
-                _context.locations.AddRange(locations);
+                _context.Sports.AddRange(sports);
+                _context.Locations.AddRange(locations);
                 _context.SaveChanges();
             }
         }

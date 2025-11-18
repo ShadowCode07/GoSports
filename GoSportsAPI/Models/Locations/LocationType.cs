@@ -2,22 +2,18 @@
 
 namespace GoSportsAPI.Models.Locations
 {
-    public class LocationType
+    public class LocationType : Base
     {
-        [Key]
-        public Guid Id { get; set; }
-
-        [Timestamp]
-        public byte[] Version { get; set; }
-        /// <summary>
-        /// The identifier of the parent location.
-        /// </summary>
-        public Guid LocationId { get; set; }
 
         /// <summary>
         /// The descriptive name of the location type (e.g., "Football Field A").
         /// </summary>
         public string Name { get; set; } = string.Empty;
+
+        /// <summary>
+        /// The identifier of the parent location.
+        /// </summary>
+        public Guid LocationId { get; set; }
 
         /// <summary>
         /// Indicates whether the location is indoors.

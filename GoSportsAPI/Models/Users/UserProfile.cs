@@ -4,14 +4,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GoSportsAPI.Models.Users
 {
-    public class UserProfile
+    public class UserProfile : Base
     {
-        [Key]
-        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
         public AppUser User { get; set; } = default!;
 
         public Guid? LobbyId { get; set; }
         public Lobby? Lobby { get; set; }
-        public ICollection<Sport>? Sports { get; set; } = new List<Sport>();
+        public ICollection<Sport> Sports { get; set; } = new List<Sport>();
     }
 }

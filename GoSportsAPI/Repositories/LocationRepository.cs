@@ -29,7 +29,7 @@ namespace GoSportsAPI.Repositories
         public async Task AddLobbyToCount(Guid id, Guid lobbyId)
         {
             Location update = await GetByIdAsync(id);
-            Lobby addedLobby = await _context.lobbies.FindAsync(lobbyId);
+            Lobby addedLobby = await _context.Lobbies.FindAsync(lobbyId);
 
             update.Lobbies.Add(addedLobby);
             update.CurrentLobbyCount += 1;
@@ -65,7 +65,7 @@ namespace GoSportsAPI.Repositories
         /// <exception cref="System.Exception">The following sports were not found: {string.Join(", ", missingSports)}</exception>
         public async Task<Location> CreateAsync(Location location, List<string> sports)
         {
-            var locationSports = await _context.sports.Where(s => sports.Contains(s.Name)).ToListAsync();
+            var locationSports = await _context.Sports.Where(s => sports.Contains(s.Name)).ToListAsync();
 
             var missingSports = sports.Except(locationSports.Select(s => s.Name)).ToList();
 
@@ -91,7 +91,7 @@ namespace GoSportsAPI.Repositories
         /// </returns>
         public async Task<List<Location>> GetAllAsync(LocationQueryObject queryObject)
         {
-            var locations = _context.locations
+            var locations = _context.Locations
                 .Include(l => l.LocationType)
                 .Include(l => l.Sports)
                 .Include(l => l.Lobbies)
@@ -186,7 +186,7 @@ namespace GoSportsAPI.Repositories
             var locationVersionBytes = Convert.FromBase64String(version);
             _context.Entry(update).Property(l => l.Version).OriginalValue = locationVersionBytes;
 
-            var locationSports = await _context.sports
+            var locationSports = await _context.Sports
                 .Where(s => sports.Contains(s.Name))
                 .ToListAsync();
 

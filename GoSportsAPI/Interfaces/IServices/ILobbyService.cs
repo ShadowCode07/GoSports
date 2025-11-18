@@ -11,5 +11,7 @@ namespace GoSportsAPI.Interfaces.IServices
         Task<Lobby?> DeleteAsync(Guid id);
         Task<LobbyResponceDto?> GetByIdAsync(Guid id);
         Task<IEnumerable<LobbyResponceDto>> GetAllAsync(LobbyQueryObject queryObject);
+        //Task JoinLobbyAsync(Guid lobbyId, Guid userProfileId);
+        //Task LeaveLobbyAsync(Guid lobbyId, Guid userProfileId);
     }
 }

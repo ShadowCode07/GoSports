@@ -39,14 +39,14 @@ namespace GoSportsAPI.Repositories
         public async Task<Lobby> CreateAsync(Guid locationId, Lobby lobby, string sportName)
         {
 
-            var lobbySports = _context.sports.Where(s => sportName.Contains(s.Name)).FirstOrDefault();
+            var lobbySports = _context.Sports.Where(s => sportName.Contains(s.Name)).FirstOrDefault();
 
             if (lobbySports == null)
             {
                 throw new Exception($"The following sports were not found: {sportName}");
             }
 
-            var location = await _context.locations
+            var location = await _context.Locations
                 .Include(l => l.Sports)
                 .FirstOrDefaultAsync(l => l.Id == locationId);
 
@@ -87,7 +87,7 @@ namespace GoSportsAPI.Repositories
                 throw new Exception("User is already in a lobby.");
             }
 
-            var lobbySport = await _context.sports
+            var lobbySport = await _context.Sports
                 .FirstOrDefaultAsync(s => s.Name == sportName);
 
             if (lobbySport == null)
@@ -95,7 +95,7 @@ namespace GoSportsAPI.Repositories
                 throw new Exception($"The following sport was not found: {sportName}");
             }
 
-            var location = await _context.locations
+            var location = await _context.Locations
                 .Include(l => l.Sports)
                 .FirstOrDefaultAsync(l => l.Id == locationId);
 
@@ -136,7 +136,7 @@ namespace GoSportsAPI.Repositories
         /// <returns>List&lt;Lobby&gt;<br /></returns>
         public async Task<List<Lobby>> GetAllAsync(LobbyQueryObject queryObject)
         {
-            var lobbies = _context.lobbies
+            var lobbies = _context.Lobbies
                 .Include(l => l.Sport)
                 .Include(l => l.Location)
                 .AsQueryable();
@@ -181,14 +181,14 @@ namespace GoSportsAPI.Repositories
             var locationVersionBytes = Convert.FromBase64String(version);
             _context.Entry(update).Property(l => l.Version).OriginalValue = locationVersionBytes;
 
-            var lobbySports = _context.sports.Where(s => sportName.Contains(s.Name)).FirstOrDefault();
+            var lobbySports = _context.Sports.Where(s => sportName.Contains(s.Name)).FirstOrDefault();
 
             if (lobbySports == null)
             {
                 throw new Exception($"The following sports were not found: {string.Join(", ", sportName)}");
             }
 
-            var location = await _context.locations
+            var location = await _context.Locations
                 .Include(l => l.Sports)
                 .FirstOrDefaultAsync(l => l.Id == locationId);
 

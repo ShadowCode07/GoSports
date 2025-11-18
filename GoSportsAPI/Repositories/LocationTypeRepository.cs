@@ -25,7 +25,7 @@ namespace GoSportsAPI.Repositories
         /// <returns>List&lt;LocationTypes&gt;</returns>
         public async Task<List<LocationType>> GetAllAsync(LocationTypeQueryObject queryObject)
         {
-            var locationTypes = _context.locationTypes
+            var locationTypes = _context.LocationTypes
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(queryObject.Name))

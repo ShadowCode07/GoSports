@@ -70,6 +70,7 @@ namespace GoSportsAPI
             builder.Services.AddScoped<ILocationTypeRepository, LocationTypeRepository>();
             builder.Services.AddScoped<ILobbyRepository, LobbyRepository>();
             builder.Services.AddScoped<ISportRepository, SportRepository>();
+            builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
 
             builder.Services.AddScoped<ILocationService, LocationService>();
             builder.Services.AddScoped<ILobbyService, LobbyService>();

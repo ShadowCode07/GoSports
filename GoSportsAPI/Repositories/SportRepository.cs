@@ -28,7 +28,7 @@ namespace GoSportsAPI.Repositories
         /// <returns>List&lt;Sport&gt;</returns>
         public async Task<List<Sport>> GetAllAsync(SportQueryObject queryObject)
         {
-            var sports = _context.sports
+            var sports = _context.Sports
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(queryObject.SportName))
