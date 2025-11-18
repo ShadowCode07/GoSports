@@ -53,7 +53,7 @@ namespace GoSportsAPI.Repositories
         /// <param name="id">The identifier.</param>
         /// <param name="dto">The dto.</param>
         /// <returns>Sports</returns>
-        public async Task<Sport?> UpdateAsync(Guid id, SportUpdateDto dto)
+        public async Task<Sport?> UpdateAsync(Guid id, Sport updatedSport, string version)
         {
             var update = await _dbSet
                 .FirstOrDefaultAsync(s => s.Id == id);
@@ -63,10 +63,10 @@ namespace GoSportsAPI.Repositories
                 return null;
             }
 
-            var locationVersionBytes = Convert.FromBase64String(dto.Version);
+            var locationVersionBytes = Convert.FromBase64String(version);
             _context.Entry(update).Property(l => l.Version).OriginalValue = locationVersionBytes;
 
-            update.Name = dto.Name;
+            update.Name = updatedSport.Name;
 
             try
             {

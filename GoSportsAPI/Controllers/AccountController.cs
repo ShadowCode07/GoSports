@@ -39,7 +39,7 @@ namespace GoSportsAPI.Controllers
                 };
 
                 var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
-
+                
                 if(createdUser.Succeeded)
                 {
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
@@ -50,6 +50,7 @@ namespace GoSportsAPI.Controllers
                             {
                                 UserName = appUser.UserName,
                                 Email = appUser.Email,
+                                Profile = appUser.Profile,
                                 Token = await _tokenService.CreateToken(appUser)
                             }
                         );
@@ -97,6 +98,7 @@ namespace GoSportsAPI.Controllers
                 {
                     UserName = user.UserName,
                     Email = user.Email,
+                    Profile = user.Profile,
                     Token = await _tokenService.CreateToken(user)
                 }
             );

@@ -12,7 +12,7 @@ namespace GoSportsAPI.Dtos.Locations
         /// <summary>
         /// The unique identifier of the location.
         /// </summary>
-        public Guid Id { get; init; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// The name of the location.

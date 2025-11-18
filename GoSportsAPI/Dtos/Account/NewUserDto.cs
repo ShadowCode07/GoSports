@@ -1,4 +1,5 @@
-﻿using GoSportsAPI.Dtos.Sports;
+﻿    using GoSportsAPI.Dtos.Sports;
+using GoSportsAPI.Models.Users;
 
 namespace GoSportsAPI.Dtos.Account
 {
@@ -6,7 +7,7 @@ namespace GoSportsAPI.Dtos.Account
     {
         public string UserName { get; set; }
         public string Email { get; set; }
-        public ICollection<SportResponceDto> Sports { get; set; }
+        public UserProfile Profile { get; set; }
         public string Token { get; set; }
     }
 }

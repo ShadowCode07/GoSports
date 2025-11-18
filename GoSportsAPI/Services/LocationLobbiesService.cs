@@ -40,7 +40,14 @@ namespace GoSportsAPI.Services
 
         public async Task<LobbyResponceDto> UpdateAsync(Guid locationGuid, Guid lobbyId, LobbyUpdateDto updateDto)
         {
-            var lobby =  await _lobbyRepository.UpdateAsync(locationGuid, lobbyId, updateDto);
+            var updatedLobby = updateDto.ToLobbyFromUpdate();
+
+            var lobby =  await _lobbyRepository.UpdateAsync(locationGuid, lobbyId, updatedLobby, updateDto.SportName, updateDto.Version);
+
+            if(lobby == null)
+            {
+                throw new ArgumentNullException(nameof(lobby));
+            }
 
             return lobby.ToLobbyResponceDto();
         }

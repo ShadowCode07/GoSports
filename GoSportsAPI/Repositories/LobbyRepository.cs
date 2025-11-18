@@ -7,6 +7,7 @@ using GoSportsAPI.Models.Lobbies;
 using GoSportsAPI.Models.Locations;
 using GoSportsAPI.Models.Sports;
 using GoSportsAPI.Models.Users;
+using Humanizer;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -169,7 +170,7 @@ namespace GoSportsAPI.Repositories
         /// <param name="sportName">Name of the sport.</param>
         /// <returns>Lobby</returns>
         /// <exception cref="System.Exception">The following sports were not found: {string.Join(", ", sportName)}</exception>
-        public async Task<Lobby?> UpdateAsync(Guid locationId, Guid id, LobbyUpdateDto dto)
+        public async Task<Lobby?> UpdateAsync(Guid locationId, Guid id, Lobby updatedLobby, string sportName, string version)
         {
             var update = await _dbSet
                 .Include(l => l.Sport)
@@ -177,28 +178,33 @@ namespace GoSportsAPI.Repositories
 
             if (update == null) return null;
 
-            var locationVersionBytes = Convert.FromBase64String(dto.Version);
+            var locationVersionBytes = Convert.FromBase64String(version);
             _context.Entry(update).Property(l => l.Version).OriginalValue = locationVersionBytes;
 
-            var lobbySports = _context.sports.Where(s => dto.SportName.Contains(s.Name)).FirstOrDefault();
+            var lobbySports = _context.sports.Where(s => sportName.Contains(s.Name)).FirstOrDefault();
 
             if (lobbySports == null)
             {
-                throw new Exception($"The following sports were not found: {string.Join(", ", dto.SportName)}");
+                throw new Exception($"The following sports were not found: {string.Join(", ", sportName)}");
             }
 
             var location = await _context.locations
                 .Include(l => l.Sports)
                 .FirstOrDefaultAsync(l => l.Id == locationId);
 
-            var locationSports = location.Sports.Where(s => dto.SportName.Contains(s.Name));
+            if(location == null)
+            {
+                throw new Exception($"The location with id: {locationId} was not found");
+            }
+
+            var locationSports = location.Sports.Where(s => sportName.Contains(s.Name));
 
             if (!locationSports.Any())
             {
-                throw new Exception($"The following location does not practise this sport: {dto.SportName}");
+                throw new Exception($"The following location does not practise this sport: {sportName}");
             }
 
-            update.Name = dto.Name;
+            update.Name = updatedLobby.Name;
             update.Sport = lobbySports;
 
             try

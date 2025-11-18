@@ -35,7 +35,7 @@ namespace GoSportsAPI.Interfaces.IRepositories
         /// <param name="id">The identifier of the location.</param>
         /// <param name="dto">The DTO containing updated location data.</param>
         /// <returns>Location</returns>
-        Task<Location?> UpdateAsync(Guid id, LocationUpdateDto dto);
+        Task<Location?> UpdateAsync(Guid id, Location updatedLocation, List<string> Sports, string version, string typeVersion);
 
         /// <summary>
         /// Checks the lobby count for a location.

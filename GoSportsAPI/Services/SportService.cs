@@ -42,7 +42,9 @@ namespace GoSportsAPI.Services
 
         public async Task<Sport?> UpdateAsync(Guid id, SportUpdateDto updateDto)
         {
-            var update = await _sprotRepository.UpdateAsync(id, updateDto);
+            var updatedSport = updateDto.ToSportFromUpdate();
+
+            var update = await _sprotRepository.UpdateAsync(id, updatedSport, updateDto.Version);
 
             return update;
         }

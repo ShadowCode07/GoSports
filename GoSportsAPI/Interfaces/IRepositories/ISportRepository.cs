@@ -24,6 +24,6 @@ namespace GoSportsAPI.Interfaces.IRepositories
         /// <param name="id">The identifier.</param>
         /// <param name="dto">The dto.</param>
         /// <returns>Sport</returns>
-        Task<Sport?> UpdateAsync(Guid id, SportUpdateDto dto);
+        Task<Sport?> UpdateAsync(Guid id, Sport updatedSport, string version);
     }
 }

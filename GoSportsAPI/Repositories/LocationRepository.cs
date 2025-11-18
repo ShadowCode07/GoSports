@@ -174,7 +174,7 @@ namespace GoSportsAPI.Repositories
         /// <param name="dto">The dto.</param>
         /// <returns>Location</returns>
         /// <exception cref="System.Exception">The following sports were not found: {string.Join(", ", missingSports)}</exception>
-        public async Task<Location?> UpdateAsync(Guid id, LocationUpdateDto dto)
+        public async Task<Location?> UpdateAsync(Guid id, Location updatedLocation, List<string> sports, string version, string typeVersion)
         {
             var update = await _dbSet
                 .Include(l => l.Sports)
@@ -183,32 +183,32 @@ namespace GoSportsAPI.Repositories
 
             if (update == null) return null;
 
-            var locationVersionBytes = Convert.FromBase64String(dto.Version);
+            var locationVersionBytes = Convert.FromBase64String(version);
             _context.Entry(update).Property(l => l.Version).OriginalValue = locationVersionBytes;
 
             var locationSports = await _context.sports
-                .Where(s => dto.Sports.Contains(s.Name))
+                .Where(s => sports.Contains(s.Name))
                 .ToListAsync();
 
-            var missingSports = dto.Sports.Except(locationSports.Select(s => s.Name)).ToList();
+            var missingSports = sports.Except(locationSports.Select(s => s.Name)).ToList();
 
             if (missingSports.Any())
             {
                 throw new Exception($"The following sports were not found: {string.Join(", ", missingSports)}");
             }
 
-            if (!string.IsNullOrWhiteSpace(dto.LocationType.Version))
+            if (!string.IsNullOrWhiteSpace(typeVersion))
             {
-                var ltVersionBytes = Convert.FromBase64String(dto.LocationType.Version);
+                var ltVersionBytes = Convert.FromBase64String(typeVersion);
                 _context.Entry(update.LocationType).Property(lt => lt.Version).OriginalValue = ltVersionBytes;
             }
 
-            update.Name = dto.Name;
-            update.Description = dto.Description;
+            update.Name = updatedLocation.Name;
+            update.Description = updatedLocation.Description;
 
             var existingLt = update.LocationType;
 
-            update.LocationType = dto.LocationType.ToLocationTypeFromUpdate();
+            update.LocationType = updatedLocation.LocationType;
 
             var tempLt = update.LocationType;
             if (existingLt == null)
@@ -223,7 +223,7 @@ namespace GoSportsAPI.Repositories
 
             _context.Entry(tempLt).State = EntityState.Detached;
 
-            update.MaxLobbyCount = dto.MaxLobbyCount;
+            update.MaxLobbyCount = updatedLocation.MaxLobbyCount;
 
             update.Sports.Clear();
             foreach (var s in locationSports)
