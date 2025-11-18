@@ -30,10 +30,10 @@ namespace GoSportsAPI.Controllers
         /// </summary>
         /// <param name="queryObject">The query object used for filtering and sorting sports.</param>
         /// <returns>
-        /// Returns an <see cref="ActionResult{T}"/> containing a collection of <see cref="SportResponceDto"/> objects.
+        /// Returns an <see cref="ActionResult{T}"/> containing a collection of <see cref="SportResponseDto"/> objects.
         /// </returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SportResponceDto>>> GetSports([FromQuery] SportQueryObject queryObject)
+        public async Task<ActionResult<IEnumerable<SportResponseDto>>> GetSports([FromQuery] SportQueryObject queryObject)
 
         {
             if (!ModelState.IsValid)
@@ -51,10 +51,10 @@ namespace GoSportsAPI.Controllers
         /// </summary>
         /// <param name="id">The unique identifier of the sport to retrieve.</param>
         /// <returns>
-        /// Returns an <see cref="ActionResult{T}"/> containing the <see cref="SportResponceDto"/> if found; otherwise, a not found result.
+        /// Returns an <see cref="ActionResult{T}"/> containing the <see cref="SportResponseDto"/> if found; otherwise, a not found result.
         /// </returns>
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<SportResponceDto>> GetSport([FromRoute] Guid id)
+        public async Task<ActionResult<SportResponseDto>> GetSport([FromRoute] Guid id)
 
         {
             if (!ModelState.IsValid)

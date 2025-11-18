@@ -30,10 +30,10 @@ namespace GoSportsAPI.Controllers
         /// </summary>
         /// <param name="queryObject">The query object used for filtering and sorting location types.</param>
         /// <returns>
-        /// Returns an <see cref="ActionResult{T}"/> containing a collection of <see cref="LocationTypeResponceDto"/> objects.
+        /// Returns an <see cref="ActionResult{T}"/> containing a collection of <see cref="LocationTypeResponseDto"/> objects.
         /// </returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LocationTypeResponceDto>>> GetLocationTypes([FromQuery] LocationTypeQueryObject queryObject)
+        public async Task<ActionResult<IEnumerable<LocationTypeResponseDto>>> GetLocationTypes([FromQuery] LocationTypeQueryObject queryObject)
 
         {
             if (!ModelState.IsValid)
@@ -51,10 +51,10 @@ namespace GoSportsAPI.Controllers
         /// </summary>
         /// <param name="id">The unique identifier of the location type to retrieve.</param>
         /// <returns>
-        /// Returns an <see cref="ActionResult{T}"/> containing the <see cref="LocationTypeResponceDto"/> if found; otherwise, a not found result.
+        /// Returns an <see cref="ActionResult{T}"/> containing the <see cref="LocationTypeResponseDto"/> if found; otherwise, a not found result.
         /// </returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<LocationTypeResponceDto>> GetLocationType([FromRoute] Guid id)
+        public async Task<ActionResult<LocationTypeResponseDto>> GetLocationType([FromRoute] Guid id)
 
         {
             if (!ModelState.IsValid)

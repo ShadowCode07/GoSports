@@ -10,6 +10,6 @@ namespace GoSportsAPI.Interfaces.IServices
         Task<Location?> UpdateAsync(Guid id, LocationUpdateDto updateDto);
         Task<Location?> DeleteAsync(Guid id);
         Task<Location?> GetByIdAsync(Guid id);
-        Task<IEnumerable<LocationResponceDto>> GetAllAsync(LocationQueryObject queryObject);
+        Task<IEnumerable<LocationResponseDto>> GetAllAsync(LocationQueryObject queryObject);
     }
 }

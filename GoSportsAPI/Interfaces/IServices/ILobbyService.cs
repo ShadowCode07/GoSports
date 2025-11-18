@@ -9,8 +9,8 @@ namespace GoSportsAPI.Interfaces.IServices
     public interface ILobbyService
     {
         Task<Lobby?> DeleteAsync(Guid id);
-        Task<LobbyResponceDto?> GetByIdAsync(Guid id);
-        Task<IEnumerable<LobbyResponceDto>> GetAllAsync(LobbyQueryObject queryObject);
+        Task<LobbyResponseDto?> GetByIdAsync(Guid id);
+        Task<IEnumerable<LobbyResponseDto>> GetAllAsync(LobbyQueryObject queryObject);
         //Task JoinLobbyAsync(Guid lobbyId, Guid userProfileId);
         //Task LeaveLobbyAsync(Guid lobbyId, Guid userProfileId);
     }

@@ -22,6 +22,9 @@ namespace GoSportsAPI.Dtos.Lobbies
         [Range(2, 8, ErrorMessage = "The number of players must be between 2 and 8.")]
         public int MaxPlayerCount { get; set; }
 
+        [Required]
+        public Guid SportId { get; set; }
+
         /// <summary>
         /// The name of the sport associated with the lobby.
         /// </summary>
@@ -32,7 +35,7 @@ namespace GoSportsAPI.Dtos.Lobbies
         public string SportName { get; set; } = string.Empty;
 
         [Required]
-        public string Version { get; set; }
+        public string ConcurrencyToken { get; set; } = string.Empty;
     }
 
 }

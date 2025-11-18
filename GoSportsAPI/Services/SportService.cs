@@ -24,7 +24,7 @@ namespace GoSportsAPI.Services
             return await _sprotRepository.DeleteAsync(id);
         }
 
-        public async Task<IEnumerable<SportResponceDto>> GetAllAsync(SportQueryObject queryObject)
+        public async Task<IEnumerable<SportResponseDto>> GetAllAsync(SportQueryObject queryObject)
         {
             var sports = await _sprotRepository.GetAllAsync(queryObject);
 
@@ -44,7 +44,7 @@ namespace GoSportsAPI.Services
         {
             var updatedSport = updateDto.ToSportFromUpdate();
 
-            var update = await _sprotRepository.UpdateAsync(id, updatedSport, updateDto.Version);
+            var update = await _sprotRepository.UpdateAsync(id, updatedSport, updateDto.ConcurrencyToken);
 
             return update;
         }

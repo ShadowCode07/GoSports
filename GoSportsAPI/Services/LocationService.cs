@@ -26,7 +26,7 @@ namespace GoSportsAPI.Services
            return await _locationRepository.DeleteAsync(id);
         }
 
-        public async Task<IEnumerable<LocationResponceDto>> GetAllAsync(LocationQueryObject queryObject)
+        public async Task<IEnumerable<LocationResponseDto>> GetAllAsync(LocationQueryObject queryObject)
         {
             var locations = await _locationRepository.GetAllAsync(queryObject);
 
@@ -46,7 +46,7 @@ namespace GoSportsAPI.Services
         {
             var updatedLocation = updateDto.ToLocationFromUpdate();
 
-            var locationModel = await _locationRepository.UpdateAsync(id, updatedLocation, updateDto.Sports, updateDto.Version, updateDto.LocationType.Version);
+            var locationModel = await _locationRepository.UpdateAsync(id, updatedLocation, updateDto.Sports, updateDto.ConcurencyToken, updateDto.LocationType.Version);
 
             return locationModel;
         }

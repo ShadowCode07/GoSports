@@ -10,9 +10,9 @@ namespace GoSportsAPI.Mappers
         /// <summary>Converts to LobbyResponceDto from a lobby model</summary>
         /// <param name="lobbyModel">The lobby model.</param>
         /// <returns>LobbyResponceDto</returns>
-        public static LobbyResponceDto ToLobbyResponceDto(this Lobby lobbyModel)
+        public static LobbyResponseDto ToLobbyResponceDto(this Lobby lobbyModel)
         {
-            var lobbyResponceDto = lobbyModel.Adapt<LobbyResponceDto>();
+            var lobbyResponceDto = lobbyModel.Adapt<LobbyResponseDto>();
 
             return lobbyResponceDto;
         }

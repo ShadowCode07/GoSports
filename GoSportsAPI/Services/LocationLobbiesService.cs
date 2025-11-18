@@ -27,7 +27,7 @@ namespace GoSportsAPI.Services
             return _locationRepository.CheckLobbyCount(locationGuid);
         }
 
-        public async Task<LobbyResponceDto> CreateAsync(Guid locationGuid, LobbyCreateDto createDto, Guid hostId)
+        public async Task<LobbyResponseDto> CreateAsync(Guid locationGuid, LobbyCreateDto createDto, Guid hostId)
         {
             var lobbyModel = createDto.ToLobbyFromCreate(locationGuid);
 
@@ -38,11 +38,11 @@ namespace GoSportsAPI.Services
             return lobbyModel.ToLobbyResponceDto();
         }
 
-        public async Task<LobbyResponceDto> UpdateAsync(Guid locationGuid, Guid lobbyId, LobbyUpdateDto updateDto)
+        public async Task<LobbyResponseDto> UpdateAsync(Guid locationGuid, Guid lobbyId, LobbyUpdateDto updateDto)
         {
             var updatedLobby = updateDto.ToLobbyFromUpdate();
 
-            var lobby =  await _lobbyRepository.UpdateAsync(locationGuid, lobbyId, updatedLobby, updateDto.SportName, updateDto.Version);
+            var lobby =  await _lobbyRepository.UpdateAsync(locationGuid, lobbyId, updatedLobby, updateDto.SportName, updateDto.ConcurrencyToken);
 
             if(lobby == null)
             {

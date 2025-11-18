@@ -1,7 +1,13 @@
-﻿namespace GoSportsAPI.Dtos.Profiles
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace GoSportsAPI.Dtos.Profiles
 {
     public class UserProfileUpdateDto
     {
-        public List<string>? Sports { get; set; }
+        [Required]
+        public List<string> Sports { get; set; } = [];
+
+        [Required]
+        public string ConcurrencyToken { get; set; } = string.Empty;
     }
 }

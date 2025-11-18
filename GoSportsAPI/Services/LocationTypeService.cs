@@ -14,14 +14,14 @@ namespace GoSportsAPI.Services
         {
             _locationTypeRepository = locationTypeRepository;
         }
-        public async Task<LocationTypeResponceDto> GetLocationTypeById(Guid id)
+        public async Task<LocationTypeResponseDto> GetLocationTypeById(Guid id)
         {
             var location = await _locationTypeRepository.GetByIdAsync(id);
 
             return location.ToLocationTypeResponceDto();
         }
 
-        public async Task<IEnumerable<LocationTypeResponceDto>> GetLocationTypes(LocationTypeQueryObject queryObject)
+        public async Task<IEnumerable<LocationTypeResponseDto>> GetLocationTypes(LocationTypeQueryObject queryObject)
         {
             var locationTypes = await _locationTypeRepository.GetAllAsync(queryObject);
 

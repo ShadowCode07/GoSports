@@ -18,7 +18,7 @@ namespace GoSportsAPI.Dtos.Sports
         public string Name { get; set; } = string.Empty;
 
         [Required]
-        public string Version { get; set; }
+        public string ConcurrencyToken { get; set; } = string.Empty;
     }
 
 }

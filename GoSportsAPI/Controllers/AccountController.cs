@@ -50,7 +50,7 @@ namespace GoSportsAPI.Controllers
                             {
                                 UserName = appUser.UserName,
                                 Email = appUser.Email,
-                                Profile = appUser.Profile,
+                                //Profile = appUser.Profile,
                                 Token = await _tokenService.CreateToken(appUser)
                             }
                         );
@@ -98,7 +98,7 @@ namespace GoSportsAPI.Controllers
                 {
                     UserName = user.UserName,
                     Email = user.Email,
-                    Profile = user.Profile,
+                    //Profile = user.Profile,
                     Token = await _tokenService.CreateToken(user)
                 }
             );

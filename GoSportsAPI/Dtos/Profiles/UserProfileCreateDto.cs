@@ -1,7 +1,13 @@
-﻿namespace GoSportsAPI.Dtos.Profiles
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace GoSportsAPI.Dtos.Profiles
 {
     public class UserProfileCreateDto
     {
-        public List<string>? Sports { get; set; }
+        [Required]
+        public Guid UserId { get; set; }
+
+        [Required]
+        public List<string> Sports { get; set; } = [];
     }
 }

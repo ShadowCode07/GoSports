@@ -7,7 +7,7 @@ namespace GoSportsAPI.Dtos.Locations
     /// <summary>
     /// Represents the data transfer object used to return location information.
     /// </summary>
-    public class LocationResponceDto
+    public class LocationResponseDto
     {
         /// <summary>
         /// The unique identifier of the location.
@@ -27,7 +27,7 @@ namespace GoSportsAPI.Dtos.Locations
         /// <summary>
         /// The type of the location.
         /// </summary>
-        public LocationTypeResponceDto LocationType { get; set; } = null!;
+        public LocationTypeResponseDto LocationType { get; set; } = null!;
 
         /// <summary>
         /// The latitude of the location.
@@ -42,12 +42,12 @@ namespace GoSportsAPI.Dtos.Locations
         /// <summary>
         /// The collection of lobbies associated with the location.
         /// </summary>
-        public ICollection<LobbyResponceDto> Lobbies { get; set; }
+        public ICollection<LobbyResponseDto> Lobbies { get; set; } = [];
 
         /// <summary>
         /// The collection of sports available at the location.
         /// </summary>
-        public ICollection<SportResponceDto> Sports { get; set; }
+        public ICollection<SportResponseDto> Sports { get; set; } = [];
 
         /// <summary>
         /// The current number of active lobbies at the location.
@@ -59,7 +59,7 @@ namespace GoSportsAPI.Dtos.Locations
         /// </summary>
         public int MaxLobbyCount { get; set; }
 
-        public string? Version { get; set; }
+        public string ConcurrencyToken { get; set; } = string.Empty;
     }
 
 }

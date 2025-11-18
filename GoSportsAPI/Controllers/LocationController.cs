@@ -30,10 +30,10 @@ namespace GoSportsAPI.Controllers
         /// </summary>
         /// <param name="queryObject">The query object used for filtering and sorting locations.</param>
         /// <returns>
-        /// Returns an <see cref="ActionResult{T}"/> containing a collection of <see cref="LocationResponceDto"/> objects.
+        /// Returns an <see cref="ActionResult{T}"/> containing a collection of <see cref="LocationResponseDto"/> objects.
         /// </returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LocationResponceDto>>> GetLocations([FromQuery] LocationQueryObject queryObject)
+        public async Task<ActionResult<IEnumerable<LocationResponseDto>>> GetLocations([FromQuery] LocationQueryObject queryObject)
 
         {
             if (!ModelState.IsValid)
@@ -51,10 +51,10 @@ namespace GoSportsAPI.Controllers
         /// </summary>
         /// <param name="id">The unique identifier of the location to retrieve.</param>
         /// <returns>
-        /// Returns an <see cref="ActionResult{T}"/> containing the <see cref="LocationResponceDto"/> if found; otherwise, a not found result.
+        /// Returns an <see cref="ActionResult{T}"/> containing the <see cref="LocationResponseDto"/> if found; otherwise, a not found result.
         /// </returns>
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<LocationResponceDto>> GetLocation([FromRoute] Guid id)
+        public async Task<ActionResult<LocationResponseDto>> GetLocation([FromRoute] Guid id)
 
         {
             if (!ModelState.IsValid)

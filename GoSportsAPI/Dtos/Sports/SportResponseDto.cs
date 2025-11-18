@@ -5,7 +5,7 @@ namespace GoSportsAPI.Dtos.Sports
     /// <summary>
     /// Represents the data transfer object used to return sport information.
     /// </summary>
-    public class SportResponceDto
+    public class SportResponseDto
     {
         /// <summary>
         /// The unique identifier of the sport.
@@ -17,7 +17,7 @@ namespace GoSportsAPI.Dtos.Sports
         /// </summary>
         public string Name { get; set; } = string.Empty;
 
-        public string Version { get; set; }
+        public string ConcurrencyToken { get; set; } = string.Empty;
     }
 
 }

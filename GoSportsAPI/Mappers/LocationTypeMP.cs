@@ -14,9 +14,9 @@ namespace GoSportsAPI.Mappers
         /// </summary>
         /// <param name="locationTypeModel">The location type model.</param>
         /// <returns>LocationTypeResponceDto</returns>
-        public static LocationTypeResponceDto ToLocationTypeResponceDto(this LocationType locationTypeModel)
+        public static LocationTypeResponseDto ToLocationTypeResponceDto(this LocationType locationTypeModel)
         {
-            var locationTypeResponceDto = locationTypeModel.Adapt<LocationTypeResponceDto>();
+            var locationTypeResponceDto = locationTypeModel.Adapt<LocationTypeResponseDto>();
 
             return locationTypeResponceDto;
         }

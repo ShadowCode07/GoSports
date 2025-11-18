@@ -46,7 +46,7 @@ namespace GoSportsAPI.Dtos.LocationTypes
         /// </remarks>
         [Required]
         public bool HasLights { get; set; }
-        public string Version { get; set; }
+        public string ConcurrencyToken { get; set; } = string.Empty;
     }
 
 }

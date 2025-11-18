@@ -13,9 +13,9 @@ namespace GoSportsAPI.Mappers
         /// </summary>
         /// <param name="sportModel">The sport model.</param>
         /// <returns>SportResponceDto</returns>
-        public static SportResponceDto ToSportResponceDto(this Sport sportModel)
+        public static SportResponseDto ToSportResponceDto(this Sport sportModel)
         {
-            var sportResponceDto = sportModel.Adapt<SportResponceDto>();
+            var sportResponceDto = sportModel.Adapt<SportResponseDto>();
 
             return sportResponceDto;
         }

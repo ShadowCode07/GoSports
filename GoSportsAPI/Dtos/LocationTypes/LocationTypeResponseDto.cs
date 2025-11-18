@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the data transfer object used to return location type information.
     /// </summary>
-    public class LocationTypeResponceDto
+    public class LocationTypeResponseDto
     {
         /// <summary>
         /// The unique identifier of the location type.
@@ -34,7 +34,7 @@
         /// Indicates whether the location type has lighting available.
         /// </summary>
         public bool HasLights { get; set; }
-        public string Version { get; set; }
+        //public string ConcurrencyToken  { get; set; } = string.Empty;
     }
 
 }

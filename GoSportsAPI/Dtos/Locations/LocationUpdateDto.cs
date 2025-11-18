@@ -48,7 +48,7 @@ namespace GoSportsAPI.Dtos.Locations
         /// This field is required and contains the type details for the location.
         /// </remarks>
         [Required]
-        public LocationTypeUpdateDto LocationType { get; set; }
+        public LocationTypeUpdateDto LocationType { get; set; } = null!;
 
         /// <summary>
         /// The list of sports available at the location.
@@ -58,10 +58,10 @@ namespace GoSportsAPI.Dtos.Locations
         /// </remarks>
         [Required]
         [MinLength(1, ErrorMessage = "You must add at least one sport.")]
-        public List<string> Sports { get; set; } = new();
+        public List<string> Sports { get; set; } = [];
 
         [Required]
-        public string Version { get; set; } = string.Empty;
+        public string ConcurencyToken { get; set; } = string.Empty;
     }
 
 }

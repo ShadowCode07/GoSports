@@ -24,7 +24,7 @@ namespace GoSportsAPI.Services
             return await _lobbyRepository.DeleteAsync(id);
         }
 
-        public async Task<IEnumerable<LobbyResponceDto>> GetAllAsync(LobbyQueryObject queryObject)
+        public async Task<IEnumerable<LobbyResponseDto>> GetAllAsync(LobbyQueryObject queryObject)
         {
             var lobbies = await _lobbyRepository.GetAllAsync(queryObject);
 
@@ -33,7 +33,7 @@ namespace GoSportsAPI.Services
             return lobbyDto;
         }
 
-        public async Task<LobbyResponceDto?> GetByIdAsync(Guid id)
+        public async Task<LobbyResponseDto?> GetByIdAsync(Guid id)
         {
             var lobby = await _lobbyRepository.GetByIdAsync(id);
 

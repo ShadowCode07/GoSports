@@ -7,7 +7,7 @@ namespace GoSportsAPI.Interfaces.IServices
 {
     public interface ILocationTypeService
     {
-        Task<IEnumerable<LocationTypeResponceDto>> GetLocationTypes(LocationTypeQueryObject queryObject);
-        Task<LocationTypeResponceDto> GetLocationTypeById(Guid id);
+        Task<IEnumerable<LocationTypeResponseDto>> GetLocationTypes(LocationTypeQueryObject queryObject);
+        Task<LocationTypeResponseDto> GetLocationTypeById(Guid id);
     }
 }

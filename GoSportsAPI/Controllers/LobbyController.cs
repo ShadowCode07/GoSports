@@ -29,10 +29,10 @@ namespace GoSportsAPI.Controllers
         /// </summary>
         /// <param name="queryObject">The query object used for filtering and sorting lobbies.</param>
         /// <returns>
-        /// Returns an <see cref="ActionResult{T}"/> containing a collection of <see cref="LobbyResponceDto"/> objects.
+        /// Returns an <see cref="ActionResult{T}"/> containing a collection of <see cref="LobbyResponseDto"/> objects.
         /// </returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LobbyResponceDto>>> Getlobbies([FromQuery] LobbyQueryObject queryObject)
+        public async Task<ActionResult<IEnumerable<LobbyResponseDto>>> Getlobbies([FromQuery] LobbyQueryObject queryObject)
         {
             if (!ModelState.IsValid)
             {
@@ -49,10 +49,10 @@ namespace GoSportsAPI.Controllers
         /// </summary>
         /// <param name="id">The unique identifier of the lobby to retrieve.</param>
         /// <returns>
-        /// Returns an <see cref="ActionResult{T}"/> containing the <see cref="LobbyResponceDto"/> if found; otherwise, a not found result.
+        /// Returns an <see cref="ActionResult{T}"/> containing the <see cref="LobbyResponseDto"/> if found; otherwise, a not found result.
         /// </returns>
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<LobbyResponceDto>> GetLobby([FromRoute] Guid id)
+        public async Task<ActionResult<LobbyResponseDto>> GetLobby([FromRoute] Guid id)
 
         {
             if (!ModelState.IsValid)
