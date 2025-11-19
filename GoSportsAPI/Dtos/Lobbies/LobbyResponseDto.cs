@@ -22,7 +22,7 @@ namespace GoSportsAPI.Dtos.Lobbies
         /// The identifier of the location associated with this lobby.
         /// </summary>
         public Guid LocationId { get; set; }
-        public Guid LocationName { get; set; }
+        public string LocationName { get; set; } = string.Empty;
 
         /// <summary>
         /// The sport associated with the lobby.

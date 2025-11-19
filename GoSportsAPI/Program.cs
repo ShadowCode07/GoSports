@@ -76,7 +76,6 @@ namespace GoSportsAPI
             builder.Services.AddScoped<ILobbyService, LobbyService>();
             builder.Services.AddScoped<ILocationTypeService, LocationTypeService>();
             builder.Services.AddScoped<ISportService, SportService>();
-            builder.Services.AddScoped<ILocationLobbiesService, LocationLobbiesService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
 
             builder.Services.AddControllers();

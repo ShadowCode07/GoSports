@@ -9,7 +9,5 @@ namespace GoSportsAPI.Models
 
         [Timestamp]
         public byte[] Version { get; set; } = Array.Empty<byte>();
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
     }
 }

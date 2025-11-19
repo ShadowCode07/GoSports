@@ -85,7 +85,7 @@ namespace GoSportsAPI.Mappers
             config.NewConfig<UserProfile, UserProfileResponseDto>()
                 .Map(dest => dest.ConcurrencyToken, src => Convert.ToBase64String(src.Version))
                 .Map(dest => dest.LobbyName, src => src.Lobby != null ? src.Lobby.Name : null)
-                .Map(dest => dest.Sports, src => src.Sports);
+                .Map(dest => dest.Sports, src => src.Sports.Select(s => s.Name).ToList());
 
             config.NewConfig<UserProfileUpdateDto, UserProfile>()
                 .Ignore(dest => dest.Id)

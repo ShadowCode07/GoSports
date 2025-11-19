@@ -25,7 +25,7 @@ namespace GoSportsAPI.Services
             _sportRepository = sportRepository;
         }
 
-        public async Task<LobbyResponseDto> CreateAsync(LobbyCreateDto dto)
+        public async Task<LobbyResponseDto> CreateAsync(LobbyCreateDto dto, Guid hostProfileId)
         {
             var location = await _locationRepository.GetWithDetailsAsync(dto.LocationId);
             if(location == null)
@@ -41,19 +41,28 @@ namespace GoSportsAPI.Services
             var sport = await _sportRepository.GetByNameAsync(dto.SportName);
             if(sport == null)
             {
-                throw new Exception("Sport not foubd");
+                throw new Exception("Sport not found");
             }
 
-            //var hostProfile = await _userProfileRepository.GetByIdAsync();
+            var hostProfile = await _userProfileRepository.GetByUserIdAsync(hostProfileId);
+
+            if(hostProfile == null)
+            {
+                throw new Exception("user not logged in");
+            }
 
             var lobby = dto.Adapt<Lobby>();
+
+            lobby.Code = RandomString(5);
+
             lobby.Sport = sport;
+            lobby.SportId = sport.Id;
             lobby.Location = location;
-            //lobby.HostProfileId = hostProfile.Id;
-            //lobby.HostProfile = hostProfile;
+            lobby.HostProfileId = hostProfileId;
+            lobby.HostProfile = hostProfile;
 
             lobby.CurrentPlayerCount = 1;
-            //lobby.Users.Add(hostProfile);
+            lobby.Users.Add(hostProfile);
 
             await _lobbyRepository.CreateAsync(lobby);
             await _lobbyRepository.SaveChanges();
@@ -97,8 +106,7 @@ namespace GoSportsAPI.Services
             if (lobby is null)
             {
                 return false;
-            }
-                
+            }   
 
             var user = await _userProfileRepository.GetWithDetailsAsync(userProfileId);
 
@@ -177,6 +185,15 @@ namespace GoSportsAPI.Services
             }
 
             return lobby.Adapt<LobbyResponseDto>();
+        }
+
+        private static Random random = new Random();
+
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
     }
 }

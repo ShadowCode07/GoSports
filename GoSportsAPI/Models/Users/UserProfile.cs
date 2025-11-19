@@ -7,7 +7,7 @@ namespace GoSportsAPI.Models.Users
     public class UserProfile : Base
     {
         public Guid UserId { get; set; }
-        public AppUser User { get; set; } = default!;
+        public AppUser User { get; set; }
 
         public Guid? LobbyId { get; set; }
         public Lobby? Lobby { get; set; }

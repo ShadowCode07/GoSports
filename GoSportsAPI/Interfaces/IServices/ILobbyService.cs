@@ -8,7 +8,7 @@ namespace GoSportsAPI.Interfaces.IServices
 {
     public interface ILobbyService
     {
-        Task<LobbyResponseDto> CreateAsync(LobbyCreateDto dto);
+        Task<LobbyResponseDto> CreateAsync(LobbyCreateDto dto, Guid hostProfileId);
         Task<LobbyResponseDto?> UpdateAsync(Guid id, LobbyUpdateDto dto);
         Task<bool> DeleteAsync(Guid id);
 

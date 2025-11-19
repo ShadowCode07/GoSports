@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GoSportsAPI.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20251118110418_Initial")]
+    [Migration("20251119195310_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -244,6 +244,7 @@ namespace GoSportsAPI.Migrations
             modelBuilder.Entity("GoSportsAPI.Models.Users.UserProfile", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("LobbyId")
@@ -261,6 +262,9 @@ namespace GoSportsAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LobbyId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("UserProfiles");
                 });
@@ -464,16 +468,16 @@ namespace GoSportsAPI.Migrations
 
             modelBuilder.Entity("GoSportsAPI.Models.Users.UserProfile", b =>
                 {
-                    b.HasOne("GoSportsAPI.Models.Users.AppUser", "User")
-                        .WithOne("Profile")
-                        .HasForeignKey("GoSportsAPI.Models.Users.UserProfile", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("GoSportsAPI.Models.Lobbies.Lobby", "Lobby")
                         .WithMany("Users")
                         .HasForeignKey("LobbyId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("GoSportsAPI.Models.Users.AppUser", "User")
+                        .WithOne("Profile")
+                        .HasForeignKey("GoSportsAPI.Models.Users.UserProfile", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Lobby");
 

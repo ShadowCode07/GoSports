@@ -114,7 +114,7 @@ namespace GoSportsAPI.Data
             modelBuilder.Entity<UserProfile>()
                 .HasOne(p => p.User)
                 .WithOne(u => u.Profile)
-                .HasForeignKey<UserProfile>(p => p.Id)
+                .HasForeignKey<UserProfile>(p => p.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 

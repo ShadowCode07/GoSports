@@ -32,127 +32,74 @@ namespace GoSportsAPI.Controllers
         /// <returns>
         /// Returns an <see cref="ActionResult{T}"/> containing a collection of <see cref="LocationResponseDto"/> objects.
         /// </returns>
+        /// <summary>
+        /// Gets all locations based on filtering and sorting options.
+        /// </summary>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LocationResponseDto>>> GetLocations([FromQuery] LocationQueryObject queryObject)
-
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAll([FromQuery] LocationQueryObject queryObject)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var locations = await _locationService.GetAllAsync(queryObject);
-
             return Ok(locations);
         }
 
         /// <summary>
-        /// Retrieves a location with the specified identifier.
+        /// Gets a location by ID.
         /// </summary>
-        /// <param name="id">The unique identifier of the location to retrieve.</param>
-        /// <returns>
-        /// Returns an <see cref="ActionResult{T}"/> containing the <see cref="LocationResponseDto"/> if found; otherwise, a not found result.
-        /// </returns>
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<LocationResponseDto>> GetLocation([FromRoute] Guid id)
-
+        [AllowAnonymous]
+        public async Task<IActionResult> GetById(Guid id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var location = await _locationService.GetByIdAsync(id);
-
-            if (location == null)
-            { 
+            if (location is null)
                 return NotFound();
-            }
 
-            return Ok(location.ToLocationResponceDto());
+            return Ok(location);
         }
 
         /// <summary>
         /// Creates a new location.
         /// </summary>
-        /// <param name="createDto">The data transfer object containing the details of the location to create.</param>
-        /// <returns>
-        /// Returns an <see cref="IActionResult"/> containing the result of the create operation.
-        /// </returns>
-        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> CreateLocation([FromBody] LocationCreateDto createDto)
-
+        public async Task<IActionResult> Create([FromBody] LocationCreateDto dto)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
-            var locationModel = createDto.ToLocationFromCreate();
+            var created = await _locationService.CreateAsync(dto);
 
-            await _locationService.CreateAsync(locationModel, createDto.Sports);
-
-            return CreatedAtAction(
-                nameof(GetLocation),
-                new { id = locationModel.Id },
-                locationModel.ToLocationResponceDto());
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         /// <summary>
-        /// Updates an existing location with the specified identifier.
+        /// Updates an existing location.
         /// </summary>
-        /// <param name="id">The unique identifier of the location to update.</param>
-        /// <param name="updateDto">The data transfer object containing the updated location information.</param>
-        /// <returns>
-        /// Returns an <see cref="IActionResult"/> indicating the result of the update operation.
-        /// </returns>
-        [Authorize(Roles = "Admin")]
         [HttpPut("{id:guid}")]
-        public async Task<IActionResult> UpdateLocation([FromRoute] Guid id, [FromBody] LocationUpdateDto updateDto)
-
+        public async Task<IActionResult> Update(Guid id, [FromBody] LocationUpdateDto dto)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
-            var locationModel = await _locationService.GetByIdAsync(id);
-            
-            if(locationModel == null)
-            {
+            var updated = await _locationService.UpdateAsync(id, dto);
+            if (updated is null)
                 return NotFound();
-            }
 
-            locationModel = await _locationService.UpdateAsync(id, updateDto);
-
-            return Ok(locationModel.ToLocationResponceDto());
+            return Ok(updated);
         }
 
         /// <summary>
-        /// Deletes a location with the specified identifier.
+        /// Deletes a location by ID.
         /// </summary>
-        /// <param name="id">The unique identifier of the location to delete.</param>
-        /// <returns>
-        /// Returns an <see cref="IActionResult"/> indicating the result of the delete operation.
-        /// </returns>
-        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> DeleteLocation([FromRoute] Guid id)
-
+        public async Task<IActionResult> Delete(Guid id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var location = await _locationService.GetByIdAsync(id);
-            if (location == null)
-            {
+            var existing = await _locationService.GetByIdAsync(id);
+            if (existing is null)
                 return NotFound();
-            }
 
-            await _locationService.DeleteAsync(id);
+            var deleted = await _locationService.DeleteAsync(id);
+            if (!deleted)
+                return BadRequest("Could not delete location.");
 
             return NoContent();
         }

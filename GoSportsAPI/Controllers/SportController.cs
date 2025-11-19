@@ -26,133 +26,81 @@ namespace GoSportsAPI.Controllers
         }
 
         /// <summary>
-        /// Retrieves a collection of sports based on the specified query parameters.
+        /// Gets all sports based on filtering settings.
         /// </summary>
-        /// <param name="queryObject">The query object used for filtering and sorting sports.</param>
-        /// <returns>
-        /// Returns an <see cref="ActionResult{T}"/> containing a collection of <see cref="SportResponseDto"/> objects.
-        /// </returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SportResponseDto>>> GetSports([FromQuery] SportQueryObject queryObject)
-
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAll([FromQuery] SportQueryObject queryObject)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var sports = await _sportService.GetAllAsync(queryObject);
-
             return Ok(sports);
         }
 
         /// <summary>
-        /// Retrieves a sport with the specified identifier.
+        /// Gets a sport by ID.
         /// </summary>
-        /// <param name="id">The unique identifier of the sport to retrieve.</param>
-        /// <returns>
-        /// Returns an <see cref="ActionResult{T}"/> containing the <see cref="SportResponseDto"/> if found; otherwise, a not found result.
-        /// </returns>
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<SportResponseDto>> GetSport([FromRoute] Guid id)
-
+        [AllowAnonymous]
+        public async Task<IActionResult> GetById(Guid id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var sport = await _sportService.GetByIdAsync(id);
 
-            if (sport == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(sport);
+            return sport is null ? NotFound() : Ok(sport);
         }
 
         /// <summary>
         /// Creates a new sport.
         /// </summary>
-        /// <param name="createDto">The data transfer object containing the details of the sport to create.</param>
-        /// <returns>
-        /// Returns an <see cref="IActionResult"/> containing the result of the create operation.
-        /// </returns>
-        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> CreateSport([FromBody] SportCreateDto createDto)
-
+        public async Task<IActionResult> Create([FromBody] SportCreateDto dto)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
-            var sportModel = createDto.ToSportFromCreate();
-
-            await _sportService.CreateAsync(sportModel);
-
-            return CreatedAtAction(
-                nameof(GetSport),
-                new { id = sportModel.Id },
-                sportModel.ToSportResponceDto());
+            var created = await _sportService.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         /// <summary>
-        /// Updates an existing sport with the specified identifier.
+        /// Updates an existing sport.
         /// </summary>
-        /// <param name="id">The unique identifier of the sport to update.</param>
-        /// <param name="updateDto">The data transfer object containing the updated sport information.</param>
-        /// <returns>
-        /// Returns an <see cref="IActionResult"/> indicating the result of the update operation.
-        /// </returns>
-        [Authorize(Roles = "Admin")]
         [HttpPut("{id:guid}")]
-        public async Task<IActionResult> UpdateSport([FromRoute] Guid id, [FromBody] SportUpdateDto updateDto)
-
+        public async Task<IActionResult> Update(Guid id, [FromBody] SportUpdateDto dto)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
-            var sportModel = await _sportService.GetByIdAsync(id);
-
-            if (sportModel == null)
+            var updated = await _sportService.UpdateAsync(id, dto);
+            
+            if (updated is null)
             {
                 return NotFound();
             }
 
-            sportModel = await _sportService.UpdateAsync(id, updateDto);
 
-            return Ok(sportModel.ToSportResponceDto());
+            return Ok(updated);
         }
 
         /// <summary>
-        /// Deletes a sport with the specified identifier.
+        /// Deletes a sport by ID.
         /// </summary>
-        /// <param name="id">The unique identifier of the sport to delete.</param>
-        /// <returns>
-        /// Returns an <see cref="IActionResult"/> indicating the result of the delete operation.
-        /// </returns>
-        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> DeleteSport([FromRoute] Guid id)
-
+        public async Task<IActionResult> Delete(Guid id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var exists = await _sportService.GetByIdAsync(id);
 
-            var sport = await _sportService.GetByIdAsync(id);
-            if (sport == null)
+            if (exists is null)
             {
                 return NotFound();
             }
 
-            await _sportService.DeleteAsync(id);
+            var deleted = await _sportService.DeleteAsync(id);
+
+            if (!deleted)
+            {
+                return BadRequest("Could not delete sport.");
+            }
+
 
             return NoContent();
         }

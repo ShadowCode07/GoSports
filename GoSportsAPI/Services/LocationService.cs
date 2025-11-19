@@ -37,12 +37,14 @@ namespace GoSportsAPI.Services
         public async Task<LocationResponseDto?> GetByIdAsync(Guid id)
         {
             var location = await _locationRepository.GetWithDetailsAsync(id);
+                    
             return location?.Adapt<LocationResponseDto>();
         }
 
         public async Task<IEnumerable<LocationResponseDto>> GetAllAsync(LocationQueryObject queryObject)
         {
             var locations = await _locationRepository.GetAllAsync(queryObject);
+
             return locations.Adapt<IEnumerable<LocationResponseDto>>();
         }
 

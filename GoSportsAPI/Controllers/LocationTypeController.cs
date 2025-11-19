@@ -1,6 +1,7 @@
 ﻿using GoSportsAPI.Dtos.LocationTypes;
 using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces.IServices;
+using GoSportsAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,80 +17,38 @@ namespace GoSportsAPI.Controllers
     [ApiController]
     [Route("api/locationType")]
     public class LocationTypeController : ControllerBase
-
     {
-        private readonly ILocationTypeService _LocationTypeService;
+        private readonly ILocationTypeService _locationTypeService;
 
-        public LocationTypeController(ILocationTypeService LocationTypeService)
+        public LocationTypeController(ILocationTypeService locationTypeService)
         {
-            _LocationTypeService = LocationTypeService;
+            _locationTypeService = locationTypeService;
         }
 
         /// <summary>
-        /// Retrieves a collection of location types based on the specified query parameters.
+        /// Gets all location types based on filtering and sorting options.
         /// </summary>
-        /// <param name="queryObject">The query object used for filtering and sorting location types.</param>
-        /// <returns>
-        /// Returns an <see cref="ActionResult{T}"/> containing a collection of <see cref="LocationTypeResponseDto"/> objects.
-        /// </returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LocationTypeResponseDto>>> GetLocationTypes([FromQuery] LocationTypeQueryObject queryObject)
-
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAll([FromQuery] LocationTypeQueryObject queryObject)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var locationTypes = await _LocationTypeService.GetLocationTypes(queryObject);
-
-            return Ok(locationTypes);
+            var types = await _locationTypeService.GetLocationTypes(queryObject);
+            return Ok(types);
         }
 
         /// <summary>
-        /// Retrieves a location type with the specified identifier.
+        /// Gets a specific location type by ID.
         /// </summary>
-        /// <param name="id">The unique identifier of the location type to retrieve.</param>
-        /// <returns>
-        /// Returns an <see cref="ActionResult{T}"/> containing the <see cref="LocationTypeResponseDto"/> if found; otherwise, a not found result.
-        /// </returns>
-        [HttpGet("{id}")]
-        public async Task<ActionResult<LocationTypeResponseDto>> GetLocationType([FromRoute] Guid id)
-
+        [HttpGet("{id:guid}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetById(Guid id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var location = await _LocationTypeService.GetLocationTypeById(id);
-
-            if (location == null)
-            {
+            var type = await _locationTypeService.GetLocationTypeById(id);
+            if (type is null)
                 return NotFound();
-            }
 
-            return Ok(location);
+            return Ok(type);
         }
 
-        /*[HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLocationType([FromRoute] Guid id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var location = await _repository.GetByIdAsync(id);
-
-            if (location == null)
-            {
-                return NotFound();
-            }
-
-            await _repository.DeleteAsync(id);
-
-            return NoContent();
-        }*/
     }
 }

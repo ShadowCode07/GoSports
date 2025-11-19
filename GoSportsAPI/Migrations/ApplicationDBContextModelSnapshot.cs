@@ -241,6 +241,7 @@ namespace GoSportsAPI.Migrations
             modelBuilder.Entity("GoSportsAPI.Models.Users.UserProfile", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("LobbyId")
@@ -258,6 +259,9 @@ namespace GoSportsAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LobbyId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("UserProfiles");
                 });
@@ -461,16 +465,16 @@ namespace GoSportsAPI.Migrations
 
             modelBuilder.Entity("GoSportsAPI.Models.Users.UserProfile", b =>
                 {
-                    b.HasOne("GoSportsAPI.Models.Users.AppUser", "User")
-                        .WithOne("Profile")
-                        .HasForeignKey("GoSportsAPI.Models.Users.UserProfile", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("GoSportsAPI.Models.Lobbies.Lobby", "Lobby")
                         .WithMany("Users")
                         .HasForeignKey("LobbyId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("GoSportsAPI.Models.Users.AppUser", "User")
+                        .WithOne("Profile")
+                        .HasForeignKey("GoSportsAPI.Models.Users.UserProfile", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Lobby");
 

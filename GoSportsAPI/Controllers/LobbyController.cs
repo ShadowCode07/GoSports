@@ -1,6 +1,8 @@
 ﻿using GoSportsAPI.Dtos.Lobbies;
+using GoSportsAPI.Extensions;
 using GoSportsAPI.Helpers;
 using GoSportsAPI.Interfaces.IServices;
+using GoSportsAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,114 +19,130 @@ namespace GoSportsAPI.Controllers
     [ApiController]
     public class LobbyController : ControllerBase
     {
-        private readonly ILobbyService _lobbySerivce;
+        private readonly ILobbyService _lobbyService;
 
         public LobbyController(ILobbyService lobbyService)
         {
-            _lobbySerivce = lobbyService;
+            _lobbyService = lobbyService;
         }
 
         /// <summary>
-        /// Retrieves a collection of lobbies based on the specified query parameters.
+        /// Gets all lobbies based on filtering and sorting options.
         /// </summary>
-        /// <param name="queryObject">The query object used for filtering and sorting lobbies.</param>
-        /// <returns>
-        /// Returns an <see cref="ActionResult{T}"/> containing a collection of <see cref="LobbyResponseDto"/> objects.
-        /// </returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LobbyResponseDto>>> Getlobbies([FromQuery] LobbyQueryObject queryObject)
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAll([FromQuery] LobbyQueryObject queryObject)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var lobbies = await _lobbySerivce.GetAllAsync(queryObject);
-
+            var lobbies = await _lobbyService.GetAllAsync(queryObject);
             return Ok(lobbies);
         }
 
         /// <summary>
-        /// Retrieves a lobby with the specified identifier.
+        /// Gets a lobby by ID.
         /// </summary>
-        /// <param name="id">The unique identifier of the lobby to retrieve.</param>
-        /// <returns>
-        /// Returns an <see cref="ActionResult{T}"/> containing the <see cref="LobbyResponseDto"/> if found; otherwise, a not found result.
-        /// </returns>
         [HttpGet("{id:guid}")]
-        public async Task<ActionResult<LobbyResponseDto>> GetLobby([FromRoute] Guid id)
-
+        [AllowAnonymous]
+        public async Task<IActionResult> GetById(Guid id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var lobby = await _lobbySerivce.GetByIdAsync(id);
-
-            if (lobby == null)
-            {
+            var lobby = await _lobbyService.GetByIdAsync(id);
+            if (lobby is null)
                 return NotFound();
-            }
 
-            return Ok();
+            return Ok(lobby);
         }
 
-        // Move to locations controllers
-        /*[HttpPost("{locationGuid}")]
-        public async Task<IActionResult> CreateLobby([FromRoute] Guid locationGuid, LobbyCreateDto createDto)
+        /// <summary>
+        /// Creates a new lobby.
+        /// </summary>
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] LobbyCreateDto dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (!await _locationRepository.Exists(locationGuid))
+            var userId = User.GetUserId();
+            if(userId == null)
             {
-                return NotFound("Location doesn't exist");
+                return Unauthorized();
             }
 
-            if (!await _locationRepository.CheckLobbyCount(locationGuid))
-            {
-                return BadRequest("Lobby count full for this location");
-            }
+            var created = await _lobbyService.CreateAsync(dto, userId.Value);
 
-            var lobbyModel = createDto.ToLobbyFromCreate(locationGuid);
-
-            await _repository.CreateAsync(lobbyModel);
-
-            await _locationRepository.AddLobbyToCount(locationGuid);
-
-            return CreatedAtAction(
-                nameof(GetLobby),
-                new { id = lobbyModel.Id }, 
-                lobbyModel.ToLobbyResponceDto());
-        }*/
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        }
 
         /// <summary>
-        /// Deletes a lobby with the specified identifier.
+        /// Updates an existing lobby.
         /// </summary>
-        /// <param name="id">The unique identifier of the lobby to delete.</param>
-        /// <returns>
-        /// Returns an <see cref="IActionResult"/> indicating the result of the delete operation.
-        /// </returns>
-        [Authorize(Roles = "Admin")]
-        [HttpDelete("{id:guid}")]
-        public async Task<IActionResult> DeleteLobby(Guid id)
-
+        [HttpPut("{id:guid}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] LobbyUpdateDto dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var lobby = await _lobbySerivce.GetByIdAsync(id);
-            if (lobby == null)
+            var updated = await _lobbyService.UpdateAsync(id, dto);
+
+            if (updated is null)
             {
                 return NotFound();
             }
 
-            await _lobbySerivce.DeleteAsync(id);
+
+            return Ok(updated);
+        }
+
+        /// <summary>
+        /// Joins the given lobby as the specified user profile.
+        /// NOTE: userProfileId is currently passed explicitly; 
+        /// later you can get it from the authenticated user instead.
+        /// </summary>
+        [HttpPost("{id:guid}/join")]
+        public async Task<IActionResult> Join(Guid id, [FromQuery] Guid userProfileId)
+        {
+            var success = await _lobbyService.JoinLobbyAsync(id, userProfileId);
+
+            if (!success)
+            {
+                return BadRequest("Unable to join lobby (it may be full, missing, or user already left).");
+            }
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Leaves the given lobby as the specified user profile.
+        /// </summary>
+        [HttpPost("{id:guid}/leave")]
+        public async Task<IActionResult> Leave(Guid id, [FromQuery] Guid userProfileId)
+        {
+            var success = await _lobbyService.LeaveLobbyAsync(id, userProfileId);
+
+            if (!success)
+            {
+
+                return BadRequest("Unable to leave lobby (it may not exist, or user is not a member).");
+            }
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Deletes a lobby by ID.
+        /// </summary>
+        [HttpDelete("{id:guid}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var exists = await _lobbyService.GetByIdAsync(id);
+            if (exists is null)
+                return NotFound();
+
+            var deleted = await _lobbyService.DeleteAsync(id);
+            if (!deleted)
+                return BadRequest("Could not delete lobby.");
 
             return NoContent();
         }

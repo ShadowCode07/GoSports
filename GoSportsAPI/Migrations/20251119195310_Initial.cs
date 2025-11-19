@@ -278,8 +278,8 @@ namespace GoSportsAPI.Migrations
                 {
                     table.PrimaryKey("PK_UserProfiles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserProfiles_AspNetUsers_Id",
-                        column: x => x.Id,
+                        name: "FK_UserProfiles_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -404,6 +404,12 @@ namespace GoSportsAPI.Migrations
                 column: "LobbyId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserProfiles_UserId",
+                table: "UserProfiles",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserSports_UserProfilesId",
                 table: "UserSports",
                 column: "UserProfilesId");
@@ -421,7 +427,7 @@ namespace GoSportsAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_UserProfiles_AspNetUsers_Id",
+                name: "FK_UserProfiles_AspNetUsers_UserId",
                 table: "UserProfiles");
 
             migrationBuilder.DropForeignKey(
