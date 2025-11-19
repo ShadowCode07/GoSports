@@ -1,71 +1,76 @@
-﻿namespace GoSportsAPI.Interfaces.IRepositories
+﻿using GoSportsAPI.Models;
+using System.Linq.Expressions;
+
+namespace GoSportsAPI.Interfaces.IRepositories
 {
     /// <summary>
     /// Defines the contract for basic asynchronous CRUD operations.
     /// </summary>
     /// <typeparam name="T">The entity type handled by the repository.</typeparam>
-    public interface IRepository<T>
+    public interface IRepository<T> 
+        where T : Base
     {
+        /// <summary>
+        /// Returns an <see cref="IQueryable{T}"/> for advanced querying scenarios.
+        /// </summary>
+        IQueryable<T> Query();
+
         /// <summary>
         /// Creates a new entity asynchronously.
         /// </summary>
-        /// <param name="entity">The entity to create.</param>
-        /// <returns>
-        /// A task representing the asynchronous operation, containing the created entity.
-        /// </returns>
         Task<T> CreateAsync(T entity);
 
         /// <summary>
-        /// Updates an existing entity asynchronously.
+        /// Retrieves an entity by its identifier.
         /// </summary>
-        /// <param name="id">The unique identifier of the entity to update.</param>
-        /// <param name="entity">The updated entity data.</param>
-        /// <returns>
-        /// A task representing the asynchronous operation, containing the updated entity if found; otherwise, <c>null</c>.
-        /// </returns>
-        Task<T?> UpdateAsync(Guid id, T entity);
+        /// <param name="id">The unique identifier of the entity.</param>
+        /// <param name="asNoTracking">
+        /// If true, the entity is returned with AsNoTracking for read-only operations.
+        /// </param>
+        Task<T?> GetByIdAsync(Guid id, bool asNoTracking = false);
 
         /// <summary>
-        /// Deletes an entity asynchronously.
+        /// Retrieves all entities.
         /// </summary>
-        /// <param name="id">The unique identifier of the entity to delete.</param>
-        /// <returns>
-        /// A task representing the asynchronous operation, containing the deleted entity if found; otherwise, <c>null</c>.
-        /// </returns>
-        Task<T?> DeleteAsync(Guid id);
+        /// <param name="asNoTracking">
+        /// If true, entities are returned with AsNoTracking for read-only operations.
+        /// </param>
+        Task<IReadOnlyList<T>> GetAllAsync(bool asNoTracking = false);
 
         /// <summary>
-        /// Retrieves an entity by its unique identifier asynchronously.
+        /// Marks an entity as modified.
         /// </summary>
-        /// <param name="id">The unique identifier of the entity to retrieve.</param>
-        /// <returns>
-        /// A task representing the asynchronous operation, containing the entity if found; otherwise, <c>null</c>.
-        /// </returns>
-        Task<T?> GetByIdAsync(Guid id);
+        void Update(T entity);
 
         /// <summary>
-        /// Retrieves all entities asynchronously.
+        /// Removes an entity from the set.
         /// </summary>
-        /// <returns>
-        /// A task representing the asynchronous operation, containing a list of all entities.
-        /// </returns>
-        Task<List<T>> GetAllAsync();
+        void Remove(T entity);
 
         /// <summary>
-        /// Checks whether an entity with the specified identifier exists asynchronously.
+        /// Deletes an entity by its identifier.
         /// </summary>
-        /// <param name="id">The unique identifier of the entity to check.</param>
-        /// <returns>
-        /// A task representing the asynchronous operation, containing <c>true</c> if the entity exists; otherwise, <c>false</c>.
-        /// </returns>
-        Task<bool> Exists(Guid id);
+        Task<bool> DeleteByIdAsync(Guid id);
+
+        /// <summary>
+        /// Checks if an entity with the given identifier exists.
+        /// </summary>
+        Task<bool> ExistsAsync(Guid id);
+
+        /// <summary>
+        /// Checks if any entities match the given predicate.
+        /// </summary>
+        Task<bool> AnyAsync(Expression<Func<T, bool>>? predicate = null);
+
+        /// <summary>
+        /// Counts entities that match the given predicate.
+        /// </summary>
+        Task<int> CountAsync(Expression<Func<T, bool>>? predicate = null);
 
         /// <summary>
         /// Saves all pending changes asynchronously.
+        /// Returns true if at least one change was saved.
         /// </summary>
-        /// <returns>
-        /// A task representing the asynchronous operation, containing <c>true</c> if changes were saved successfully; otherwise, <c>false</c>.
-        /// </returns>
         Task<bool> SaveChanges();
     }
 }

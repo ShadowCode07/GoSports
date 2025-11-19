@@ -17,39 +17,9 @@ namespace GoSportsAPI.Services
             _locationRepository = locationRepository;
         }
 
-        public Task<bool> CheckLocation(Guid locationId)
+        public Task<IEnumerable<LobbyResponseDto>> GetLobbiesForLocationAsync(Guid locationId)
         {
-            return _locationRepository.Exists(locationId);
-        }
-
-        public Task<bool> CheckLobbyCount(Guid locationGuid)
-        {
-            return _locationRepository.CheckLobbyCount(locationGuid);
-        }
-
-        public async Task<LobbyResponseDto> CreateAsync(Guid locationGuid, LobbyCreateDto createDto, Guid hostId)
-        {
-            var lobbyModel = createDto.ToLobbyFromCreate(locationGuid);
-
-            await _lobbyRepository.CreateAsync(locationGuid, lobbyModel, createDto.SportName, hostId);
-
-            await _locationRepository.AddLobbyToCount(locationGuid, lobbyModel.Id);
-
-            return lobbyModel.ToLobbyResponceDto();
-        }
-
-        public async Task<LobbyResponseDto> UpdateAsync(Guid locationGuid, Guid lobbyId, LobbyUpdateDto updateDto)
-        {
-            var updatedLobby = updateDto.ToLobbyFromUpdate();
-
-            var lobby =  await _lobbyRepository.UpdateAsync(locationGuid, lobbyId, updatedLobby, updateDto.SportName, updateDto.ConcurrencyToken);
-
-            if(lobby == null)
-            {
-                throw new ArgumentNullException(nameof(lobby));
-            }
-
-            return lobby.ToLobbyResponceDto();
+            throw new NotImplementedException();
         }
     }
 }

@@ -4,49 +4,75 @@ using GoSportsAPI.Interfaces.IRepositories;
 using GoSportsAPI.Interfaces.IServices;
 using GoSportsAPI.Mappers;
 using GoSportsAPI.Models.Sports;
+using GoSportsAPI.Repositories;
+using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace GoSportsAPI.Services
 {
     public class SportService : ISportService
     {
-        private readonly ISportRepository _sprotRepository;
-        public SportService(ISportRepository sprotRepository)
+        private readonly ISportRepository _sportRepository;
+        public SportService(ISportRepository sportRepository)
         {
-            _sprotRepository = sprotRepository;
-        }
-        public async Task<Sport> CreateAsync(Sport entity)
-        {
-            return await _sprotRepository.CreateAsync(entity);
+            _sportRepository = sportRepository;
         }
 
-        public async Task<Sport?> DeleteAsync(Guid id)
+        public async Task<SportResponseDto> CreateAsync(SportCreateDto dto)
         {
-            return await _sprotRepository.DeleteAsync(id);
+            var sport = dto.Adapt<Sport>();
+
+            await _sportRepository.CreateAsync(sport);
+            await _sportRepository.SaveChanges();
+
+            return sport.Adapt<SportResponseDto>();
+        }
+
+        public async Task<SportResponseDto?> GetByIdAsync(Guid id)
+        {
+            var sport = await _sportRepository.GetByIdAsync(id, asNoTracking: true);
+            return sport?.Adapt<SportResponseDto>();
         }
 
         public async Task<IEnumerable<SportResponseDto>> GetAllAsync(SportQueryObject queryObject)
         {
-            var sports = await _sprotRepository.GetAllAsync(queryObject);
-
-            var sportsDto = sports.Select(l => l.ToSportResponceDto());
-
-            return sportsDto;
+            var sports = await _sportRepository.GetAllAsync(queryObject);
+            return sports.Adapt<IEnumerable<SportResponseDto>>();
         }
 
-        public async Task<Sport?> GetByIdAsync(Guid id)
+        public async Task<SportResponseDto?> UpdateAsync(Guid id, SportUpdateDto dto)
         {
-            var sport = await _sprotRepository.GetByIdAsync(id);
-           
-            return sport;
+            var sport = await _sportRepository.GetByIdAsync(id);
+            if (sport is null)
+            {
+                return null;
+            }
+
+            dto.Adapt(sport);
+
+            try
+            {
+                await _sportRepository.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return null;
+            }
+
+            return sport.Adapt<SportResponseDto>();
         }
 
-        public async Task<Sport?> UpdateAsync(Guid id, SportUpdateDto updateDto)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            var updatedSport = updateDto.ToSportFromUpdate();
+            var deleted = await _sportRepository.DeleteByIdAsync(id);
 
-            var update = await _sprotRepository.UpdateAsync(id, updatedSport, updateDto.ConcurrencyToken);
+            if (!deleted)
+            {
+                return false;
+            }
 
-            return update;
+            await _sportRepository.SaveChanges();
+            return true;
         }
     }
 }

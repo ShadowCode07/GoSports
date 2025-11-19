@@ -19,11 +19,9 @@ namespace GoSportsAPI.Interfaces.IRepositories
         /// <returns>List&lt;Sport&gt;</returns>
         Task<List<Sport>> GetAllAsync(SportQueryObject queryObject);
 
-
-        /// <summary>Updates a sport</summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="dto">The dto.</param>
-        /// <returns>Sport</returns>
-        Task<Sport?> UpdateAsync(Guid id, Sport updatedSport, string version);
+        /// <summary>
+        /// Retrieves a sport by its exact name, or null if not found.
+        /// </summary>
+        Task<Sport?> GetByNameAsync(string name);
     }
 }

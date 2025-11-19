@@ -4,6 +4,7 @@ using GoSportsAPI.Interfaces.IRepositories;
 using GoSportsAPI.Interfaces.IServices;
 using GoSportsAPI.Mappers;
 using GoSportsAPI.Models.Locations;
+using Mapster;
 
 namespace GoSportsAPI.Services
 {
@@ -14,20 +15,18 @@ namespace GoSportsAPI.Services
         {
             _locationTypeRepository = locationTypeRepository;
         }
-        public async Task<LocationTypeResponseDto> GetLocationTypeById(Guid id)
-        {
-            var location = await _locationTypeRepository.GetByIdAsync(id);
-
-            return location.ToLocationTypeResponceDto();
-        }
 
         public async Task<IEnumerable<LocationTypeResponseDto>> GetLocationTypes(LocationTypeQueryObject queryObject)
         {
             var locationTypes = await _locationTypeRepository.GetAllAsync(queryObject);
+            return locationTypes.Adapt<IEnumerable<LocationTypeResponseDto>>();
+        }
 
-            var locationTypesDto = locationTypes.Select(l => l.ToLocationTypeResponceDto());
-
-            return locationTypesDto;
+        public async Task<LocationTypeResponseDto?> GetLocationTypeById(Guid id)
+        {
+            var locationType = await _locationTypeRepository.GetByIdAsync(id, asNoTracking: true);
+            return locationType?.Adapt<LocationTypeResponseDto>();
         }
     }
 }
+

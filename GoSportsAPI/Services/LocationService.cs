@@ -4,51 +4,107 @@ using GoSportsAPI.Interfaces.IRepositories;
 using GoSportsAPI.Interfaces.IServices;
 using GoSportsAPI.Mappers;
 using GoSportsAPI.Models.Locations;
+using GoSportsAPI.Models.Sports;
+using GoSportsAPI.Repositories;
+using Mapster;
+using Microsoft.EntityFrameworkCore;
 
 namespace GoSportsAPI.Services
 {
     public class LocationService : ILocationService
     {
         private readonly ILocationRepository _locationRepository;
+        private readonly ISportRepository _sportRepository;
 
-        public LocationService(ILocationRepository locationRepository)
+        public LocationService(ILocationRepository locationRepository, ISportRepository sportRepository)
         {
             _locationRepository = locationRepository;
+            _sportRepository = sportRepository;
         }
 
-        public async Task<Location> CreateAsync(Location entity, List<string> sports)
+        public async Task<LocationResponseDto> CreateAsync(LocationCreateDto dto)
         {
-            return await _locationRepository.CreateAsync(entity, sports);
+            var location = dto.Adapt<Location>();
+
+            location.Sports = await ResolveSportsByNames(dto.Sports);
+
+            await _locationRepository.CreateAsync(location);
+            await _locationRepository.SaveChanges();
+
+            return location.Adapt<LocationResponseDto>();
         }
 
-        public async Task<Location?> DeleteAsync(Guid id)
+        public async Task<LocationResponseDto?> GetByIdAsync(Guid id)
         {
-           return await _locationRepository.DeleteAsync(id);
+            var location = await _locationRepository.GetWithDetailsAsync(id);
+            return location?.Adapt<LocationResponseDto>();
         }
 
         public async Task<IEnumerable<LocationResponseDto>> GetAllAsync(LocationQueryObject queryObject)
         {
             var locations = await _locationRepository.GetAllAsync(queryObject);
-
-            var locationDto = locations.Select(l => l.ToLocationResponceDto());
-
-            return locationDto;
+            return locations.Adapt<IEnumerable<LocationResponseDto>>();
         }
 
-        public async Task<Location?> GetByIdAsync(Guid id)
+        public async Task<LocationResponseDto?> UpdateAsync(Guid id, LocationUpdateDto dto)
         {
-            var location = await _locationRepository.GetByIdAsync(id);
+            var location = await _locationRepository.GetWithDetailsAsync(id);
+            if (location is null)
+            {
+                return null;
+            }
 
-            return location;
+            dto.Adapt(location);
+
+            location.Sports = await ResolveSportsByNames(dto.Sports);
+
+            try
+            {
+                await _locationRepository.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return null;
+            }
+
+            return location.Adapt<LocationResponseDto>();
         }
 
-        public async Task<Location?> UpdateAsync(Guid id, LocationUpdateDto updateDto)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            var updatedLocation = updateDto.ToLocationFromUpdate();
+            var deleted = await _locationRepository.DeleteByIdAsync(id);
+            if (!deleted)
+            {
+                return false;
+            }
 
-            var locationModel = await _locationRepository.UpdateAsync(id, updatedLocation, updateDto.Sports, updateDto.ConcurencyToken, updateDto.LocationType.Version);
+            await _locationRepository.SaveChanges();
+            return true;
+        }
 
-            return locationModel;
+        private async Task<List<Sport>> ResolveSportsByNames(IEnumerable<string> names)
+        {
+            var result = new List<Sport>();
+
+            if (names == null)
+            {
+                return result;
+            }
+                
+            foreach (var name in names.Where(n => !string.IsNullOrWhiteSpace(n)))
+            {
+                var sport = await _sportRepository.GetByNameAsync(name.Trim());
+                if (sport != null)
+                {
+                    if (!result.Any(s => s.Id == sport.Id))
+                    {
+                        result.Add(sport);
+                    }
+
+                }
+            }
+
+            return result;
         }
     }
 }

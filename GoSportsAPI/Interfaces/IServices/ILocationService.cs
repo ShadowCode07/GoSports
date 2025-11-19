@@ -6,10 +6,11 @@ namespace GoSportsAPI.Interfaces.IServices
 {
     public interface ILocationService
     {
-        Task<Location> CreateAsync(Location entity, List<string> sports);
-        Task<Location?> UpdateAsync(Guid id, LocationUpdateDto updateDto);
-        Task<Location?> DeleteAsync(Guid id);
-        Task<Location?> GetByIdAsync(Guid id);
+        Task<LocationResponseDto> CreateAsync(LocationCreateDto dto);
+        Task<LocationResponseDto?> UpdateAsync(Guid id, LocationUpdateDto dto);
+        Task<bool> DeleteAsync(Guid id);
+
+        Task<LocationResponseDto?> GetByIdAsync(Guid id);
         Task<IEnumerable<LocationResponseDto>> GetAllAsync(LocationQueryObject queryObject);
     }
 }

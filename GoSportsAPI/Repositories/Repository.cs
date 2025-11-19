@@ -1,6 +1,9 @@
 ﻿using GoSportsAPI.Data;
 using GoSportsAPI.Interfaces.IRepositories;
+using GoSportsAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace GoSportsAPI.Repositories
 {
@@ -12,7 +15,7 @@ namespace GoSportsAPI.Repositories
     /// Implements the <see cref="IRepository{T}"/> interface and provides shared CRUD functionality 
     /// for derived repository classes.
     /// </remarks>
-    public abstract class Repository<T> : IRepository<T> where T : class
+    public abstract class Repository<T> : IRepository<T> where T : Base
     {
         protected readonly ApplicationDBContext _context;
         protected readonly DbSet<T> _dbSet;
@@ -23,93 +26,120 @@ namespace GoSportsAPI.Repositories
             _dbSet = context.Set<T>();
         }
 
+        /// <inheritdoc/>
+        public virtual IQueryable<T> Query()
+        {
+            return _dbSet.AsQueryable();
+        }
 
-        /// <summary>Create entity of type T.</summary>
-        /// <param name="entity">The entity.</param>
-        /// <returns>
-        ///   <br />
-        /// </returns>
+        /// <inheritdoc/>
         public virtual async Task<T> CreateAsync(T entity)
         {
-            await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
-            return entity;
-        }
-
-
-        /// <summary>Updates an entity of type T.</summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="entity">The entity.</param>
-        /// <returns>
-        ///   <br />
-        /// </returns>
-        public virtual async Task<T?> UpdateAsync(Guid id, T entity)
-        {
-            _dbSet.Update(entity);
-            await _context.SaveChangesAsync();
-            return entity;
-        }
-
-
-        /// <summary>Deletes an entity of type T.</summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>
-        ///   <br />
-        /// </returns>
-        public virtual async Task<T?> DeleteAsync(Guid id)
-        {
-            var model = await GetByIdAsync(id);
-
-            if (model == null)
+            if (entity == null)
             {
-                return null;
+                throw new ArgumentNullException(nameof(entity));
             }
 
-            _dbSet.Remove(model);
-            await _context.SaveChangesAsync();
-            return model;
+            await _dbSet.AddAsync(entity);
+
+            return entity;
         }
 
-
-        /// <summary>Gets all entities of type T.</summary>
-        /// <returns>
-        ///   <br />
-        /// </returns>
-        public virtual async Task<List<T>> GetAllAsync()
+        /// <inheritdoc/>
+        public virtual async Task<T?> GetByIdAsync(Guid id, bool asNoTracking = false)
         {
-            return await _dbSet.ToListAsync();
+            IQueryable<T> query = _dbSet;
+
+            if (asNoTracking)
+            {
+                query = query.AsNoTracking();
+            }
+                
+            return await query.FirstOrDefaultAsync(e => e.Id == id);
         }
 
-
-        /// <summary>Gets an entity of type T by Identifier.</summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>
-        ///   <br />
-        /// </returns>
-        public virtual async Task<T?> GetByIdAsync(Guid id)
+        /// <inheritdoc/>
+        public virtual async Task<IReadOnlyList<T>> GetAllAsync(bool asNoTracking = false)
         {
-            return await _dbSet.FindAsync(id);
+            IQueryable<T> query = _dbSet;
+
+            if (asNoTracking)
+            {
+                query = query.AsNoTracking();
+            }
+                
+            return await query.ToListAsync();
         }
 
+        /// <inheritdoc/>
+        public virtual void Update(T entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
 
-        /// <summary>Saves changes to the context.</summary>
-        /// <returns>
-        ///   <br />
-        /// </returns>
+            _dbSet.Update(entity);
+        }
+
+        /// <inheritdoc/>
+        public virtual void Remove(T entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            _dbSet.Remove(entity);
+        }
+
+        /// <inheritdoc/>
+        public virtual async Task<bool> DeleteByIdAsync(Guid id)
+        {
+            var entity = await _dbSet.FirstOrDefaultAsync(e => e.Id == id);
+
+            if (entity == null)
+            {
+                return false;
+            }
+
+            _dbSet.Remove(entity);
+
+            return true;
+        }
+
+        /// <inheritdoc/>
+        public virtual Task<bool> ExistsAsync(Guid id)
+        {
+            return _dbSet.AnyAsync(e => e.Id == id);
+        }
+
+        /// <inheritdoc/>
+        public virtual Task<bool> AnyAsync(Expression<Func<T, bool>>? predicate = null)
+        {
+            IQueryable<T> query = _dbSet;
+
+            if (predicate != null)
+                query = query.Where(predicate);
+
+            return query.AnyAsync();
+        }
+
+        /// <inheritdoc/>
+        public virtual Task<int> CountAsync(Expression<Func<T, bool>>? predicate = null)
+        {
+            IQueryable<T> query = _dbSet;
+
+            if (predicate != null)
+                query = query.Where(predicate);
+
+            return query.CountAsync();
+        }
+
+        /// <inheritdoc/>
         public virtual async Task<bool> SaveChanges()
         {
-            return (_context.SaveChanges() >= 0);
-        }
-
-
-        /// <summary>Checks if entity exists by Identifier.</summary>
-        /// <param name="id">The identifier.</param>
-        /// <returns>
-        ///   <br />
-        /// </returns>
-        public virtual Task<bool> Exists(Guid id)
-        {
-            return _dbSet.AnyAsync();
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

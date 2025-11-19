@@ -97,7 +97,7 @@ namespace GoSportsAPI.Mappers
                 .IgnoreNullValues(true)
                 .AfterMapping((src, dest) =>
                 {
-                    dest.Version = Convert.FromBase64String(src.ConcurrencyToken);s.
+                    dest.Version = Convert.FromBase64String(src.ConcurrencyToken);
                 });
 
             config.NewConfig<Lobby, LobbyResponseDto>()

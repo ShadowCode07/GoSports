@@ -28,56 +28,39 @@ namespace GoSportsAPI.Repositories
         /// <returns>List&lt;Sport&gt;</returns>
         public async Task<List<Sport>> GetAllAsync(SportQueryObject queryObject)
         {
-            var sports = _context.Sports
-                .AsQueryable();
+            IQueryable<Sport> sports = _dbSet.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(queryObject.SportName))
             {
-                sports = sports.Where(l => l.Name.Contains(queryObject.SportName));
+                var name = queryObject.SportName.Trim().ToLower();
+                sports = sports.Where(s => s.Name.ToLower().Contains(name));
             }
 
-            if (!string.IsNullOrEmpty(queryObject.SortBy))
+            if (!string.IsNullOrWhiteSpace(queryObject.SortBy))
             {
-                if (queryObject.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                switch (queryObject.SortBy.Trim().ToLower())
                 {
-                    sports = queryObject.IsDescending ? sports.OrderByDescending(l => l.Name) : sports.OrderBy(l => l.Name);
+                    case "name":
+                    case "sportname":
+                        sports = queryObject.IsDescending
+                            ? sports.OrderByDescending(s => s.Name)
+                            : sports.OrderBy(s => s.Name);
+                        break;
                 }
             }
-
 
             return await sports.ToListAsync();
         }
 
-
-        /// <summary>Updates a sport.</summary>
-        /// <param name="id">The identifier.</param>
-        /// <param name="dto">The dto.</param>
-        /// <returns>Sports</returns>
-        public async Task<Sport?> UpdateAsync(Guid id, Sport updatedSport, string version)
+        /// <inheritdoc/>
+        public Task<Sport?> GetByNameAsync(string name)
         {
-            var update = await _dbSet
-                .FirstOrDefaultAsync(s => s.Id == id);
-
-            if (update == null)
+            if (string.IsNullOrWhiteSpace(name))
             {
-                return null;
+                return Task.FromResult<Sport?>(null);
             }
 
-            var locationVersionBytes = Convert.FromBase64String(version);
-            _context.Entry(update).Property(l => l.Version).OriginalValue = locationVersionBytes;
-
-            update.Name = updatedSport.Name;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw new DbUpdateConcurrencyException("Lobby was modified elsewhere. Try again.");
-            }
-
-            return update;
+            return _dbSet.FirstOrDefaultAsync(s => s.Name == name);
         }
     }
 }

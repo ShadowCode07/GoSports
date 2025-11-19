@@ -14,30 +14,20 @@ namespace GoSportsAPI.Interfaces.IRepositories
     public interface ILobbyRepository : IRepository<Lobby>
     {
         /// <summary>
-        /// Creates a new lobby.
+        /// Returns all lobbies filtered and sorted using the provided query object.
         /// </summary>
-        /// <param name="locationId">The identifier of the location where the lobby belongs.</param>
-        /// <param name="entity">The lobby entity to create.</param>
-        /// <param name="sportName">The name of the sport associated with the lobby.</param>
-        /// <returns>Lobby</returns>
-        Task<Lobby> CreateAsync(Guid locationId, Lobby lobby, string sportName);
-        Task<Lobby> CreateAsync(Guid locationId, Lobby lobbt, string sportName, Guid hostProfileId);
-
-        /// <summary>
-        /// Gets all the lobbies.
-        /// </summary>
-        /// <param name="queryObject">The query object used for filtering and sorting lobbies.</param>
-        /// <returns>List&lt;Lobby&gt;</returns>
         Task<List<Lobby>> GetAllAsync(LobbyQueryObject queryObject);
 
         /// <summary>
-        /// Updates a lobby.
+        /// Returns a lobby with all required related data included.
+        /// Perfect for service-layer logic such as join/leave operations.
         /// </summary>
-        /// <param name="id">The identifier of the lobby.</param>
-        /// <param name="dto">The DTO containing updated lobby data.</param>
-        /// <param name="sportName">The name of the sport associated with the lobby.</param>
-        /// <returns>Lobby</returns>
-        Task<Lobby?> UpdateAsync(Guid locationId, Guid id, Lobby updatedLobby, string sportName, string version);
+        Task<Lobby?> GetWithDetailsAsync(Guid id);
+
+        /// <summary>
+        /// Returns all lobbies hosted by a specific user profile.
+        /// </summary>
+        Task<List<Lobby>> GetByHostProfileAsync(Guid hostProfileId);
 
     }
 }
