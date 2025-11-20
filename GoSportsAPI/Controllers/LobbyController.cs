@@ -45,8 +45,12 @@ namespace GoSportsAPI.Controllers
         public async Task<IActionResult> GetById(Guid id)
         {
             var lobby = await _lobbyService.GetByIdAsync(id);
+            
             if (lobby is null)
+            {
                 return NotFound();
+            }
+
 
             return Ok(lobby);
         }
@@ -101,9 +105,15 @@ namespace GoSportsAPI.Controllers
         /// later you can get it from the authenticated user instead.
         /// </summary>
         [HttpPost("{id:guid}/join")]
-        public async Task<IActionResult> Join(Guid id, [FromQuery] Guid userProfileId)
+        public async Task<IActionResult> Join(Guid id)
         {
-            var success = await _lobbyService.JoinLobbyAsync(id, userProfileId);
+            var userId = User.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var success = await _lobbyService.JoinLobbyAsync(id, userId.Value);
 
             if (!success)
             {
@@ -117,9 +127,15 @@ namespace GoSportsAPI.Controllers
         /// Leaves the given lobby as the specified user profile.
         /// </summary>
         [HttpPost("{id:guid}/leave")]
-        public async Task<IActionResult> Leave(Guid id, [FromQuery] Guid userProfileId)
+        public async Task<IActionResult> Leave(Guid id)
         {
-            var success = await _lobbyService.LeaveLobbyAsync(id, userProfileId);
+            var userId = User.GetUserId();
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var success = await _lobbyService.LeaveLobbyAsync(id, userId.Value);
 
             if (!success)
             {

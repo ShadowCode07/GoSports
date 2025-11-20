@@ -99,7 +99,7 @@ namespace GoSportsAPI.Services
 
             return lobby.Adapt<LobbyResponseDto>();
         }
-        public async Task<bool> JoinLobbyAsync(Guid lobbyId, Guid userProfileId)
+        public async Task<bool> JoinLobbyAsync(Guid lobbyId, Guid userId)
         {
             var lobby = await _lobbyRepository.GetWithDetailsAsync(lobbyId);
             
@@ -108,14 +108,14 @@ namespace GoSportsAPI.Services
                 return false;
             }   
 
-            var user = await _userProfileRepository.GetWithDetailsAsync(userProfileId);
+            var user = await _userProfileRepository.GetByUserIdAsync(userId);
 
             if (user is null)
             {
                 return false;
             }
 
-            if (lobby.Users.Any(u => u.Id == userProfileId))
+            if (lobby.Users.Any(u => u.Id == user.Id))
             {
                 return true;
             }
@@ -132,7 +132,7 @@ namespace GoSportsAPI.Services
             return true;
         }
 
-        public async Task<bool> LeaveLobbyAsync(Guid lobbyId, Guid userProfileId)
+        public async Task<bool> LeaveLobbyAsync(Guid lobbyId, Guid userId)
         {
             var lobby = await _lobbyRepository.GetWithDetailsAsync(lobbyId);
             
@@ -140,17 +140,24 @@ namespace GoSportsAPI.Services
             {
                 return false;
             }
-                
-            var user = lobby.Users.FirstOrDefault(u => u.Id == userProfileId);
+
+            var user = await _userProfileRepository.GetByUserIdAsync(userId);
+
             if (user is null)
             {
                 return false;
             }
 
-            lobby.Users.Remove(user);
+            var userProfile = lobby.Users.FirstOrDefault(u => u.Id == user.Id);
+            if (userProfile is null)
+            {
+                return false;
+            }
+
+            lobby.Users.Remove(userProfile);
             lobby.CurrentPlayerCount = Math.Max(0, lobby.CurrentPlayerCount - 1);
 
-            if (lobby.HostProfileId == userProfileId)
+            if (lobby.HostProfileId == user.Id)
             {
                 await _lobbyRepository.DeleteByIdAsync(lobbyId);
             }
