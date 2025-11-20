@@ -108,6 +108,7 @@ namespace GoSportsAPI.Mappers
                 .Map(dest => dest.SportName, src => src.Sport.Name)
                 .Map(dest => dest.HostProfileId, src => src.HostProfileId)
                 .Map(dest => dest.HostUserName, src => src.HostProfile.User.UserName)
+                .Map(dest => dest.Players, src => src.Users)
                 .Map(dest => dest.CurrentPlayerCount, src => src.CurrentPlayerCount)
                 .Map(dest => dest.MaxPlayerCount, src => src.MaxPlayerCount);
 

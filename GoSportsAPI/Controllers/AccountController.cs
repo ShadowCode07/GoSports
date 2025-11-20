@@ -1,6 +1,9 @@
 ﻿using GoSportsAPI.Dtos.Account;
+using GoSportsAPI.Dtos.Profiles;
 using GoSportsAPI.Interfaces.IServices;
+using GoSportsAPI.Models.Sports;
 using GoSportsAPI.Models.Users;
+using Mapster;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +18,13 @@ namespace GoSportsAPI.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly SignInManager<AppUser> _signInManager;
-        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager)
+        private readonly IUserProfileService _userProfileServise;
+        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService, SignInManager<AppUser> signInManager, IUserProfileService userProfileServise)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _signInManager = signInManager;
+            _userProfileServise = userProfileServise;
         }
 
         [HttpPost("register")]
@@ -39,8 +44,10 @@ namespace GoSportsAPI.Controllers
                 };
 
                 var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
-                
-                if(createdUser.Succeeded)
+
+                var userProfile = await _userProfileServise.CreateAsync(new UserProfileCreateDto { UserId = appUser.Id, Sports = registerDto.Sports });
+
+                if (createdUser.Succeeded)
                 {
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
                     if(roleResult.Succeeded)
@@ -50,7 +57,7 @@ namespace GoSportsAPI.Controllers
                             {
                                 UserName = appUser.UserName,
                                 Email = appUser.Email,
-                                //Profile = appUser.Profile,
+                                Profile = userProfile,
                                 Token = await _tokenService.CreateToken(appUser)
                             }
                         );
@@ -79,7 +86,10 @@ namespace GoSportsAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await _userManager.FindByEmailAsync(loginDto.Email);
+            var user = await _userManager.Users
+                .Include(u => u.Profile)
+                .ThenInclude(p => p.Lobby)
+                .SingleAsync(u => u.NormalizedEmail == loginDto.Email.ToUpper());
 
             if(user == null)
             {
@@ -98,7 +108,7 @@ namespace GoSportsAPI.Controllers
                 {
                     UserName = user.UserName,
                     Email = user.Email,
-                    //Profile = user.Profile,
+                    Profile = user.Profile.Adapt<UserProfileResponseDto>(),
                     Token = await _tokenService.CreateToken(user)
                 }
             );

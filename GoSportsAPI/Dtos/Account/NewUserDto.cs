@@ -6,7 +6,7 @@ namespace GoSportsAPI.Dtos.Account
     {
         public string UserName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public UserProfileResponseDto Profile { get; set; } = null!;
+        public UserProfileResponseDto Profile { get; set; }
         public string Token { get; set; } = string.Empty;
     }
 }

@@ -1,4 +1,5 @@
-﻿using GoSportsAPI.Dtos.Sports;
+﻿using GoSportsAPI.Dtos.Profiles;
+using GoSportsAPI.Dtos.Sports;
 using System.ComponentModel.DataAnnotations;
 
 namespace GoSportsAPI.Dtos.Lobbies
@@ -32,6 +33,8 @@ namespace GoSportsAPI.Dtos.Lobbies
 
         public Guid HostProfileId { get; set; }
         public string HostUserName { get; set; } = string.Empty;
+        public ICollection<UserProfileResponseDto> Players { get; set; } = [];
+
         public int CurrentPlayerCount { get; set; } = 0;
         public int MaxPlayerCount { get; set; }
 
